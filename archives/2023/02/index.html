@@ -306,10 +306,10 @@
   var titleTime;
   document.addEventListener("visibilitychange", function () {
     if (document.hidden) {
-      document.title = " (ง •̀_•́)ง 加油学习" + originTitle;
+      document.title = " (つд⊂) 偷懒休息会 " + originTitle;
       clearTimeout(titleTime);
     } else {
-      document.title = " (つд⊂) 偷懒休息会 " + originTitle;
+      document.title = " (ง •̀_•́)ง 加油学习 " + originTitle;
       titleTime = setTimeout(function () {
         document.title = originTitle;
       }, 2000);
