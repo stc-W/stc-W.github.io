@@ -174,6 +174,118 @@
             
 
   
+    <article id="post-算法设计与分析" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+  
+  
+    <h1 itemprop="name">
+	
+	  <a class="article-title" href="/2023/02/21/%E7%AE%97%E6%B3%95%E8%AE%BE%E8%AE%A1%E4%B8%8E%E5%88%86%E6%9E%90/" target="_blank">算法设计与分析1</a>
+  
+    </h1>
+  
+
+
+  
+  
+<a href="/2023/02/21/%E7%AE%97%E6%B3%95%E8%AE%BE%E8%AE%A1%E4%B8%8E%E5%88%86%E6%9E%90/" class="archive-article-date">
+        <time datetime="2023-02-21T14:48:31.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2023-02-21</time>
+</a>
+
+  
+  
+    
+
+  
+  </header>
+  
+  <div class="article-entry" itemprop="articleBody">
+    
+    <h1 id="Stable-Matching-Algorithm"><a href="#Stable-Matching-Algorithm" class="headerlink" title="Stable Matching Algorithm"></a>Stable Matching Algorithm</h1><h2 id="引子"><a href="#引子" class="headerlink" title="引子"></a>引子</h2><p>   今天记录一下今天上了整整一节大课才讲完的<code>Stable Matching Algorithm</code>，这个算法是由<code>Gale-Shapley</code>两个人共同提出的，一个算法两个人提出嗯。。。可见其含金量，、之所以被称为<code>stable matching algorithm</code>是因为他解决了<strong>stable matching problem</strong>,即一个稳定匹配的问题。下面由一个例子引出这个算法。</p>
+<h2 id="Introduction-：an-example"><a href="#Introduction-：an-example" class="headerlink" title="Introduction ：an example"></a>Introduction ：an example</h2><p>  假设有一群毕业的医学生，他们毕业要分配到不同的医院去，并且我们有一张表，上面记录了医学生对每个医院的排名和医院对医学生的排名，我们需要找到一种配对方式，使得这个配对方式里不存在不稳定对即<code>unstable pairs</code>。</p>
+<p><strong>unstable pairs</strong> ：在此种配对方式下，将所有不是一对的学生和医院进行一个自由组合，如果其中有一对其学生对这所医院的排名高于自己本身配对的医院并且该医院对这个学生的排名也大于它本身配对的学生，那么这一对就叫做不稳定对，<strong>直观上的理解就是双方都有更好的选择所以两个人可能会达成某种交易变成一对这会伤害到他们本身配对的学生和医院</strong>。</p>
+<h2 id="Another-example"><a href="#Another-example" class="headerlink" title="Another example:"></a>Another example:</h2><p>​       上一个例子可能还不够直观，那我们来说一个更直观的例子，关于结婚的例子，有n个男人和n个女人，男人对女人有一个排名，女人对男人有一个排名，我们需要找到一种配对方式，使得这种方式不存在<code>unstable pairs</code>,这里的<strong>unstable pairs</strong>同上面类似也是在其他的配对中，有女性喜欢这个配对的男性大于自身原来的配偶并且该男性喜欢这个女性也大于自身的配偶，那么他们有可能<strong>私奔</strong>，所以这是一个不稳定对。看下面一张表。</p>
+<p><img src="/2023/02/21/%E7%AE%97%E6%B3%95%E8%AE%BE%E8%AE%A1%E4%B8%8E%E5%88%86%E6%9E%90/p1.png"></p>
+<p>​           此时我们给定一种配对<strong>X-C,Y-B,Z-A</strong>,请读者想一想这种配对是否是一个<strong>stable matching</strong>，事实上我们的检验方法也是非常简单，把所有其他的配对给列出来例如<strong>X-B</strong>,这是一个<strong>unstable pairs</strong>吗，事实上是的，因为<strong>X</strong>对<strong>B</strong>的喜爱度大于其当前的伴侣<strong>C</strong>并且<strong>B</strong>对<strong>X</strong>的限度也大于他当前的伴侣<strong>Y</strong>，所以<strong>X-B</strong>是一对不稳定对，他们完全有可能抛弃自己当前的伴侣而选择对方并且私奔。我们再来看<strong>X-A,Y-B,Z-C</strong>这一组组合，发现找不出一族<strong>unstable pairs</strong>，举个例子<strong>Z-A</strong>，虽然<strong>Z</strong>喜欢<strong>A</strong>胜过自己现在的伴侣<strong>C</strong>,但是<strong>A</strong>喜欢自己现在的伴侣超过<strong>Z</strong>，所以他不会抛弃自己现在的伴侣，所以这并不是一对<strong>unstable pairs</strong>。</p>
+<h2 id="一个例外"><a href="#一个例外" class="headerlink" title="一个例外"></a>一个例外</h2><p> 现在我们似乎应该开始探讨这么一种算法了，但是在那之前我们不妨先想一想，是否每一个类似的问题都有解。我们先来看一个类似的问题，选择室友的问题。下面是一张表，是每一个人对自己室友候选人的一个评级，我们要给出一种配对，也是两个人一对，不存在任何的不稳定对。</p>
+<p><img src="/2023/02/21/%E7%AE%97%E6%B3%95%E8%AE%BE%E8%AE%A1%E4%B8%8E%E5%88%86%E6%9E%90/p2.png"></p>
+<p>存在这样的配对方式吗，我们经过穷举发现是不存在的，具体结果请看下图。</p>
+<p><img src="/2023/02/21/%E7%AE%97%E6%B3%95%E8%AE%BE%E8%AE%A1%E4%B8%8E%E5%88%86%E6%9E%90/p3.png"></p>
+<p>​         所以这样一个找室友的问题似乎是不存在解的，但是幸运的是像我们上面那样的找伴侣或者学生和医院的配对是一定存在解的并且可以找到这么一种算法求得这样一个解。</p>
+<h3 id="为什么"><a href="#为什么" class="headerlink" title="为什么"></a>为什么</h3><p>​         笔者经过一定的思考发现了找室友问题和找伴侣问题和医院学生配对的不同，即伴侣问题是将对象严格分为两组的，且每一组内部的对象不能够互相配对，但是找室友问题则没有将对象分为两组，所有的对象都能两两配对，所以这样的问题不一定有解。</p>
+<h2 id="算法"><a href="#算法" class="headerlink" title="算法"></a>算法</h2><p>​        终于到了我们最重要的阶段了，算法揭秘阶段，这个算法叫做<code>Propose-and-reject algorithm</code>也叫<code>Gale-Shapley algorithm</code>，后面这个是以两个设计者的名称的来命名的。下面是算法的实现过程。</p>
+<p><img src="/2023/02/21/%E7%AE%97%E6%B3%95%E8%AE%BE%E8%AE%A1%E4%B8%8E%E5%88%86%E6%9E%90/p4.png"></p>
+<p>​     简要叙述一下算法的过程，首先第一步将所有的男性和女性的状态全都设置为<strong>free</strong>即自由状态，然后开始while循环，while循环的条件有两个，一个是有<strong>free</strong>的男性并且该男性并没有对所有的女性都发过申请。进入while循环，首先随便选择一个符合while循环条件的男性m，再选择一个女性w，这个w是m当前为发出过请求中最喜欢的女性。</p>
+<p>​		接下来开始if判断，如果w是自由的那么w将直接成为m的暂时伴侣，如果w有伴侣了那么如果w喜欢当前m大于自己的当前伴侣那么w抛弃自己原来的伴侣接受m否则拒绝m，经过一次又一次的循环，最终得到的就是一份<strong>stable matching</strong> 。</p>
+<h2 id="证明"><a href="#证明" class="headerlink" title="证明"></a>证明</h2><h3 id="证明1"><a href="#证明1" class="headerlink" title="证明1"></a>证明1</h3><p>​		 这个证明需要一步一步证明，我们先来第一个证明，这个算法运算结束之后所有男性女性都将有一个伴侣，不可能存在一个孤立的男性和一个孤立的女性的情况，如何证明呢我们运用<strong>反证法</strong>。</p>
+<p>​		<strong>假设有一个男性和女性当算法结束的时候没有配对，那么这个男性一定对所有的女性发出过请求，不然while循环不会结束，如果女性没有配对说明这个女性没有被任何人请求过，因为按照我们的算法，如果一个自由的女性被请求过那么她后面只会在男性之间被交换（没有歧视女性的意思），这就与上面的结论矛盾，因为我们说那个男性一定请求过所有的女性，矛盾产生，假设不成立原命题成立</strong></p>
+<h3 id="证明2"><a href="#证明2" class="headerlink" title="证明2"></a>证明2</h3><p>​		第二个证明，这种配对下不存在<strong>unstable pairs</strong>我们同样使用反证法。</p>
+<p>​		<strong>假设有这样一对unstable pairs，M1-W1，M1喜欢W1超过自己的现任，说明M1曾经先请求的W1但是被拒绝了，因为根据我们的算法男性会先向自己最喜欢的女性发出请求，但是W1拒绝说明W1喜欢当初的伴侣超过M1，按照我们的算法女性只会找自己越来越喜欢的男性，所以最终的伴侣不可能低于M1所以与我们的假设相悖，原命题成立</strong></p>
+<h3 id="证明3"><a href="#证明3" class="headerlink" title="证明3"></a>证明3</h3><h4 id="一点小深入"><a href="#一点小深入" class="headerlink" title="一点小深入"></a>一点小深入</h4><p>​		通过上面两个证明我们已经基本证明了该算法的可行性，即一定可以找到一个合理的<strong>stable matching</strong>，我们将这个问题思考的再深一些，<strong>stable matching</strong>是否只存在一种，我们通过一些例子可以发现是不只一种的，看下面一个例子。</p>
+<p><img src="/2023/02/21/%E7%AE%97%E6%B3%95%E8%AE%BE%E8%AE%A1%E4%B8%8E%E5%88%86%E6%9E%90/p5.png"></p>
+<p>​		这个例子就有两种<strong>stable matching</strong>，那么我们通过算法获得的是哪一种呢，是男性获得自己最喜欢的女性的那一种即第一种。叫做<code>man-optimal stable matching</code>.下面是证明。</p>
+<p><img src="/2023/02/21/%E7%AE%97%E6%B3%95%E8%AE%BE%E8%AE%A1%E4%B8%8E%E5%88%86%E6%9E%90/p6.png"></p>
+<p>​		简单点一下最难的部分第六步，因为Y是第一个被自己最好的valid<strong>（m的valid women指的是所有不同的stable matching里面和m配对的女性）</strong>所以Z在之前不可能被任何自己最佳的valid women拒绝过，而Z会从好到差选择自己的女性伴侣，所以他一定喜欢A超过B，不然他肯定会先选B但是会被拒绝，不然也不会和Y抢A，但是这样Y就不是第一个被valid women拒绝的了所以矛盾。这是对第六条的解释后面看上面就比较简单了。</p>
+<h2 id="具体实现"><a href="#具体实现" class="headerlink" title="具体实现"></a>具体实现</h2><p>​		具体实现和简单，两个二维数组存上述的男女两个表，再用一个数组存第m个男性发出请求的次数。</p>
+<p>时间复杂度O（n方）</p>
+
+    
+
+    
+
+    
+
+  </div>
+  <div class="article-info article-info-index">
+    
+    
+	<div class="article-tag tagcloud">
+		<i class="icon-price-tags icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">算法设计与分析</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
+    
+
+    
+    <p class="article-more-link">
+      <a class="article-more-a" href="/2023/02/21/%E7%AE%97%E6%B3%95%E8%AE%BE%E8%AE%A1%E4%B8%8E%E5%88%86%E6%9E%90/">展开全文 >></a>
+    </p>
+    
+
+    
+    <div class="clearfix"></div>
+  </div>
+  </div>
+</article>
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
+        </div>
+        
+        
+    </div>
+</aside>
+
+
+
+
+  
     <article id="post-计算机组成原理1" class="article article-type-post  article-index" itemscope itemprop="blogPost">
   <div class="article-inner">
     
@@ -502,6 +614,10 @@
              
               <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color3">计算机组成原理</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color3">算法设计与分析</a>
               </li>
             
             <div class="clearfix"></div>
