@@ -6,19 +6,33 @@
   <meta name="renderer" content="webkit">
   <meta http-equiv="X-UA-Compatible" content="IE=edge" >
   <link rel="dns-prefetch" href="https://stc-w.github.io">
-  <title>Archives |  </title>
+  <title>计算机组成原理2（lab） |  </title>
   <meta name="generator" content="hexo-theme-yilia-plus">
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
   
-  <meta name="description" content="是一个默默学习的寄系人">
-<meta property="og:type" content="website">
-<meta property="og:title" content=" ">
-<meta property="og:url" content="https://stc-w.github.io/archives/index.html">
+  <meta name="description" content="Lab​		这次的lab课内容不是很多但是比较麻烦，我还没没想好该从哪开始说，先从MIPS中的存储规范和关键字开始讲起吧。 存储规范字与字节​		字与字节都可以简单看成一串二进制数字，字节是构成字的基本单位，对于所有系统中字节的长度都是一定的（叫做一个byte），为8个bit，即一个八位的二进制数字如10101010，对于字的长度则不一定，在不同的场合有不同的规范，在我们的MIPS中四个字节构成一">
+<meta property="og:type" content="article">
+<meta property="og:title" content="计算机组成原理2（lab）">
+<meta property="og:url" content="https://stc-w.github.io/2023/02/23/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BB%84%E6%88%90%E5%8E%9F%E7%90%862%EF%BC%88%E7%BB%AD%EF%BC%89/index.html">
 <meta property="og:site_name" content=" ">
-<meta property="og:description" content="是一个默默学习的寄系人">
+<meta property="og:description" content="Lab​		这次的lab课内容不是很多但是比较麻烦，我还没没想好该从哪开始说，先从MIPS中的存储规范和关键字开始讲起吧。 存储规范字与字节​		字与字节都可以简单看成一串二进制数字，字节是构成字的基本单位，对于所有系统中字节的长度都是一定的（叫做一个byte），为8个bit，即一个八位的二进制数字如10101010，对于字的长度则不一定，在不同的场合有不同的规范，在我们的MIPS中四个字节构成一">
 <meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://stc-w.github.io/2023/02/23/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BB%84%E6%88%90%E5%8E%9F%E7%90%862%EF%BC%88%E7%BB%AD%EF%BC%89/p1.png">
+<meta property="og:image" content="https://stc-w.github.io/2023/02/23/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BB%84%E6%88%90%E5%8E%9F%E7%90%862%EF%BC%88%E7%BB%AD%EF%BC%89/p2.png">
+<meta property="og:image" content="https://stc-w.github.io/2023/02/23/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BB%84%E6%88%90%E5%8E%9F%E7%90%862%EF%BC%88%E7%BB%AD%EF%BC%89/p3.png">
+<meta property="og:image" content="https://stc-w.github.io/2023/02/23/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BB%84%E6%88%90%E5%8E%9F%E7%90%862%EF%BC%88%E7%BB%AD%EF%BC%89/p4.png">
+<meta property="og:image" content="https://stc-w.github.io/2023/02/23/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BB%84%E6%88%90%E5%8E%9F%E7%90%862%EF%BC%88%E7%BB%AD%EF%BC%89/p6.jpg">
+<meta property="og:image" content="https://stc-w.github.io/2023/02/23/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BB%84%E6%88%90%E5%8E%9F%E7%90%862%EF%BC%88%E7%BB%AD%EF%BC%89/p5.jpg">
+<meta property="og:image" content="https://stc-w.github.io/2023/02/23/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BB%84%E6%88%90%E5%8E%9F%E7%90%862%EF%BC%88%E7%BB%AD%EF%BC%89/p7.png">
+<meta property="og:image" content="https://stc-w.github.io/2023/02/23/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BB%84%E6%88%90%E5%8E%9F%E7%90%862%EF%BC%88%E7%BB%AD%EF%BC%89/p8.png">
+<meta property="og:image" content="https://stc-w.github.io/2023/02/23/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BB%84%E6%88%90%E5%8E%9F%E7%90%862%EF%BC%88%E7%BB%AD%EF%BC%89/p9.png">
+<meta property="og:image" content="https://stc-w.github.io/2023/02/23/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BB%84%E6%88%90%E5%8E%9F%E7%90%862%EF%BC%88%E7%BB%AD%EF%BC%89/p10.png">
+<meta property="article:published_time" content="2023-02-23T14:09:52.000Z">
+<meta property="article:modified_time" content="2023-02-24T11:26:30.576Z">
 <meta property="article:author" content="王海龙">
+<meta property="article:tag" content="计算机组成原理">
 <meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://stc-w.github.io/2023/02/23/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BB%84%E6%88%90%E5%8E%9F%E7%90%862%EF%BC%88%E7%BB%AD%EF%BC%89/p1.png">
   
     <link rel="alternative" href="/atom.xml" title=" " type="application/atom+xml">
   
@@ -167,41 +181,138 @@
               class="anm-canvas"></canvas>
           </div>
           <div id="js-content" class="content-ll">
-            
+            <article id="post-计算机组成原理2（续）" class="article article-type-post " itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
   
   
-    
-    
-      
-      
-      <section class="archives-wrap">
-        <div class="archive-year-wrap">
-          <a href="/archives/2023" class="archive-year">2023</a>
-        </div>
-        <div class="archives">
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	
+    <h1 class="article-title" itemprop="name">
+      计算机组成原理2（lab）
+    </h1>
+  
+
+
+  
+  
+        
+        <span id="busuanzi_container_page_pv" style='display:none' class="archive-article-date">
+              <i class="icon-smile icon"></i> 阅读数：<span id="busuanzi_value_page_pv"></span>次
+        </span>
+
 <a href="/2023/02/23/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BB%84%E6%88%90%E5%8E%9F%E7%90%862%EF%BC%88%E7%BB%AD%EF%BC%89/" class="archive-article-date">
         <time datetime="2023-02-23T14:09:52.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2023-02-23</time>
 </a>
 
-        </div>
-    	 
   
-    <h1 itemprop="name">
-	
-	  <a class="archive-article-title" href="/2023/02/23/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BB%84%E6%88%90%E5%8E%9F%E7%90%862%EF%BC%88%E7%BB%AD%EF%BC%89/" target="_blank">计算机组成原理2（lab）</a>
   
-    </h1>
-  
+    
+<div style="margin-top:10px;">
+  <span class="post-time">
+    <span class="post-meta-item-icon">
+      <!-- fonts.scss -->
+      <!-- 百度字体平台:http://fontstore.baidu.com/static/editor/index.html -->
+      <i class="icon-statistics"></i>
+      <span class="post-meta-item-text"> 字数统计:</span>
+      <span class="post-count">2.7k字</span>
+    </span>
+  </span>
+
+  <span class="post-time">
+    &nbsp; | &nbsp;
+    <span class="post-meta-item-icon">
+      <i class="icon-book icon"></i>
+      <span class="post-meta-item-text"> 阅读时长≈</span>
+      <span class="post-count">9分</span>
+    </span>
+  </span>
+</div>
 
 
-        <div class="article-info info-on-right">
+  
+  </header>
+  
+  <div class="article-entry" itemprop="articleBody">
+    
+    <h1 id="Lab"><a href="#Lab" class="headerlink" title="Lab"></a>Lab</h1><p>​		这次的lab课内容不是很多但是比较麻烦，我还没没想好该从哪开始说，先从<strong>MIPS</strong>中的存储规范和关键字开始讲起吧。</p>
+<h2 id="存储规范"><a href="#存储规范" class="headerlink" title="存储规范"></a>存储规范</h2><h3 id="字与字节"><a href="#字与字节" class="headerlink" title="字与字节"></a>字与字节</h3><p>​		字与字节都可以简单看成一串二进制数字，字节是构成字的<strong>基本单位</strong>，对于所有系统中字节的长度都是一定的<strong>（叫做一个byte）</strong>，为8个<strong>bit</strong>，即一个八位的二进制数字如<strong>10101010</strong>，对于字的长度则不一定，在不同的场合有不同的规范，在我们的<strong>MIPS</strong>中四个字节构成一个字，即一个字节就是一个32位的二进制数字，在<strong>MIPS</strong>中每一个寄存器的大小是一个字，<strong>一个字可以存储一个字符或者一个数字。</strong>我们以字为基本存储单位。</p>
+<h3 id="信息如何在MIPS中储存"><a href="#信息如何在MIPS中储存" class="headerlink" title="信息如何在MIPS中储存"></a>信息如何在MIPS中储存</h3><h4 id="数据域"><a href="#数据域" class="headerlink" title="数据域"></a>数据域</h4><p>​		<strong>MIPS</strong>中总共有两类信息，第一类信息是数据域中的信息，数据域中的信息是按照顺序存在<strong>内存</strong>里的下面请看一个例子。</p>
+<p>​		<img src="/2023/02/23/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BB%84%E6%88%90%E5%8E%9F%E7%90%862%EF%BC%88%E7%BB%AD%EF%BC%89/p1.png"></p>
+<p>​		这里是数据域，简单介绍一下，第一个<strong>s1</strong>存储的是一个字符串<strong>（.ascii）</strong>，第二个<strong>sid</strong>，用一个关键字<strong>（.space）</strong>表示预先给其一个9个<strong>字节</strong>那么大的空间但是先不存东西，后面一个<strong>e1</strong>存储的也是一个字符串，但是关键字是<strong>asciiz</strong>，它与<strong>ascii</strong>的不同是它会自动给字符串的结尾加上一个终止符<code>\0</code>，<strong>输出语句只有遇到<code>\0</code>才会终止</strong>，这句话很重要！！！。</p>
+<p>​		我们来看看在内存中长什么样子</p>
+<p><img src="/2023/02/23/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BB%84%E6%88%90%E5%8E%9F%E7%90%862%EF%BC%88%E7%BB%AD%EF%BC%89/p2.png"></p>
+<p>​		前面这个<strong>Address</strong>表示的地址其实是开头第一个字节的地址<strong>（每一个字节都有自己的一个独特的地址）</strong>，我们之前说了一个字节是一个8位二进制数，也就是一个2位的16进制数，所以这里的地址为0x10010000存储的数据是第一段最低的16进制数57，0x10010001存储的是65,0x10010002存储的事6c，然后是63,6f,6d,65,20，后面为什么都是0呢，因为这是我们<strong>sid</strong>提前占的9个字<strong>（18位的16进制数，）</strong>那么长，需要注意的是你其实只能输入8个字节的数据，最后一个字节会自动给你加上一个<code>\0</code>，终止符，在这18位之后继续存的是下一个字符串。</p>
+<h4 id="存储小规则"><a href="#存储小规则" class="headerlink" title="存储小规则"></a>存储小规则</h4><p>​		字节是一个8位的二进制数也就是一个两位的16进制数，使用什么规则转换的呢，用的是对应的<strong>ascall</strong>码表示的哦！！！上面的57,65,6c，63查表对应下来应该是W,e,l,c。</p>
+<pre><code>   我们来看下上面的对应信息是啥。
+</code></pre>
+<p><img src="/2023/02/23/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BB%84%E6%88%90%E5%8E%9F%E7%90%862%EF%BC%88%E7%BB%AD%EF%BC%89/p3.png"></p>
+<h4 id="操作域"><a href="#操作域" class="headerlink" title="操作域"></a>操作域</h4><p>​		上面说的是我们的数据域如何存储，那么操作域实际上也会被存储进入我们的内存当中，每一个操作语句都会被转成一个32位的二进制数字，具体规则如下。</p>
+<p><img src="/2023/02/23/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BB%84%E6%88%90%E5%8E%9F%E7%90%862%EF%BC%88%E7%BB%AD%EF%BC%89/p4.png"></p>
+<p>​		这里有两种指令格式，上面一个被称为<strong>I型</strong>指令下面是<strong>R型</strong>指令，其各部分的含义是。</p>
+<p><img src="/2023/02/23/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BB%84%E6%88%90%E5%8E%9F%E7%90%862%EF%BC%88%E7%BB%AD%EF%BC%89/p6.jpg"></p>
+<p><img src="/2023/02/23/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BB%84%E6%88%90%E5%8E%9F%E7%90%862%EF%BC%88%E7%BB%AD%EF%BC%89/p5.jpg"></p>
+<p>​		对于<strong>R型</strong>可以有三个寄存器，也可以有两个如果是两个则将<strong>rs</strong>赋值为5位的0，如果是一个寄存器将<strong>rt，rd</strong>分别赋值为5位的0，对于指令的翻译，需要对应查表才能知道如何翻译。</p>
+<p><img src="/2023/02/23/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BB%84%E6%88%90%E5%8E%9F%E7%90%862%EF%BC%88%E7%BB%AD%EF%BC%89/p7.png"></p>
+<p>​		上图好看出来，<strong>Address</strong>表示指令存储的地址，<strong>code</strong>表示翻译成的二进制数字。<strong>basic</strong>表示的意思应该是将原复杂指令<strong>（source）</strong>翻译成更简单的指令。</p>
+<h2 id="关键字"><a href="#关键字" class="headerlink" title="关键字"></a>关键字</h2><h3 id="小复习"><a href="#小复习" class="headerlink" title="小复习"></a>小复习</h3><h4 id="li："><a href="#li：" class="headerlink" title="li："></a>li：</h4><p>用的格式是 <code>li $t0,x</code>,x是一个立即数（就是一个数字），这句话的意思是直接将后面那个x直接赋值给前面那个寄存器t0。</p>
+<h4 id="la："><a href="#la：" class="headerlink" title="la："></a>la：</h4><p>用的格式是有两种第一种是<code>la $t0,x</code>这里的x是数据域中的某个变量，或者<code>la $t0,($t1)</code>,这里的意思是将后面那个<strong>变量</strong>或者<strong>寄存器</strong>的地址赋给前面的变量。</p>
+<h3 id="Load-and-Store"><a href="#Load-and-Store" class="headerlink" title="Load and Store"></a>Load and Store</h3><pre><code>     下面这些操作分为两类，第一类是Load表示将数据从内存搬到寄存器，第二类Store是将数据从寄存器存到内存，相信聪明的你以及发现一个问题了，我们**无法**将数据直接从**一个内存搬到另外一个内存**，只能通过中间的寄存器将内存中数据搬到寄存器，再将寄存器中数据搬到内存。
+</code></pre>
+<p>​		<strong>事实上我们也无法直接访问内存，只能通过寄存器存储内存地址，然后通过寄存器中的内存地址寻址找到那一块内存并对内存中的数据进行操作。</strong>下面开始介绍几个操作。</p>
+<h4 id="lw："><a href="#lw：" class="headerlink" title="lw："></a>lw：</h4><p>​		使用方法<code>lw $t0,($t1)</code>或者<code>lw $t0,x</code>,x表示数据域中的一个变量，表示将寄存器t1中的地址取出来，找到该地址对应的内存然后将该内存中的<strong>四个字节</strong>的数据即一个字存入寄存器当中，这里需要注意的是，这里面内存的地址必须是四的倍数，我们联系一下上文，我们这里的四个字节可以是<strong>Welc</strong>，但是不能是<strong>elco</strong>，前者是合法因为开头内存地址是0x10010000是4的倍数而后者的开头是0x10010001所以不合法是错误的。</p>
+<h4 id="lb"><a href="#lb" class="headerlink" title="lb:"></a>lb:</h4><p>​		这个关键字同<code>lw</code>十分相像，用法也是一样，只不过这里搬移的数据从一个字变成了一个字节。</p>
+<h4 id="sw"><a href="#sw" class="headerlink" title="sw:"></a>sw:</h4><p>​		以<strong>s</strong>开头就代表了<strong>store</strong>，即将数据（一个字）从寄存器存储到内存中，具体用法是<code>sw $t2,($t0)</code>,这里我们是将寄存器t2中的数据搬到内存中，这个内存在哪呢，内存的地址存储在$t0当中。</p>
+<h4 id="sb："><a href="#sb：" class="headerlink" title="sb："></a>sb：</h4><p>​		同lw和lb的关系，只搬移一个字节进入内存当中。</p>
+<h4 id="小小的延伸用法"><a href="#小小的延伸用法" class="headerlink" title="小小的延伸用法"></a>小小的延伸用法</h4><p>​		 可以在这四个关键字当中表示地址的寄存器前加数字，（可正可负），表示我要取的地址或者要存的地址实际上是在我寄存器所在地址的前面或者后面，如果是正数就是加也就是在后面，反之就是在前面。具体的例子是<code>lw $t2, 4($t0)</code>,<code>sw $t2,-12($t0)</code> 。</p>
+<h2 id="实战"><a href="#实战" class="headerlink" title="实战"></a>实战</h2><p>​		下面是一个小小的例子</p>
+<p><img src="/2023/02/23/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BB%84%E6%88%90%E5%8E%9F%E7%90%862%EF%BC%88%E7%BB%AD%EF%BC%89/p8.png"></p>
+<p>​			前面先读入一段<strong>String</strong>，读入<strong>String</strong>存入的是寄存器a0所指代的内存地址，长度是寄存器a1中的值，但是你要注意哦，我们实际输入的长度只能是a1中的值减一，这是为什么呢，因为他会自动在我们的字符串后面加上一个<code>\0</code>也就是终止符，这个终止符要占一个位置。</p>
+<h3 id="小问题"><a href="#小问题" class="headerlink" title="小问题"></a>小问题</h3><p>​		让我们想想，我们如果在这里输入的是11111111，输出会是什么，答案是会是<strong>Welcome 11111111</strong>，为什么呢，我们不妨来看看内存里现在有什么.</p>
+<p>​		<img src="/2023/02/23/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BB%84%E6%88%90%E5%8E%9F%E7%90%862%EF%BC%88%E7%BB%AD%EF%BC%89/p9.png"></p>
+<p>​		首先根据我们上面对于数据域的存储规律可以知道，s1,sid(尽管是空的)，e1，是依次排列的，所以我们这里先将sid的值赋给a0，其实就是将那个空的地址赋给了a0，所以后面读到的String自然也就存储到了sid所表示的内存当中，也就是紧跟着Welcome，后来我们再将Welcome的地址赋给a0（实际上赋的地址是字母W的地址也就是开头的地址），然后调动<strong>syscall（v0此时为4，是输出a0存储地址代表内存的内容）</strong>去找到a0内部存储的地址所代表的内存然后输出里面的内容，这个输出有一个要点<strong>会一直输出，直到碰到\0</strong>，所以虽然我们指向的是W，但是只要我们调用输出就会输出Welcome 11111111,知道碰到最后一个1后面的\0终止这就是为什么不会输出全部只输出前面的原因。</p>
+<h3 id="如何解决"><a href="#如何解决" class="headerlink" title="如何解决"></a>如何解决</h3><p>​		这里有几个办法可以解决，第一个办法就是把to MIPS World这个字符串（每个字符占一个字节）整体往前搬一位，让<strong>t</strong>把那个<strong>\0</strong>的位置给占掉，（这里有些人可能有些小疑问，为什么我们不能四个字节四个字节的搬运，也就是一个字一个字的般，而是一个字节一个字节的般呢，这就要联系到我们前面说的lw和sw的规则了，地址必须是四位的，我们这里最后一位的\0地址是0x100110017，不是四的倍数，不能直接搬过去，只能一位一位的搬），占掉之后就会顺着输出了，知道下一个\0,这里我们简单写一个字符的，而不是整个字符串，整个字符串太长了而且都类似。</p>
+<figure class="highlight mips"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">la $<span class="built_in">t0</span>,e1 <span class="comment">#把e1的地址先存入一个寄存器中以便于后面移位</span></span><br><span class="line"><span class="keyword">lb </span>$<span class="built_in">t1</span>,($<span class="built_in">t0</span>) <span class="comment">#将t0代表的地址中的内容存到t1中</span></span><br><span class="line"><span class="keyword">sb </span>$<span class="built_in">t1</span>,-<span class="number">1</span>($<span class="built_in">t0</span>) <span class="comment">#将t0中存入的数据存进t0所代表的地址减一位中</span></span><br></pre></td></tr></table></figure>
+
+<p>​		这里再简单解释一下代码，为什么第一步要多次一举把e1存入t0中，因为只有这样才能写sb $t1,-1($t0)这句话，笔者之前试过写sb $t1,-1e1，发现似乎不行，直接用数据域前面加数字似乎是不合法的。</p>
+<p>​		代码的过程就是先把e1存入t0，然后先从t0所指代的地址也就是e1所指代的地址存入一个字节的数据其实也就是<strong>t</strong>进入t1中，然后再将t1现在存的东西（也就是t）存入t0对应的地址-1，也就是那个t之前的\0的位置，现在内存里的东西是啥呢。</p>
+<p>​		<img src="/2023/02/23/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BB%84%E6%88%90%E5%8E%9F%E7%90%862%EF%BC%88%E7%BB%AD%EF%BC%89/p10.png"></p>
+<p>​		我们可以发现原先是\0的位置以及被t给占领了，接下来我们只要一个一个往前搬移就能把所有数据都往前搬一位</p>
+<p>就能实现我们的最终目的。</p>
+<p>​		当然了如果想偷懒可以直接找一个空格的位置，把他直接存到原来\0代表的位置上去，让后就可以取而代之了，而且也不影响输出的结果，有点小偷懒哈哈。比如所Welcome后就有一个空格可以这样</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">la $t0,s1</span><br><span class="line">la $t2,e1</span><br><span class="line">lb $t1,7($s1) #搬了一个空格来</span><br><span class="line">sb $t1,-1(t2) #空格占位</span><br></pre></td></tr></table></figure>
+
+<h1 id="结束"><a href="#结束" class="headerlink" title="结束"></a>结束</h1><p>​		以上就是本期的全部内容辣，如果有建议欢迎来提，写的好累。</p>
+
+    
+
+    
+
+    
+    <div class="declare"> 
+      <ul class="post-copyright">
+        <li>
+          <strong>本文作者：</strong>
+          王海龙
+        </li>
+        <li>
+          <strong>本文链接：</strong>
+          <a href="https://stc-w.github.io/2023/02/23/计算机组成原理2（续）/" title="计算机组成原理2（lab）" target="_blank">https://stc-w.github.io/2023/02/23/计算机组成原理2（续）/</a>
+        </li>
+        
+        <li>
+          <strong>版权声明： </strong>
           
+          本博客所有文章除特别声明外，均采用 <a href="https://github.com/JoeyBling/hexo-theme-yilia-plus/blob/master/LICENSE" rel="external nofollow" target="_blank">MIT</a> 许可协议。转载请注明出处！
+        </li>
+        
+      </ul>
+    </div>
+    
+
+  </div>
+  <div class="article-info article-info-index">
+    
+    
 	<div class="article-tag tagcloud">
 		<i class="icon-price-tags icon"></i>
 		<ul class="article-tag-list">
@@ -213,191 +324,128 @@
 		</ul>
 	</div>
 
-          
+    
 
+    
+
+    
+    
+<div class="share-btn share-icons tooltip-left">
+  <div class="tooltip tooltip-east">
+    <span class="tooltip-item">
+      <a href="javascript:;" class="share-sns share-outer">
+        <i class="icon icon-share"></i>
+      </a>
+    </span>
+    <span class="tooltip-content">
+      <div class="share-wrap">
+        <div class="share-icons">
+          <a class="weibo share-sns" href="javascript:;" data-type="weibo">
+            <i class="icon icon-weibo"></i>
+          </a>
+          <!-- <a class="weixin share-sns wxFab" href="javascript:;" data-type="weixin">
+            <i class="icon icon-weixin"></i>
+          </a> -->
+          <a class="qq share-sns" href="javascript:;" data-type="qq">
+            <i class="icon icon-qq"></i>
+          </a>
+          <a class="douban share-sns" href="javascript:;" data-type="douban">
+            <i class="icon icon-douban"></i>
+          </a>
+          <a class="qzone share-sns" href="javascript:;" data-type="qzone">
+            <i class="icon icon-qzone"></i>
+          </a>
+          <a class="facebook share-sns" href="javascript:;" data-type="facebook">
+            <i class="icon icon-facebook"></i>
+          </a>
+          <a class="twitter share-sns" href="javascript:;" data-type="twitter">
+            <i class="icon icon-twitter"></i>
+          </a>
+          <a class="google share-sns" href="javascript:;" data-type="google">
+            <i class="icon icon-google"></i>
+          </a>
         </div>
-        <div class="clearfix"></div>
-    </header>
+      </div>
+    </span>
+  </div>
+</div>
+
+<div class="page-modal wx-share js-wx-box">
+    <a class="close js-modal-close" href="javascript:;"><i class="icon icon-close"></i></a>
+    <p>扫一扫，分享到微信</p>
+    <div class="wx-qrcode">
+     <!-- <img src="//pan.baidu.com/share/qrcode?url=https://stc-w.github.io/2023/02/23/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BB%84%E6%88%90%E5%8E%9F%E7%90%862%EF%BC%88%E7%BB%AD%EF%BC%89/" alt="微信分享二维码"> -->
+    </div>
+</div>
+
+<div class="mask js-mask"></div>
+
+    
+    <div class="clearfix"></div>
+  </div>
   </div>
 </article>
-  
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	
-<a href="/2023/02/23/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BB%84%E6%88%90%E5%8E%9F%E7%90%862/" class="archive-article-date">
-        <time datetime="2023-02-23T08:27:00.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2023-02-23</time>
-</a>
 
+
+<nav id="article-nav">
+  
+  
+    <a href="/2023/02/23/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BB%84%E6%88%90%E5%8E%9F%E7%90%862/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">计算机组成原理2</div>
+      <i class="icon-circle-right"></i>
+    </a>
+  
+</nav>
+
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
         </div>
-    	 
-  
-    <h1 itemprop="name">
-	
-	  <a class="archive-article-title" href="/2023/02/23/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BB%84%E6%88%90%E5%8E%9F%E7%90%862/" target="_blank">计算机组成原理2</a>
-  
-    </h1>
-  
+        
+        
+    </div>
+</aside>
 
 
-        <div class="article-info info-on-right">
-          
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">计算机组成原理</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-          
-
-        </div>
-        <div class="clearfix"></div>
-    </header>
-  </div>
-</article>
-  
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	
-<a href="/2023/02/21/%E7%AE%97%E6%B3%95%E8%AE%BE%E8%AE%A1%E4%B8%8E%E5%88%86%E6%9E%90/" class="archive-article-date">
-        <time datetime="2023-02-21T14:48:31.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2023-02-21</time>
-</a>
-
-        </div>
-    	 
-  
-    <h1 itemprop="name">
-	
-	  <a class="archive-article-title" href="/2023/02/21/%E7%AE%97%E6%B3%95%E8%AE%BE%E8%AE%A1%E4%B8%8E%E5%88%86%E6%9E%90/" target="_blank">算法设计与分析1</a>
-  
-    </h1>
-  
 
 
-        <div class="article-info info-on-right">
-          
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">算法设计与分析</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-          
-
-        </div>
-        <div class="clearfix"></div>
-    </header>
-  </div>
-</article>
-  
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	
-<a href="/2023/02/16/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BB%84%E6%88%90%E5%8E%9F%E7%90%861/" class="archive-article-date">
-        <time datetime="2023-02-16T11:16:41.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2023-02-16</time>
-</a>
-
-        </div>
-    	 
-  
-    <h1 itemprop="name">
-	
-	  <a class="archive-article-title" href="/2023/02/16/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BB%84%E6%88%90%E5%8E%9F%E7%90%861/" target="_blank">计算机组成原理1</a>
-  
-    </h1>
-  
 
 
-        <div class="article-info info-on-right">
-          
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">计算机组成原理</a>
-        		</li>
-      		
-		</ul>
-	</div>
 
-          
+<section id="comments">
+  <div id="disqus_thread"></div>
+  <script type="text/javascript">
+    /* * * CONFIGURATION VARIABLES: EDIT BEFORE PASTING INTO YOUR WEBPAGE * * */
+    var disqus_shortname =
+    'tree'; // required: replace example with your forum shortname
 
-        </div>
-        <div class="clearfix"></div>
-    </header>
-  </div>
-</article>
-  
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	
-<a href="/2023/02/15/%E5%BC%80%E5%A7%8B/" class="archive-article-date">
-        <time datetime="2023-02-15T08:10:51.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2023-02-15</time>
-</a>
+    /* * * DON'T EDIT BELOW THIS LINE * * */
+    (function () {
+      var dsq = document.createElement('script');
+      dsq.type = 'text/javascript';
+      dsq.async = true;
+      dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+      (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
 
-        </div>
-    	 
-  
-    <h1 itemprop="name">
-	
-	  <a class="archive-article-title" href="/2023/02/15/%E5%BC%80%E5%A7%8B/" target="_blank">开始</a>
-  
-    </h1>
-  
+  </script>
+  <noscript>Please enable JavaScript to view the <a target="_blank" rel="noopener" href="https://disqus.com/?ref_noscript">comments powered by
+      Disqus.</a></noscript>
+</section>
 
 
-        <div class="article-info info-on-right">
-          
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">随笔</a>
-        		</li>
-      		
-		</ul>
-	</div>
 
-          
 
-        </div>
-        <div class="clearfix"></div>
-    </header>
-  </div>
-</article>
-  
-  
-    </div></section>
-  
 
-    
+
 
 
           </div>
@@ -438,8 +486,8 @@
 	var yiliaConfig = {
 		mathjax: true,
 		isHome: false,
-		isPost: false,
-		isArchive: true,
+		isPost: true,
+		isArchive: false,
 		isTag: false,
 		isCategory: false,
 		open_in_new: true,

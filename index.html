@@ -174,6 +174,263 @@
             
 
   
+    <article id="post-计算机组成原理2（续）" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+  
+  
+    <h1 itemprop="name">
+	
+	  <a class="article-title" href="/2023/02/23/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BB%84%E6%88%90%E5%8E%9F%E7%90%862%EF%BC%88%E7%BB%AD%EF%BC%89/" target="_blank">计算机组成原理2（lab）</a>
+  
+    </h1>
+  
+
+
+  
+  
+<a href="/2023/02/23/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BB%84%E6%88%90%E5%8E%9F%E7%90%862%EF%BC%88%E7%BB%AD%EF%BC%89/" class="archive-article-date">
+        <time datetime="2023-02-23T14:09:52.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2023-02-23</time>
+</a>
+
+  
+  
+    
+
+  
+  </header>
+  
+  <div class="article-entry" itemprop="articleBody">
+    
+    <h1 id="Lab"><a href="#Lab" class="headerlink" title="Lab"></a>Lab</h1><p>​		这次的lab课内容不是很多但是比较麻烦，我还没没想好该从哪开始说，先从<strong>MIPS</strong>中的存储规范和关键字开始讲起吧。</p>
+<h2 id="存储规范"><a href="#存储规范" class="headerlink" title="存储规范"></a>存储规范</h2><h3 id="字与字节"><a href="#字与字节" class="headerlink" title="字与字节"></a>字与字节</h3><p>​		字与字节都可以简单看成一串二进制数字，字节是构成字的<strong>基本单位</strong>，对于所有系统中字节的长度都是一定的<strong>（叫做一个byte）</strong>，为8个<strong>bit</strong>，即一个八位的二进制数字如<strong>10101010</strong>，对于字的长度则不一定，在不同的场合有不同的规范，在我们的<strong>MIPS</strong>中四个字节构成一个字，即一个字节就是一个32位的二进制数字，在<strong>MIPS</strong>中每一个寄存器的大小是一个字，<strong>一个字可以存储一个字符或者一个数字。</strong>我们以字为基本存储单位。</p>
+<h3 id="信息如何在MIPS中储存"><a href="#信息如何在MIPS中储存" class="headerlink" title="信息如何在MIPS中储存"></a>信息如何在MIPS中储存</h3><h4 id="数据域"><a href="#数据域" class="headerlink" title="数据域"></a>数据域</h4><p>​		<strong>MIPS</strong>中总共有两类信息，第一类信息是数据域中的信息，数据域中的信息是按照顺序存在<strong>内存</strong>里的下面请看一个例子。</p>
+<p>​		<img src="/2023/02/23/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BB%84%E6%88%90%E5%8E%9F%E7%90%862%EF%BC%88%E7%BB%AD%EF%BC%89/p1.png"></p>
+<p>​		这里是数据域，简单介绍一下，第一个<strong>s1</strong>存储的是一个字符串<strong>（.ascii）</strong>，第二个<strong>sid</strong>，用一个关键字<strong>（.space）</strong>表示预先给其一个9个<strong>字节</strong>那么大的空间但是先不存东西，后面一个<strong>e1</strong>存储的也是一个字符串，但是关键字是<strong>asciiz</strong>，它与<strong>ascii</strong>的不同是它会自动给字符串的结尾加上一个终止符<code>\0</code>，<strong>输出语句只有遇到<code>\0</code>才会终止</strong>，这句话很重要！！！。</p>
+<p>​		我们来看看在内存中长什么样子</p>
+<p><img src="/2023/02/23/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BB%84%E6%88%90%E5%8E%9F%E7%90%862%EF%BC%88%E7%BB%AD%EF%BC%89/p2.png"></p>
+<p>​		前面这个<strong>Address</strong>表示的地址其实是开头第一个字节的地址<strong>（每一个字节都有自己的一个独特的地址）</strong>，我们之前说了一个字节是一个8位二进制数，也就是一个2位的16进制数，所以这里的地址为0x10010000存储的数据是第一段最低的16进制数57，0x10010001存储的是65,0x10010002存储的事6c，然后是63,6f,6d,65,20，后面为什么都是0呢，因为这是我们<strong>sid</strong>提前占的9个字<strong>（18位的16进制数，）</strong>那么长，需要注意的是你其实只能输入8个字节的数据，最后一个字节会自动给你加上一个<code>\0</code>，终止符，在这18位之后继续存的是下一个字符串。</p>
+<h4 id="存储小规则"><a href="#存储小规则" class="headerlink" title="存储小规则"></a>存储小规则</h4><p>​		字节是一个8位的二进制数也就是一个两位的16进制数，使用什么规则转换的呢，用的是对应的<strong>ascall</strong>码表示的哦！！！上面的57,65,6c，63查表对应下来应该是W,e,l,c。</p>
+<pre><code>   我们来看下上面的对应信息是啥。
+</code></pre>
+<p><img src="/2023/02/23/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BB%84%E6%88%90%E5%8E%9F%E7%90%862%EF%BC%88%E7%BB%AD%EF%BC%89/p3.png"></p>
+<h4 id="操作域"><a href="#操作域" class="headerlink" title="操作域"></a>操作域</h4><p>​		上面说的是我们的数据域如何存储，那么操作域实际上也会被存储进入我们的内存当中，每一个操作语句都会被转成一个32位的二进制数字，具体规则如下。</p>
+<p><img src="/2023/02/23/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BB%84%E6%88%90%E5%8E%9F%E7%90%862%EF%BC%88%E7%BB%AD%EF%BC%89/p4.png"></p>
+<p>​		这里有两种指令格式，上面一个被称为<strong>I型</strong>指令下面是<strong>R型</strong>指令，其各部分的含义是。</p>
+<p><img src="/2023/02/23/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BB%84%E6%88%90%E5%8E%9F%E7%90%862%EF%BC%88%E7%BB%AD%EF%BC%89/p6.jpg"></p>
+<p><img src="/2023/02/23/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BB%84%E6%88%90%E5%8E%9F%E7%90%862%EF%BC%88%E7%BB%AD%EF%BC%89/p5.jpg"></p>
+<p>​		对于<strong>R型</strong>可以有三个寄存器，也可以有两个如果是两个则将<strong>rs</strong>赋值为5位的0，如果是一个寄存器将<strong>rt，rd</strong>分别赋值为5位的0，对于指令的翻译，需要对应查表才能知道如何翻译。</p>
+<p><img src="/2023/02/23/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BB%84%E6%88%90%E5%8E%9F%E7%90%862%EF%BC%88%E7%BB%AD%EF%BC%89/p7.png"></p>
+<p>​		上图好看出来，<strong>Address</strong>表示指令存储的地址，<strong>code</strong>表示翻译成的二进制数字。<strong>basic</strong>表示的意思应该是将原复杂指令<strong>（source）</strong>翻译成更简单的指令。</p>
+<h2 id="关键字"><a href="#关键字" class="headerlink" title="关键字"></a>关键字</h2><h3 id="小复习"><a href="#小复习" class="headerlink" title="小复习"></a>小复习</h3><h4 id="li："><a href="#li：" class="headerlink" title="li："></a>li：</h4><p>用的格式是 <code>li $t0,x</code>,x是一个立即数（就是一个数字），这句话的意思是直接将后面那个x直接赋值给前面那个寄存器t0。</p>
+<h4 id="la："><a href="#la：" class="headerlink" title="la："></a>la：</h4><p>用的格式是有两种第一种是<code>la $t0,x</code>这里的x是数据域中的某个变量，或者<code>la $t0,($t1)</code>,这里的意思是将后面那个<strong>变量</strong>或者<strong>寄存器</strong>的地址赋给前面的变量。</p>
+<h3 id="Load-and-Store"><a href="#Load-and-Store" class="headerlink" title="Load and Store"></a>Load and Store</h3><pre><code>     下面这些操作分为两类，第一类是Load表示将数据从内存搬到寄存器，第二类Store是将数据从寄存器存到内存，相信聪明的你以及发现一个问题了，我们**无法**将数据直接从**一个内存搬到另外一个内存**，只能通过中间的寄存器将内存中数据搬到寄存器，再将寄存器中数据搬到内存。
+</code></pre>
+<p>​		<strong>事实上我们也无法直接访问内存，只能通过寄存器存储内存地址，然后通过寄存器中的内存地址寻址找到那一块内存并对内存中的数据进行操作。</strong>下面开始介绍几个操作。</p>
+<h4 id="lw："><a href="#lw：" class="headerlink" title="lw："></a>lw：</h4><p>​		使用方法<code>lw $t0,($t1)</code>或者<code>lw $t0,x</code>,x表示数据域中的一个变量，表示将寄存器t1中的地址取出来，找到该地址对应的内存然后将该内存中的<strong>四个字节</strong>的数据即一个字存入寄存器当中，这里需要注意的是，这里面内存的地址必须是四的倍数，我们联系一下上文，我们这里的四个字节可以是<strong>Welc</strong>，但是不能是<strong>elco</strong>，前者是合法因为开头内存地址是0x10010000是4的倍数而后者的开头是0x10010001所以不合法是错误的。</p>
+<h4 id="lb"><a href="#lb" class="headerlink" title="lb:"></a>lb:</h4><p>​		这个关键字同<code>lw</code>十分相像，用法也是一样，只不过这里搬移的数据从一个字变成了一个字节。</p>
+<h4 id="sw"><a href="#sw" class="headerlink" title="sw:"></a>sw:</h4><p>​		以<strong>s</strong>开头就代表了<strong>store</strong>，即将数据（一个字）从寄存器存储到内存中，具体用法是<code>sw $t2,($t0)</code>,这里我们是将寄存器t2中的数据搬到内存中，这个内存在哪呢，内存的地址存储在$t0当中。</p>
+<h4 id="sb："><a href="#sb：" class="headerlink" title="sb："></a>sb：</h4><p>​		同lw和lb的关系，只搬移一个字节进入内存当中。</p>
+<h4 id="小小的延伸用法"><a href="#小小的延伸用法" class="headerlink" title="小小的延伸用法"></a>小小的延伸用法</h4><p>​		 可以在这四个关键字当中表示地址的寄存器前加数字，（可正可负），表示我要取的地址或者要存的地址实际上是在我寄存器所在地址的前面或者后面，如果是正数就是加也就是在后面，反之就是在前面。具体的例子是<code>lw $t2, 4($t0)</code>,<code>sw $t2,-12($t0)</code> 。</p>
+<h2 id="实战"><a href="#实战" class="headerlink" title="实战"></a>实战</h2><p>​		下面是一个小小的例子</p>
+<p><img src="/2023/02/23/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BB%84%E6%88%90%E5%8E%9F%E7%90%862%EF%BC%88%E7%BB%AD%EF%BC%89/p8.png"></p>
+<p>​			前面先读入一段<strong>String</strong>，读入<strong>String</strong>存入的是寄存器a0所指代的内存地址，长度是寄存器a1中的值，但是你要注意哦，我们实际输入的长度只能是a1中的值减一，这是为什么呢，因为他会自动在我们的字符串后面加上一个<code>\0</code>也就是终止符，这个终止符要占一个位置。</p>
+<h3 id="小问题"><a href="#小问题" class="headerlink" title="小问题"></a>小问题</h3><p>​		让我们想想，我们如果在这里输入的是11111111，输出会是什么，答案是会是<strong>Welcome 11111111</strong>，为什么呢，我们不妨来看看内存里现在有什么.</p>
+<p>​		<img src="/2023/02/23/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BB%84%E6%88%90%E5%8E%9F%E7%90%862%EF%BC%88%E7%BB%AD%EF%BC%89/p9.png"></p>
+<p>​		首先根据我们上面对于数据域的存储规律可以知道，s1,sid(尽管是空的)，e1，是依次排列的，所以我们这里先将sid的值赋给a0，其实就是将那个空的地址赋给了a0，所以后面读到的String自然也就存储到了sid所表示的内存当中，也就是紧跟着Welcome，后来我们再将Welcome的地址赋给a0（实际上赋的地址是字母W的地址也就是开头的地址），然后调动<strong>syscall（v0此时为4，是输出a0存储地址代表内存的内容）</strong>去找到a0内部存储的地址所代表的内存然后输出里面的内容，这个输出有一个要点<strong>会一直输出，直到碰到\0</strong>，所以虽然我们指向的是W，但是只要我们调用输出就会输出Welcome 11111111,知道碰到最后一个1后面的\0终止这就是为什么不会输出全部只输出前面的原因。</p>
+<h3 id="如何解决"><a href="#如何解决" class="headerlink" title="如何解决"></a>如何解决</h3><p>​		这里有几个办法可以解决，第一个办法就是把to MIPS World这个字符串（每个字符占一个字节）整体往前搬一位，让<strong>t</strong>把那个<strong>\0</strong>的位置给占掉，（这里有些人可能有些小疑问，为什么我们不能四个字节四个字节的搬运，也就是一个字一个字的般，而是一个字节一个字节的般呢，这就要联系到我们前面说的lw和sw的规则了，地址必须是四位的，我们这里最后一位的\0地址是0x100110017，不是四的倍数，不能直接搬过去，只能一位一位的搬），占掉之后就会顺着输出了，知道下一个\0,这里我们简单写一个字符的，而不是整个字符串，整个字符串太长了而且都类似。</p>
+<figure class="highlight mips"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">la $<span class="built_in">t0</span>,e1 <span class="comment">#把e1的地址先存入一个寄存器中以便于后面移位</span></span><br><span class="line"><span class="keyword">lb </span>$<span class="built_in">t1</span>,($<span class="built_in">t0</span>) <span class="comment">#将t0代表的地址中的内容存到t1中</span></span><br><span class="line"><span class="keyword">sb </span>$<span class="built_in">t1</span>,-<span class="number">1</span>($<span class="built_in">t0</span>) <span class="comment">#将t0中存入的数据存进t0所代表的地址减一位中</span></span><br></pre></td></tr></table></figure>
+
+<p>​		这里再简单解释一下代码，为什么第一步要多次一举把e1存入t0中，因为只有这样才能写sb $t1,-1($t0)这句话，笔者之前试过写sb $t1,-1e1，发现似乎不行，直接用数据域前面加数字似乎是不合法的。</p>
+<p>​		代码的过程就是先把e1存入t0，然后先从t0所指代的地址也就是e1所指代的地址存入一个字节的数据其实也就是<strong>t</strong>进入t1中，然后再将t1现在存的东西（也就是t）存入t0对应的地址-1，也就是那个t之前的\0的位置，现在内存里的东西是啥呢。</p>
+<p>​		<img src="/2023/02/23/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BB%84%E6%88%90%E5%8E%9F%E7%90%862%EF%BC%88%E7%BB%AD%EF%BC%89/p10.png"></p>
+<p>​		我们可以发现原先是\0的位置以及被t给占领了，接下来我们只要一个一个往前搬移就能把所有数据都往前搬一位</p>
+<p>就能实现我们的最终目的。</p>
+<p>​		当然了如果想偷懒可以直接找一个空格的位置，把他直接存到原来\0代表的位置上去，让后就可以取而代之了，而且也不影响输出的结果，有点小偷懒哈哈。比如所Welcome后就有一个空格可以这样</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">la $t0,s1</span><br><span class="line">la $t2,e1</span><br><span class="line">lb $t1,7($s1) #搬了一个空格来</span><br><span class="line">sb $t1,-1(t2) #空格占位</span><br></pre></td></tr></table></figure>
+
+<h1 id="结束"><a href="#结束" class="headerlink" title="结束"></a>结束</h1><p>​		以上就是本期的全部内容辣，如果有建议欢迎来提，写的好累。</p>
+
+    
+
+    
+
+    
+
+  </div>
+  <div class="article-info article-info-index">
+    
+    
+	<div class="article-tag tagcloud">
+		<i class="icon-price-tags icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">计算机组成原理</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
+    
+
+    
+    <p class="article-more-link">
+      <a class="article-more-a" href="/2023/02/23/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BB%84%E6%88%90%E5%8E%9F%E7%90%862%EF%BC%88%E7%BB%AD%EF%BC%89/">展开全文 >></a>
+    </p>
+    
+
+    
+    <div class="clearfix"></div>
+  </div>
+  </div>
+</article>
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
+        </div>
+        
+        
+    </div>
+</aside>
+
+
+
+
+  
+    <article id="post-计算机组成原理2" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+  
+  
+    <h1 itemprop="name">
+	
+	  <a class="article-title" href="/2023/02/23/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BB%84%E6%88%90%E5%8E%9F%E7%90%862/" target="_blank">计算机组成原理2</a>
+  
+    </h1>
+  
+
+
+  
+  
+<a href="/2023/02/23/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BB%84%E6%88%90%E5%8E%9F%E7%90%862/" class="archive-article-date">
+        <time datetime="2023-02-23T08:27:00.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2023-02-23</time>
+</a>
+
+  
+  
+    
+
+  
+  </header>
+  
+  <div class="article-entry" itemprop="articleBody">
+    
+    <h1 id="lecture"><a href="#lecture" class="headerlink" title="lecture"></a>lecture</h1><h2 id="一点前言"><a href="#一点前言" class="headerlink" title="一点前言"></a>一点前言</h2><p>​		这节课一开始延续上节课的ppt讲了一些余下的内容，具体有下面几点</p>
+<h3 id="能量消耗问题"><a href="#能量消耗问题" class="headerlink" title="能量消耗问题"></a>能量消耗问题</h3><p>​		上节课说了摩尔定律，计算机的算力每18个月翻一番，这很大程度上依赖于单位面积上晶体管数量的增长<strong>所以光刻机的发展十分重要，否则根本制造不了如此微小的晶体管</strong>，但是与此同时带来的问题就是能量消耗问题，能源消耗问题主要有两个分类。</p>
+<h4 id="静态能源消耗"><a href="#静态能源消耗" class="headerlink" title="静态能源消耗"></a>静态能源消耗</h4><p>​		晶体管保持自身原本的状态所需要的能量，这个能量老师上课没有给计算的公式，但是似乎这部分能量是我们很难去改变的部分所以我们的重点不在于此。我们的重点在于动态能源损耗的减少上。</p>
+<h4 id="动态能源损耗"><a href="#动态能源损耗" class="headerlink" title="动态能源损耗"></a>动态能源损耗</h4><p> 为了简化计算，我们将动态能源的损耗简单看成电容的充放电，一个电容器所具有的能量是<strong>1&#x2F;2CV^2</strong>,所以一个电容经过一次完整的充放电所需要的能量就是<strong>CV^2</strong>，我们想要减少这个能量的损耗有几个方向。</p>
+<p>​		<strong>2.<strong>减少电容充放电的次数，想要达到这个目的我们需要降低时钟频率，但是降低时钟频率带来的问题就是</strong>计算机处理速度的下降</strong>，所以只能在一定范围内限制时钟频率。你可以看到近些年的计算机时钟频率没有持续的升高。</p>
+<p><img src="/2023/02/23/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BB%84%E6%88%90%E5%8E%9F%E7%90%862/p1.png"></p>
+<p>​		**1.**降低电容的电容量，这点是很难做到的，第二点试试降低电压，但是这也存在一定的问题，在计算机中我们实际就是以高低电平来表示二进制数字1和0，如果电压太低，高低电平区分不明显就往往会导致错误，所以降低电压不能降的太低。</p>
+<h3 id="存储器"><a href="#存储器" class="headerlink" title="存储器"></a>存储器</h3><p>​		我们讲到存储器主要就是两种一种是<code>Volatile main memory</code>，断电数据即消失的内存，以<code>RAM</code>为代表，还有一种就是永久的存储器，如硬盘，CD等等。</p>
+<h2 id="八个大问题（设计领域）"><a href="#八个大问题（设计领域）" class="headerlink" title="八个大问题（设计领域）"></a>八个大问题（设计领域）</h2><p>​		由于这八个领域感觉不是我们考试的重要范畴就简单点一下吧。</p>
+<p>先上图。</p>
+<p><img src="/2023/02/23/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BB%84%E6%88%90%E5%8E%9F%E7%90%862/p2.png"></p>
+<h3 id="为摩尔定律设计"><a href="#为摩尔定律设计" class="headerlink" title="为摩尔定律设计"></a>为摩尔定律设计</h3><p>​		根据摩尔定律计算机的计算速度每18个月翻一番，所以我们现有的软件以及其他一些计算机方向的设计是对标以后的计算机算力的，如果我们以当前计算机算力来设计的话，等到我们产品上线就会跟不上时代了。</p>
+<h3 id="抽象的设计"><a href="#抽象的设计" class="headerlink" title="抽象的设计"></a>抽象的设计</h3><p>​		其核心思想就是数据都能转换成二进制编码，我们将需要将问题逐渐抽象化，讲一个实际问题转换成二进制运算才能变成计算机所能解决的问题。</p>
+<h3 id="提高计算机速度的方法"><a href="#提高计算机速度的方法" class="headerlink" title="提高计算机速度的方法"></a>提高计算机速度的方法</h3><p>​	**流水线作业:**将一个大问题分离成若干的小问题，然后将处理器分块解决，这样本来每次必需处理完一个大问题才能处理下一个同样的大问题，将其分块后，完成第一个大问题的小问题后紧接着就能继续做下一个同样大问题的第一个小问题，然后以此类推，这种工作模式叫做流水线作业。</p>
+<p>  <img src="/2023/02/23/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BB%84%E6%88%90%E5%8E%9F%E7%90%862/p3.png"></p>
+<p><strong>并行</strong>：笔者对此没有很深的了解，但是根据笔者的理解应该是在计算机内安装多个处理器，这样就能同时完成多项任务*(amd已经有64核的处理器集群了可以同时开64个线程，恐怖如斯)*</p>
+<h3 id="数据搬移问题"><a href="#数据搬移问题" class="headerlink" title="数据搬移问题"></a>数据搬移问题</h3><p>​		数据直接从cpu搬移的速度&gt;从内存搬移的速度&gt;从硬盘搬移的速度。提升搬移速度最好的打算似乎就是将cpu的内存不断扩大，但是这件事很难办成，一个是成本原因一个是cpu大小的原因，所以我们有了一个新的解决思路。我将其称之为<strong>缓存策略</strong>：先从cpu取数据，如果没有接着向下找，在某一级找到了该元素，就将他提上一级，这样下次查找的速度就会更快（这里我们是认为被查询过的数据下次被查询到的概率更大），一个数据被查询的越频繁他的级别就越高查询他的速度就越快。</p>
+<p><img src="/2023/02/23/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BB%84%E6%88%90%E5%8E%9F%E7%90%862/p4.png"></p>
+<h3 id="冗余与稳定性问题"><a href="#冗余与稳定性问题" class="headerlink" title="冗余与稳定性问题"></a>冗余与稳定性问题</h3><p>​		我们知道计算机内部的数据（磁盘内的数据）不总是稳定的，就算是假定一个很低的故障率如果一个计算机拥有大量的磁盘，那么整个系统的故障率还是会很高，这个时候我们就要引入<strong>冗余</strong>的方案，我们将一个数据多备份几份在磁盘里，这样即时有一份出现问题也可以从其他正常的备份中找到原始数据，虽然这样会消耗存储空间但是确实降低了系统的故障率。</p>
+<h2 id="如何评价计算机的好坏"><a href="#如何评价计算机的好坏" class="headerlink" title="如何评价计算机的好坏"></a>如何评价计算机的好坏</h2><pre><code>     计算机的性能其实有很多方面的数据和指标，我们这里采用CPU的计算速度来评判。
+</code></pre>
+<h3 id="最简单的入门公式"><a href="#最简单的入门公式" class="headerlink" title="最简单的入门公式"></a>最简单的入门公式</h3><pre><code>     一个最简单的算法就是用时钟**(我们总是考虑CPU在时钟的控制下工作)**一个周期的时间乘以时钟过了多少个周期**（这里说的是完成一项具体工作的时间啊）**。
+</code></pre>
+<p><img src="/2023/02/23/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BB%84%E6%88%90%E5%8E%9F%E7%90%862/p5.png"></p>
+<p>​		根据这个公式我们有两种提升性能的办法，第一种就是减少所需要的时钟周期，第二种就是提高时钟的周期频率。</p>
+<h3 id="新概念——CPI"><a href="#新概念——CPI" class="headerlink" title="新概念——CPI"></a>新概念——CPI</h3><pre><code>     前面我们说的CPU时间的计算是完成一项具体工作所需要的时钟周期乘以每个周期时间，我们将其进一步细化，我们其实可以将一个工作分解成若干个指令`Instructions`，然后每个`Instructions`需要多少个时钟周期，再去乘以时钟周期时间，这里的`CPI`就是每个指令所需要花费的时钟周期数量(下图应该是默认了每个指令所需要的时钟周期是相同的，可以理解在**RISC**指令集下所有的指令都是较为简单的指令长度相同**有别于CISC**)![](p6.png)
+</code></pre>
+<p>下面来简单举一个例子吧</p>
+<p>这里的sequence1和2的区别应该是在于两种不同的代码方式或者编译方式，使得相同类（完成同样工作）所需要的指令数目不同CPI也不同。</p>
+<p><img src="/2023/02/23/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BB%84%E6%88%90%E5%8E%9F%E7%90%862/p7.png"></p>
+<h3 id="最终公式"><a href="#最终公式" class="headerlink" title="最终公式"></a>最终公式</h3><p><img src="/2023/02/23/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BB%84%E6%88%90%E5%8E%9F%E7%90%862/p8.png"></p>
+<p>第一项是有平均每个程序有多少条指令，第二项是平均每一条指令要多少个时钟周期，最后一项是一个周期有多少秒，乘在一起就是平均每个程序的CPU时间。</p>
+<h3 id="影响因素"><a href="#影响因素" class="headerlink" title="影响因素"></a>影响因素</h3><p><img src="/2023/02/23/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BB%84%E6%88%90%E5%8E%9F%E7%90%862/p9.png"></p>
+<h3 id="一些额外的知识"><a href="#一些额外的知识" class="headerlink" title="一些额外的知识"></a>一些额外的知识</h3><p>​		国际上实际有标准的评价计算机性能的标准<strong>SPEC CPU Benchmark</strong>，下面附一个一个Core i7的测评报告</p>
+<p><img src="/2023/02/23/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BB%84%E6%88%90%E5%8E%9F%E7%90%862/p10.png"></p>
+<h3 id="另外的评判标准（从功率上评判）——-SPEC-Power-Benchmark"><a href="#另外的评判标准（从功率上评判）——-SPEC-Power-Benchmark" class="headerlink" title="另外的评判标准（从功率上评判）—— SPEC Power Benchmark"></a>另外的评判标准（从功率上评判）—— SPEC Power Benchmark</h3><p>​		具体的指标就是利用多少CPU需要消耗多少的能量</p>
+<p><img src="/2023/02/23/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BB%84%E6%88%90%E5%8E%9F%E7%90%862/p11.png"></p>
+<p>​		可以看到，CPU在负载较低的情况下的能量消耗率是很大的，在10%的CPU占用下居然可以达到满载的资源消耗的一半，着实有些匪夷所思。</p>
+<h1 id="结束"><a href="#结束" class="headerlink" title="结束"></a>结束</h1><p> 额，感觉这次lec的东西有点多。实验课的东西就单独再开一章，这次就先这样喽。</p>
+
+    
+
+    
+
+    
+
+  </div>
+  <div class="article-info article-info-index">
+    
+    
+	<div class="article-tag tagcloud">
+		<i class="icon-price-tags icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">计算机组成原理</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
+    
+
+    
+    <p class="article-more-link">
+      <a class="article-more-a" href="/2023/02/23/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BB%84%E6%88%90%E5%8E%9F%E7%90%862/">展开全文 >></a>
+    </p>
+    
+
+    
+    <div class="clearfix"></div>
+  </div>
+  </div>
+</article>
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
+        </div>
+        
+        
+    </div>
+</aside>
+
+
+
+
+  
     <article id="post-算法设计与分析" class="article article-type-post  article-index" itemscope itemprop="blogPost">
   <div class="article-inner">
     
@@ -203,21 +460,24 @@
   
   <div class="article-entry" itemprop="articleBody">
     
-    <h1 id="Stable-Matching-Algorithm"><a href="#Stable-Matching-Algorithm" class="headerlink" title="Stable Matching Algorithm"></a>Stable Matching Algorithm</h1><h2 id="引子"><a href="#引子" class="headerlink" title="引子"></a>引子</h2><p>   今天记录一下今天上了整整一节大课才讲完的<code>Stable Matching Algorithm</code>，这个算法是由<code>Gale-Shapley</code>两个人共同提出的，一个算法两个人提出嗯。。。可见其含金量，、之所以被称为<code>stable matching algorithm</code>是因为他解决了<strong>stable matching problem</strong>,即一个稳定匹配的问题。下面由一个例子引出这个算法。</p>
-<h2 id="Introduction-：an-example"><a href="#Introduction-：an-example" class="headerlink" title="Introduction ：an example"></a>Introduction ：an example</h2><p>  假设有一群毕业的医学生，他们毕业要分配到不同的医院去，并且我们有一张表，上面记录了医学生对每个医院的排名和医院对医学生的排名，我们需要找到一种配对方式，使得这个配对方式里不存在不稳定对即<code>unstable pairs</code>。</p>
+    <h1 id="Stable-Matching-Algorithm"><a href="#Stable-Matching-Algorithm" class="headerlink" title="Stable Matching Algorithm"></a>Stable Matching Algorithm</h1><h2 id="引子"><a href="#引子" class="headerlink" title="引子"></a>引子</h2><pre><code>   今天记录一下今天上了整整一节大课才讲完的`Stable Matching Algorithm`，这个算法是由`Gale-Shapley`两个人共同提出的，一个算法两个人提出嗯。。。可见其含金量，、之所以被称为`stable matching algorithm`是因为他解决了**stable matching problem**,即一个稳定匹配的问题。下面由一个例子引出这个算法。
+</code></pre>
+<h2 id="Introduction-：an-example"><a href="#Introduction-：an-example" class="headerlink" title="Introduction ：an example"></a>Introduction ：an example</h2><pre><code>      假设有一群毕业的医学生，他们毕业要分配到不同的医院去，并且我们有一张表，上面记录了医学生对每个医院的排名和医院对医学生的排名，我们需要找到一种配对方式，使得这个配对方式里不存在不稳定对即`unstable pairs`。
+</code></pre>
 <p><strong>unstable pairs</strong> ：在此种配对方式下，将所有不是一对的学生和医院进行一个自由组合，如果其中有一对其学生对这所医院的排名高于自己本身配对的医院并且该医院对这个学生的排名也大于它本身配对的学生，那么这一对就叫做不稳定对，<strong>直观上的理解就是双方都有更好的选择所以两个人可能会达成某种交易变成一对这会伤害到他们本身配对的学生和医院</strong>。</p>
 <h2 id="Another-example"><a href="#Another-example" class="headerlink" title="Another example:"></a>Another example:</h2><p>​       上一个例子可能还不够直观，那我们来说一个更直观的例子，关于结婚的例子，有n个男人和n个女人，男人对女人有一个排名，女人对男人有一个排名，我们需要找到一种配对方式，使得这种方式不存在<code>unstable pairs</code>,这里的<strong>unstable pairs</strong>同上面类似也是在其他的配对中，有女性喜欢这个配对的男性大于自身原来的配偶并且该男性喜欢这个女性也大于自身的配偶，那么他们有可能<strong>私奔</strong>，所以这是一个不稳定对。看下面一张表。</p>
 <p><img src="/2023/02/21/%E7%AE%97%E6%B3%95%E8%AE%BE%E8%AE%A1%E4%B8%8E%E5%88%86%E6%9E%90/p1.png"></p>
 <p>​           此时我们给定一种配对<strong>X-C,Y-B,Z-A</strong>,请读者想一想这种配对是否是一个<strong>stable matching</strong>，事实上我们的检验方法也是非常简单，把所有其他的配对给列出来例如<strong>X-B</strong>,这是一个<strong>unstable pairs</strong>吗，事实上是的，因为<strong>X</strong>对<strong>B</strong>的喜爱度大于其当前的伴侣<strong>C</strong>并且<strong>B</strong>对<strong>X</strong>的限度也大于他当前的伴侣<strong>Y</strong>，所以<strong>X-B</strong>是一对不稳定对，他们完全有可能抛弃自己当前的伴侣而选择对方并且私奔。我们再来看<strong>X-A,Y-B,Z-C</strong>这一组组合，发现找不出一族<strong>unstable pairs</strong>，举个例子<strong>Z-A</strong>，虽然<strong>Z</strong>喜欢<strong>A</strong>胜过自己现在的伴侣<strong>C</strong>,但是<strong>A</strong>喜欢自己现在的伴侣超过<strong>Z</strong>，所以他不会抛弃自己现在的伴侣，所以这并不是一对<strong>unstable pairs</strong>。</p>
-<h2 id="一个例外"><a href="#一个例外" class="headerlink" title="一个例外"></a>一个例外</h2><p> 现在我们似乎应该开始探讨这么一种算法了，但是在那之前我们不妨先想一想，是否每一个类似的问题都有解。我们先来看一个类似的问题，选择室友的问题。下面是一张表，是每一个人对自己室友候选人的一个评级，我们要给出一种配对，也是两个人一对，不存在任何的不稳定对。</p>
+<h2 id="一个例外"><a href="#一个例外" class="headerlink" title="一个例外"></a>一个例外</h2><pre><code>     现在我们似乎应该开始探讨这么一种算法了，但是在那之前我们不妨先想一想，是否每一个类似的问题都有解。我们先来看一个类似的问题，选择室友的问题。下面是一张表，是每一个人对自己室友候选人的一个评级，我们要给出一种配对，也是两个人一对，不存在任何的不稳定对。
+</code></pre>
 <p><img src="/2023/02/21/%E7%AE%97%E6%B3%95%E8%AE%BE%E8%AE%A1%E4%B8%8E%E5%88%86%E6%9E%90/p2.png"></p>
-<p>存在这样的配对方式吗，我们经过穷举发现是不存在的，具体结果请看下图。</p>
+<p>​		存在这样的配对方式吗，我们经过穷举发现是不存在的，具体结果请看下图。</p>
 <p><img src="/2023/02/21/%E7%AE%97%E6%B3%95%E8%AE%BE%E8%AE%A1%E4%B8%8E%E5%88%86%E6%9E%90/p3.png"></p>
 <p>​         所以这样一个找室友的问题似乎是不存在解的，但是幸运的是像我们上面那样的找伴侣或者学生和医院的配对是一定存在解的并且可以找到这么一种算法求得这样一个解。</p>
 <h3 id="为什么"><a href="#为什么" class="headerlink" title="为什么"></a>为什么</h3><p>​         笔者经过一定的思考发现了找室友问题和找伴侣问题和医院学生配对的不同，即伴侣问题是将对象严格分为两组的，且每一组内部的对象不能够互相配对，但是找室友问题则没有将对象分为两组，所有的对象都能两两配对，所以这样的问题不一定有解。</p>
 <h2 id="算法"><a href="#算法" class="headerlink" title="算法"></a>算法</h2><p>​        终于到了我们最重要的阶段了，算法揭秘阶段，这个算法叫做<code>Propose-and-reject algorithm</code>也叫<code>Gale-Shapley algorithm</code>，后面这个是以两个设计者的名称的来命名的。下面是算法的实现过程。</p>
 <p><img src="/2023/02/21/%E7%AE%97%E6%B3%95%E8%AE%BE%E8%AE%A1%E4%B8%8E%E5%88%86%E6%9E%90/p4.png"></p>
-<p>​     简要叙述一下算法的过程，首先第一步将所有的男性和女性的状态全都设置为<strong>free</strong>即自由状态，然后开始while循环，while循环的条件有两个，一个是有<strong>free</strong>的男性并且该男性并没有对所有的女性都发过申请。进入while循环，首先随便选择一个符合while循环条件的男性m，再选择一个女性w，这个w是m当前为发出过请求中最喜欢的女性。</p>
+<p>​    	 简要叙述一下算法的过程，首先第一步将所有的男性和女性的状态全都设置为<strong>free</strong>即自由状态，然后开始while循环，while循环的条件有两个，一个是有<strong>free</strong>的男性并且该男性并没有对所有的女性都发过申请。进入while循环，首先随便选择一个符合while循环条件的男性m，再选择一个女性w，这个w是m当前为发出过请求中最喜欢的女性。</p>
 <p>​		接下来开始if判断，如果w是自由的那么w将直接成为m的暂时伴侣，如果w有伴侣了那么如果w喜欢当前m大于自己的当前伴侣那么w抛弃自己原来的伴侣接受m否则拒绝m，经过一次又一次的循环，最终得到的就是一份<strong>stable matching</strong> 。</p>
 <h2 id="证明"><a href="#证明" class="headerlink" title="证明"></a>证明</h2><h3 id="证明1"><a href="#证明1" class="headerlink" title="证明1"></a>证明1</h3><p>​		 这个证明需要一步一步证明，我们先来第一个证明，这个算法运算结束之后所有男性女性都将有一个伴侣，不可能存在一个孤立的男性和一个孤立的女性的情况，如何证明呢我们运用<strong>反证法</strong>。</p>
 <p>​		<strong>假设有一个男性和女性当算法结束的时候没有配对，那么这个男性一定对所有的女性发出过请求，不然while循环不会结束，如果女性没有配对说明这个女性没有被任何人请求过，因为按照我们的算法，如果一个自由的女性被请求过那么她后面只会在男性之间被交换（没有歧视女性的意思），这就与上面的结论矛盾，因为我们说那个男性一定请求过所有的女性，矛盾产生，假设不成立原命题成立</strong></p>
@@ -229,7 +489,15 @@
 <p><img src="/2023/02/21/%E7%AE%97%E6%B3%95%E8%AE%BE%E8%AE%A1%E4%B8%8E%E5%88%86%E6%9E%90/p6.png"></p>
 <p>​		简单点一下最难的部分第六步，因为Y是第一个被自己最好的valid<strong>（m的valid women指的是所有不同的stable matching里面和m配对的女性）</strong>所以Z在之前不可能被任何自己最佳的valid women拒绝过，而Z会从好到差选择自己的女性伴侣，所以他一定喜欢A超过B，不然他肯定会先选B但是会被拒绝，不然也不会和Y抢A，但是这样Y就不是第一个被valid women拒绝的了所以矛盾。这是对第六条的解释后面看上面就比较简单了。</p>
 <h2 id="具体实现"><a href="#具体实现" class="headerlink" title="具体实现"></a>具体实现</h2><p>​		具体实现和简单，两个二维数组存上述的男女两个表，再用一个数组存第m个男性发出请求的次数。</p>
-<p>时间复杂度O（n方）</p>
+<p>时间复杂度O（n方) </p>
+<h3 id="实现补充"><a href="#实现补充" class="headerlink" title="实现补充"></a>实现补充</h3><p>​		今天lab课上让我们具体实现了一下才发现不是那么简单的事情，我大概花了半个小时实现该算法，简单讲一下其中的要点，首先是姓名到数字的映射，因为我们中途处理的过程中需要把人的姓名给编号，用1，2，3，4，5…来代替人的名字存入数组当中，但是每次如果需要查找对应的人和编号是一件不那么容易的事情，我们如果有n个数据，查找所有人的编号就要遍历n次，是o（n^2）的时间复杂度，我们采取另一个数据结构<code>HashMap</code>做映射，这样通过键值对查询，每次查询的速度是o（1）的，同时为了后面将编号和人民反过来对应输出，我建立了第二张<code>HashMap</code>以编号为key人名为value。</p>
+<p>​		存储每个人对男&#x2F;女的打分，先用一张二维数组存下来此时数组的下标是名字，里面的值是人的编号，我们后面再建立一个inverse数组，数组下标表示人物编号，值表示排名方便后面对比(仅女性)。</p>
+<p>​		同时建立一个<code>count</code>数组，count[m]表示第m个男性已经对多少个女性发出过请求，这有两个作用，一个作用是判断其是不是已经向全部女性发出过请求，第二个因为男性总是会从高到低向女性发出申请，如果他被一个女性拒绝了，那么下次他也同样会被该女性拒绝，所以这个数组可以帮助我们快速找到这个男性当前应该对谁发出请求。</p>
+<p>​		建立一个rewomen数组，用来存储当前女性的伴侣编号，如果是-1则表示free，有两个用，第一个是储存中间结果，便于对比，第二个是方便最后输出结果。下面贴上我的代码。**(Qreader是一个快读模板，不用管)**</p>
+ <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> java.io.BufferedReader;</span><br><span class="line"><span class="keyword">import</span> java.io.IOException;</span><br><span class="line"><span class="keyword">import</span> java.io.InputStreamReader;</span><br><span class="line"><span class="keyword">import</span> java.io.PrintWriter;</span><br><span class="line"><span class="keyword">import</span> java.util.ArrayDeque;</span><br><span class="line"><span class="keyword">import</span> java.util.Deque;</span><br><span class="line"><span class="keyword">import</span> java.util.HashMap;</span><br><span class="line"><span class="keyword">import</span> java.util.StringTokenizer;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">stablematching</span> &#123;</span><br><span class="line">  <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title function_">main</span><span class="params">(String[] args)</span> &#123;</span><br><span class="line">    <span class="type">QReader</span> <span class="variable">in</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">QReader</span>();</span><br><span class="line">    <span class="type">PrintWriter</span> <span class="variable">out</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">PrintWriter</span>(System.out);</span><br><span class="line">    <span class="type">int</span> <span class="variable">n</span> <span class="operator">=</span> in.nextInt();</span><br><span class="line">    <span class="type">int</span>[] count = <span class="keyword">new</span> <span class="title class_">int</span>[n];</span><br><span class="line">    <span class="type">int</span>[] womenre =  <span class="keyword">new</span> <span class="title class_">int</span>[n];</span><br><span class="line">    <span class="keyword">for</span> (<span class="type">int</span> <span class="variable">i</span> <span class="operator">=</span> <span class="number">0</span>; i &lt; n; i++) &#123;</span><br><span class="line">      womenre[i] = -<span class="number">1</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    HashMap&lt;String, Integer&gt; menList = <span class="keyword">new</span> <span class="title class_">HashMap</span>&lt;&gt;();</span><br><span class="line">    HashMap&lt;Integer, String&gt; reMenList = <span class="keyword">new</span> <span class="title class_">HashMap</span>&lt;&gt;();</span><br><span class="line">    <span class="type">int</span> <span class="variable">manCount</span> <span class="operator">=</span> <span class="number">0</span>;</span><br><span class="line">    HashMap&lt;String, Integer&gt; womenList = <span class="keyword">new</span> <span class="title class_">HashMap</span>&lt;&gt;();</span><br><span class="line">    HashMap&lt;Integer, String&gt; reWomenList = <span class="keyword">new</span> <span class="title class_">HashMap</span>&lt;&gt;();</span><br><span class="line">    <span class="type">int</span> <span class="variable">womenCount</span> <span class="operator">=</span> <span class="number">0</span>;</span><br><span class="line">    <span class="keyword">for</span> (<span class="type">int</span> <span class="variable">i</span> <span class="operator">=</span> <span class="number">0</span>; i &lt; n; i++) &#123;</span><br><span class="line">      <span class="type">String</span> <span class="variable">name</span> <span class="operator">=</span> in.next();</span><br><span class="line">      menList.put(name, manCount);</span><br><span class="line">      reMenList.put(manCount, name);</span><br><span class="line">      manCount++;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">for</span> (<span class="type">int</span> <span class="variable">i</span> <span class="operator">=</span> <span class="number">0</span>; i &lt; n; i++) &#123;</span><br><span class="line">      <span class="type">String</span> <span class="variable">name</span> <span class="operator">=</span> in.next();</span><br><span class="line">      womenList.put(name, womenCount);</span><br><span class="line">      reWomenList.put(womenCount, name);</span><br><span class="line">      womenCount++;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="type">int</span>[][] menPreferenceList = <span class="keyword">new</span> <span class="title class_">int</span>[n][n];</span><br><span class="line">    <span class="type">int</span>[][] womenPreferenceList = <span class="keyword">new</span> <span class="title class_">int</span>[n][n];</span><br><span class="line">    <span class="keyword">for</span> (<span class="type">int</span> <span class="variable">i</span> <span class="operator">=</span> <span class="number">0</span>; i &lt; n; i++) &#123;</span><br><span class="line">      <span class="keyword">for</span> (<span class="type">int</span> <span class="variable">j</span> <span class="operator">=</span> <span class="number">0</span>; j &lt; n; j++) &#123;</span><br><span class="line">        <span class="type">String</span> <span class="variable">name</span> <span class="operator">=</span> in.next();</span><br><span class="line">        menPreferenceList[i][j] = womenList.get(name);</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">for</span> (<span class="type">int</span> <span class="variable">i</span> <span class="operator">=</span> <span class="number">0</span>; i &lt; n; i++) &#123;</span><br><span class="line">      <span class="keyword">for</span> (<span class="type">int</span> <span class="variable">j</span> <span class="operator">=</span> <span class="number">0</span>; j &lt; n; j++) &#123;</span><br><span class="line">        <span class="type">String</span> <span class="variable">name</span> <span class="operator">=</span> in.next();</span><br><span class="line">        womenPreferenceList[i][j] = menList.get(name);</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;</span><br><span class="line"> </span><br><span class="line">    <span class="type">int</span>[][] inverseWomenList = <span class="keyword">new</span> <span class="title class_">int</span>[n][n];</span><br><span class="line">   </span><br><span class="line">    <span class="keyword">for</span> (<span class="type">int</span> <span class="variable">i</span> <span class="operator">=</span> <span class="number">0</span>; i &lt; n; i++) &#123;</span><br><span class="line">      <span class="keyword">for</span> (<span class="type">int</span> <span class="variable">j</span> <span class="operator">=</span> <span class="number">0</span>; j &lt; n; j++) &#123;</span><br><span class="line">        inverseWomenList[i][womenPreferenceList[i][j]] = j;</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;</span><br><span class="line">  Deque&lt;Integer&gt; man = <span class="keyword">new</span> <span class="title class_">ArrayDeque</span>&lt;&gt;();</span><br><span class="line">    <span class="keyword">for</span> (<span class="type">int</span> <span class="variable">i</span> <span class="operator">=</span> <span class="number">0</span>; i &lt; n; i++) &#123;</span><br><span class="line">      man.addLast(i);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">while</span> (!man.isEmpty()) &#123;</span><br><span class="line">      <span class="type">int</span> <span class="variable">tempMan</span> <span class="operator">=</span> man.pollFirst();</span><br><span class="line">      <span class="type">int</span> <span class="variable">tempWomen</span> <span class="operator">=</span> menPreferenceList[tempMan][count[tempMan]];</span><br><span class="line">      count[tempMan]++;</span><br><span class="line">      <span class="keyword">if</span> (womenre[tempWomen] == -<span class="number">1</span>) &#123;</span><br><span class="line">        womenre[tempWomen] = tempMan;</span><br><span class="line">      &#125; <span class="keyword">else</span> <span class="keyword">if</span> (inverseWomenList[tempWomen][womenre[tempWomen]] &gt; inverseWomenList[tempWomen][tempMan]) &#123;</span><br><span class="line">        <span class="keyword">if</span> (count[womenre[tempWomen]] &lt; n) &#123;</span><br><span class="line">          man.addLast(womenre[tempWomen]);</span><br><span class="line">        &#125;</span><br><span class="line">        womenre[tempWomen] = tempMan;</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">for</span> (<span class="type">int</span> <span class="variable">i</span> <span class="operator">=</span> <span class="number">0</span>; i &lt; n; i++) &#123;</span><br><span class="line">      out.println(reMenList.get(womenre[i])+<span class="string">&quot; &quot;</span>+reWomenList.get(i));</span><br><span class="line">    &#125;</span><br><span class="line">    out.close();</span><br><span class="line">&#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">class</span> <span class="title class_">QReader</span> &#123;</span><br><span class="line">  <span class="keyword">private</span> <span class="type">BufferedReader</span> <span class="variable">reader</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">BufferedReader</span>(<span class="keyword">new</span> <span class="title class_">InputStreamReader</span>(System.in));</span><br><span class="line">  <span class="keyword">private</span> <span class="type">StringTokenizer</span> <span class="variable">tokenizer</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">StringTokenizer</span>(<span class="string">&quot;&quot;</span>);</span><br><span class="line">  </span><br><span class="line">  <span class="keyword">private</span> String <span class="title function_">innerNextLine</span><span class="params">()</span> &#123;</span><br><span class="line">    <span class="keyword">try</span> &#123;</span><br><span class="line">      <span class="keyword">return</span> reader.readLine();</span><br><span class="line">    &#125; <span class="keyword">catch</span> (IOException e) &#123;</span><br><span class="line">      <span class="keyword">return</span> <span class="literal">null</span>;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">  </span><br><span class="line">  <span class="keyword">public</span> <span class="type">boolean</span> <span class="title function_">hasNext</span><span class="params">()</span> &#123;</span><br><span class="line">    <span class="keyword">while</span> (!tokenizer.hasMoreTokens()) &#123;</span><br><span class="line">      <span class="type">String</span> <span class="variable">nextLine</span> <span class="operator">=</span> innerNextLine();</span><br><span class="line">      <span class="keyword">if</span> (nextLine == <span class="literal">null</span>) &#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line">      &#125;</span><br><span class="line">      tokenizer = <span class="keyword">new</span> <span class="title class_">StringTokenizer</span>(nextLine);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> <span class="literal">true</span>;</span><br><span class="line">  &#125;</span><br><span class="line">  </span><br><span class="line">  <span class="keyword">public</span> String <span class="title function_">nextLine</span><span class="params">()</span> &#123;</span><br><span class="line">    tokenizer = <span class="keyword">new</span> <span class="title class_">StringTokenizer</span>(<span class="string">&quot;&quot;</span>);</span><br><span class="line">    <span class="keyword">return</span> innerNextLine();</span><br><span class="line">  &#125;</span><br><span class="line">  </span><br><span class="line">  <span class="keyword">public</span> String <span class="title function_">next</span><span class="params">()</span> &#123;</span><br><span class="line">    hasNext();</span><br><span class="line">    <span class="keyword">return</span> tokenizer.nextToken();</span><br><span class="line">  &#125;</span><br><span class="line">  </span><br><span class="line">  <span class="keyword">public</span> <span class="type">int</span> <span class="title function_">nextInt</span><span class="params">()</span> &#123;</span><br><span class="line">    <span class="keyword">return</span> Integer.parseInt(next());</span><br><span class="line">  &#125;</span><br><span class="line">  </span><br><span class="line">  <span class="keyword">public</span> <span class="type">long</span> <span class="title function_">nextLong</span><span class="params">()</span> &#123;</span><br><span class="line">    <span class="keyword">return</span> Long.parseLong(next());</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+
 
     
 
