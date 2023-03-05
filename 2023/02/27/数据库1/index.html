@@ -10,15 +10,15 @@
   <meta name="generator" content="hexo-theme-yilia-plus">
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
   
-  <meta name="description" content="第一次​		这是我第一次写关于数据库的内容，今天有点累，就不写很多了，就简单写点一些特殊名词吧。">
+  <meta name="description" content="第一次​		这是我第一次写关于数据库的内容，开始几周数据库并没有讲很多的内容，大部分时间都是在将一些基础概念，下面来简单介绍一下吧。 关键名词的全称​		SQL : structure query language (结构化查询语言) ​		DBMS：Database mangement system （数据库管理系统，我们用的postgresql和mysql实际本质上就是一种数据库管理系统，用来">
 <meta property="og:type" content="article">
 <meta property="og:title" content="数据库1">
 <meta property="og:url" content="https://stc-w.github.io/2023/02/27/%E6%95%B0%E6%8D%AE%E5%BA%931/index.html">
 <meta property="og:site_name" content=" ">
-<meta property="og:description" content="第一次​		这是我第一次写关于数据库的内容，今天有点累，就不写很多了，就简单写点一些特殊名词吧。">
+<meta property="og:description" content="第一次​		这是我第一次写关于数据库的内容，开始几周数据库并没有讲很多的内容，大部分时间都是在将一些基础概念，下面来简单介绍一下吧。 关键名词的全称​		SQL : structure query language (结构化查询语言) ​		DBMS：Database mangement system （数据库管理系统，我们用的postgresql和mysql实际本质上就是一种数据库管理系统，用来">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2023-02-27T13:55:52.000Z">
-<meta property="article:modified_time" content="2023-02-27T14:03:03.787Z">
+<meta property="article:modified_time" content="2023-03-05T03:21:21.528Z">
 <meta property="article:author" content="王海龙">
 <meta property="article:tag" content="数据库">
 <meta name="twitter:card" content="summary">
@@ -203,7 +203,7 @@
       <!-- 百度字体平台:http://fontstore.baidu.com/static/editor/index.html -->
       <i class="icon-statistics"></i>
       <span class="post-meta-item-text"> 字数统计:</span>
-      <span class="post-count">41字</span>
+      <span class="post-count">584字</span>
     </span>
   </span>
 
@@ -212,7 +212,7 @@
     <span class="post-meta-item-icon">
       <i class="icon-book icon"></i>
       <span class="post-meta-item-text"> 阅读时长≈</span>
-      <span class="post-count">1分</span>
+      <span class="post-count">2分</span>
     </span>
   </span>
 </div>
@@ -223,7 +223,21 @@
   
   <div class="article-entry" itemprop="articleBody">
     
-    <h1 id="第一次"><a href="#第一次" class="headerlink" title="第一次"></a>第一次</h1><p>​		这是我第一次写关于数据库的内容，今天有点累，就不写很多了，就简单写点一些特殊名词吧。</p>
+    <h1 id="第一次"><a href="#第一次" class="headerlink" title="第一次"></a>第一次</h1><p>​		这是我第一次写关于数据库的内容，开始几周数据库并没有讲很多的内容，大部分时间都是在将一些基础概念，下面来简单介绍一下吧。</p>
+<h2 id="关键名词的全称"><a href="#关键名词的全称" class="headerlink" title="关键名词的全称"></a>关键名词的全称</h2><p>​		SQL : structure query language (结构化查询语言)</p>
+<p>​		DBMS：Database mangement system （数据库管理系统，我们用的postgresql和mysql实际本质上就是一种数据库管理系统，用来管理数据库）</p>
+<p>​		DDL: Database definition language （定义语句，主要用来建表，插入约束，定义数据类型）</p>
+<p>​		DML：Data Manipulation（操作） Language</p>
+<p> （具体操作语句，负责增删改的部分）</p>
+<p>​		DQL：Database query language  </p>
+<p> （查询语句，用来查询（带条件））</p>
+<p>​		DCL：Data Control Language  (控制语句，这个一般比较少用，用来创建用户，决定用户的权限)</p>
+<h2 id="外键"><a href="#外键" class="headerlink" title="外键"></a>外键</h2><p>​		一张表要和另外一张表链接起来就要靠外键，一张表的外键行对应的事别的表的一行，<strong>二者一定要一一对应</strong>，下面介绍几种常见的外键插入方式。</p>
+<p>​		一对一：直接插入外键（在谁那里插都一样）</p>
+<p>​		一对多: 在多的哪里插入外键，例如一个课程可以有很多学生选，应该在学生哪里插入一个course_id的外键对应到对应的课程</p>
+<p>​		多对多：重新建立一张表两行，建立二者的联系。</p>
+<h3 id="注意"><a href="#注意" class="headerlink" title="注意"></a>注意</h3><p>​		虽然外键很方便但是一般我们在实际工作中不用外键，因为如果是一个体积非常庞大的数据库使用外键，当其中一行发生修改时，整个数据库都要因为外键的原因一起修改，可能会造成数据库的崩溃，因为其<strong>高耦合</strong>，所以我门想要实现类似外键的作用都要在应用层实现（我的理解就是具体操作数据库的时候用查询组合等语句来实现，而不是在建立数据库的时候插入外键）。</p>
+<h2 id="数据类型"><a href="#数据类型" class="headerlink" title="数据类型"></a>数据类型</h2><p>​		常规的就不说了，平常都会用到，这里说一下<strong>data</strong>类型，用来储存时间的，data只储存年月日，datatime储存年月日时分秒，注意如果拿data和datatime进行比较，我们将date(‘2020-03-20’) 当成 datetime(‘2020-03-20 00:00:00’)。</p>
 
     
 
@@ -551,6 +565,10 @@
              
               <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color4">数据库</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color5">离散数学</a>
               </li>
             
             <div class="clearfix"></div>

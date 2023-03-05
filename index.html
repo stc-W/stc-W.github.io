@@ -174,6 +174,109 @@
             
 
   
+    <article id="post-计算机组成3" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+  
+  
+    <h1 itemprop="name">
+	
+	  <a class="article-title" href="/2023/03/04/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BB%84%E6%88%903/" target="_blank">计算机组成3</a>
+  
+    </h1>
+  
+
+
+  
+  
+<a href="/2023/03/04/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BB%84%E6%88%903/" class="archive-article-date">
+        <time datetime="2023-03-04T09:43:35.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2023-03-04</time>
+</a>
+
+  
+  
+    
+
+  
+  </header>
+  
+  <div class="article-entry" itemprop="articleBody">
+    
+    <h1 id="Lec大概"><a href="#Lec大概" class="headerlink" title="Lec大概"></a>Lec大概</h1><p>​		到了周末写博客的时间了，这节大课讲的内容不是很多，很多其实在lab课上都讲过了都是mips的一些代码。还有从指令翻译成机器码。</p>
+<h1 id="翻译成机器码"><a href="#翻译成机器码" class="headerlink" title="翻译成机器码"></a>翻译成机器码</h1><p>​		这个在lab课的那节其实讲过了，这里就不细说了，这里提一下shamt，移位码，应该是sll等移位命令的数值大小。</p>
+<h1 id="跳跃"><a href="#跳跃" class="headerlink" title="跳跃"></a>跳跃</h1><p>​		这节课讲了一个比较重要的就是跳跃，正常的汇编语言是一句一句依次执行的，跳跃语句可以直接从一句跳转到另外一句。</p>
+<p>​		可以用来实现<strong>if else</strong>语句，<strong>循环语句</strong>。下面将具体使用</p>
+<figure class="highlight mips"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">不加条件的跳转</span><br><span class="line"><span class="keyword">j </span>L1 <span class="comment">#这里的L1是一个标签</span></span><br><span class="line"><span class="keyword">jr </span>$<span class="built_in">s0</span> <span class="comment"># ？</span></span><br><span class="line">加条件的跳转</span><br><span class="line"><span class="keyword">beg </span>$<span class="built_in">s0</span> $<span class="built_in">s1</span> L1 <span class="comment">#be equal,如果s0和s1内部的值相等则跳转到L1</span></span><br><span class="line"><span class="keyword">bne </span>$<span class="built_in">s0</span> $<span class="built_in">s1</span> L1 <span class="comment">#be not queal, 如果两个寄存器内部的值不跳转则跳转到L1</span></span><br></pre></td></tr></table></figure>
+
+<p>​		下面用mips实现一个while循环，这里提一个小点，我们一般知道的是一个数组的开头地址，然后一般一个数字占四个字节。</p>
+<p>​		例如数组A[0]的地址是$s0，A[i]的地址是i * 4 + s0.</p>
+<p>​		下面将一段高级语言代码代码转换成汇编语言</p>
+<p><strong>i存在s3中k存在s5中save数组的开头地址存在s6中</strong></p>
+ <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">while (save[i] == k)</span><br><span class="line"> i += 1;</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">Loop: sll $t1, $s3, 2 #左移两个位置表示乘2</span><br><span class="line">	  add $t1, $t1, $s6 #获得save[i]的地址</span><br><span class="line">	  lw $t0, 0(t1) #将save[i]的值存入t0中方便下面对比</span><br><span class="line">	  bne $t0, $s5, Exit</span><br><span class="line">	  addi $s3, $s3, 1</span><br><span class="line">	  j Loop</span><br><span class="line"> Exit:</span><br></pre></td></tr></table></figure>
+
+<h1 id="Lab"><a href="#Lab" class="headerlink" title="Lab"></a>Lab</h1><p>lab课讲的内容和大课差不多，不多赘述了，还是一些基本的翻译，程序运行结果和基本指令的介绍，重点介绍了移位操作。</p>
+<h2 id="移位操作"><a href="#移位操作" class="headerlink" title="移位操作"></a>移位操作</h2><h3 id="sll（shift-left-logic）"><a href="#sll（shift-left-logic）" class="headerlink" title="sll（shift left logic）"></a>sll（shift left logic）</h3><p>​		左移然后在空出来的最低比特为插0，最高比特位比次高比特位占据。</p>
+<h3 id="sra-（shift-right-arithmeatic）"><a href="#sra-（shift-right-arithmeatic）" class="headerlink" title="sra （shift right  arithmeatic）"></a>sra （shift right  arithmeatic）</h3><p>​		右移，在最高比特位插入的是符号位<strong>也就是最高比特位</strong>，如果你一开始最高位是1，最高位就补1，如果是0就补0.</p>
+<h3 id="srl-shift-right-logic"><a href="#srl-shift-right-logic" class="headerlink" title="srl (shift right logic)"></a>srl (shift right logic)</h3><p>​		右移，最高位补0</p>
+
+    
+
+    
+
+    
+
+  </div>
+  <div class="article-info article-info-index">
+    
+    
+	<div class="article-tag tagcloud">
+		<i class="icon-price-tags icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">计算机组成原理</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
+    
+
+    
+    <p class="article-more-link">
+      <a class="article-more-a" href="/2023/03/04/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BB%84%E6%88%903/">展开全文 >></a>
+    </p>
+    
+
+    
+    <div class="clearfix"></div>
+  </div>
+  </div>
+</article>
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
+        </div>
+        
+        
+    </div>
+</aside>
+
+
+
+
+  
     <article id="post-离散数学1" class="article article-type-post  article-index" itemscope itemprop="blogPost">
   <div class="article-inner">
     
@@ -203,7 +306,15 @@
   
   <div class="article-entry" itemprop="articleBody">
     
-    
+    <h1 id="开始"><a href="#开始" class="headerlink" title="开始"></a>开始</h1><p>​		事实上这已经是第三周了，才开始写离散数学的第一篇博客，心中有些惭愧。确实这几天有点偷懒了。下面简单叙述一下这几周上了什么内容吧。</p>
+<h1 id="大概"><a href="#大概" class="headerlink" title="大概"></a>大概</h1><p>​		其实大部分还是叙述一些概念性的东西，一些名词分别是什么意思，然后讲了一些证明的具体方法例如证明<strong>逆否命题</strong>，<strong>反证明法</strong>，</p>
+<p><strong>正面证明</strong>，很多证明都充满了奇技淫巧，感觉没啥意思，但是还是要记下来，唉唉。</p>
+<h2 id="proposition（命题）"><a href="#proposition（命题）" class="headerlink" title="proposition（命题）"></a>proposition（命题）</h2><p>​		老师花了大篇幅讲了<strong>proposition</strong>的概念，一句话说就是可以判断真伪的句子。例如地球是平的，太阳从东边升起，注意<strong>命题一定是陈述句，不能是问句，而且不能带未知数例如x&gt;3就不是个命题，因为这个句子的真假无法判断取决于x1的取值</strong>。</p>
+<h2 id="predicates-（谓词）Quantifiers-量词-Nested-Quantifiers-（嵌套量词）"><a href="#predicates-（谓词）Quantifiers-量词-Nested-Quantifiers-（嵌套量词）" class="headerlink" title="predicates （谓词）Quantifiers (量词) Nested Quantifiers （嵌套量词）"></a>predicates （谓词）Quantifiers (量词) Nested Quantifiers （嵌套量词）</h2><p>​		可以简单看成一个带有未知数的函数，例如<strong>P（x）：x&gt;3</strong>,P(x)就是一个谓词。</p>
+<p>​		找到一篇比较通俗的文章，可以借鉴看看，这里就不多说了，偷点小懒。</p>
+<p><a target="_blank" rel="noopener" href="https://blog.csdn.net/weixin_50502862/article/details/126504094">(27条消息) 【快乐离散数学】谓词与量词 | 嵌套量词 | 狄摩根定律 | Predicates and Quantifiers | Nested Quantifiers_柠檬叶子C的博客-CSDN博客</a></p>
+<h2 id="题目"><a href="#题目" class="headerlink" title="题目"></a>题目</h2><p>​		题目会手抄到本子上，就不在博客上写了，太麻烦。	</p>
+
     
 
     
@@ -214,6 +325,17 @@
   <div class="article-info article-info-index">
     
     
+	<div class="article-tag tagcloud">
+		<i class="icon-price-tags icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">离散数学</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
     
 
     
@@ -277,7 +399,21 @@
   
   <div class="article-entry" itemprop="articleBody">
     
-    <h1 id="第一次"><a href="#第一次" class="headerlink" title="第一次"></a>第一次</h1><p>​		这是我第一次写关于数据库的内容，今天有点累，就不写很多了，就简单写点一些特殊名词吧。</p>
+    <h1 id="第一次"><a href="#第一次" class="headerlink" title="第一次"></a>第一次</h1><p>​		这是我第一次写关于数据库的内容，开始几周数据库并没有讲很多的内容，大部分时间都是在将一些基础概念，下面来简单介绍一下吧。</p>
+<h2 id="关键名词的全称"><a href="#关键名词的全称" class="headerlink" title="关键名词的全称"></a>关键名词的全称</h2><p>​		SQL : structure query language (结构化查询语言)</p>
+<p>​		DBMS：Database mangement system （数据库管理系统，我们用的postgresql和mysql实际本质上就是一种数据库管理系统，用来管理数据库）</p>
+<p>​		DDL: Database definition language （定义语句，主要用来建表，插入约束，定义数据类型）</p>
+<p>​		DML：Data Manipulation（操作） Language</p>
+<p> （具体操作语句，负责增删改的部分）</p>
+<p>​		DQL：Database query language  </p>
+<p> （查询语句，用来查询（带条件））</p>
+<p>​		DCL：Data Control Language  (控制语句，这个一般比较少用，用来创建用户，决定用户的权限)</p>
+<h2 id="外键"><a href="#外键" class="headerlink" title="外键"></a>外键</h2><p>​		一张表要和另外一张表链接起来就要靠外键，一张表的外键行对应的事别的表的一行，<strong>二者一定要一一对应</strong>，下面介绍几种常见的外键插入方式。</p>
+<p>​		一对一：直接插入外键（在谁那里插都一样）</p>
+<p>​		一对多: 在多的哪里插入外键，例如一个课程可以有很多学生选，应该在学生哪里插入一个course_id的外键对应到对应的课程</p>
+<p>​		多对多：重新建立一张表两行，建立二者的联系。</p>
+<h3 id="注意"><a href="#注意" class="headerlink" title="注意"></a>注意</h3><p>​		虽然外键很方便但是一般我们在实际工作中不用外键，因为如果是一个体积非常庞大的数据库使用外键，当其中一行发生修改时，整个数据库都要因为外键的原因一起修改，可能会造成数据库的崩溃，因为其<strong>高耦合</strong>，所以我门想要实现类似外键的作用都要在应用层实现（我的理解就是具体操作数据库的时候用查询组合等语句来实现，而不是在建立数据库的时候插入外键）。</p>
+<h2 id="数据类型"><a href="#数据类型" class="headerlink" title="数据类型"></a>数据类型</h2><p>​		常规的就不说了，平常都会用到，这里说一下<strong>data</strong>类型，用来储存时间的，data只储存年月日，datatime储存年月日时分秒，注意如果拿data和datatime进行比较，我们将date(‘2020-03-20’) 当成 datetime(‘2020-03-20 00:00:00’)。</p>
 
     
 
@@ -1054,6 +1190,10 @@
              
               <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color4">数据库</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color5">离散数学</a>
               </li>
             
             <div class="clearfix"></div>
