@@ -174,6 +174,1177 @@
             
 
   
+    <article id="post-spring2" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+  
+  
+    <h1 itemprop="name">
+	
+	  <a class="article-title" href="/2023/03/10/spring2/" target="_blank">spring2</a>
+  
+    </h1>
+  
+
+
+  
+  
+<a href="/2023/03/10/spring2/" class="archive-article-date">
+        <time datetime="2023-03-10T13:21:52.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2023-03-10</time>
+</a>
+
+  
+  
+    
+
+  
+  </header>
+  
+  <div class="article-entry" itemprop="articleBody">
+    
+    <h1 id="数据库操作"><a href="#数据库操作" class="headerlink" title="数据库操作"></a>数据库操作</h1><h2 id="JDBC（先学一下这个，极客时间的课有点看不懂了）"><a href="#JDBC（先学一下这个，极客时间的课有点看不懂了）" class="headerlink" title="JDBC（先学一下这个，极客时间的课有点看不懂了）"></a>JDBC（先学一下这个，极客时间的课有点看不懂了）</h2><h3 id="简介"><a href="#简介" class="headerlink" title="简介"></a>简介</h3><p>​		使用java语言操作数据库的一套API，</p>
+<h2 id="如何用一套代码操作所有数据库？"><a href="#如何用一套代码操作所有数据库？" class="headerlink" title="如何用一套代码操作所有数据库？"></a>如何用一套代码操作所有数据库？</h2><p>​		java -&gt; JDBC(规范)是一个接口， 由各个数据库实现JDBC这个接口的实现类（驱动）， 真正执行的代码是各个驱动厂商给的jar包（实现类）。所以可以随时切换底层数据库，只要学会JDBC接口的操作即可。</p>
+<h2 id="快速入门"><a href="#快速入门" class="headerlink" title="快速入门"></a>快速入门</h2><h3 id="七个步骤"><a href="#七个步骤" class="headerlink" title="七个步骤"></a>七个步骤</h3><h4 id="创建工程，导入jar包（具体数据库的jar）"><a href="#创建工程，导入jar包（具体数据库的jar）" class="headerlink" title="创建工程，导入jar包（具体数据库的jar）"></a>创建工程，导入jar包（具体数据库的jar）</h4><h4 id="注册驱动"><a href="#注册驱动" class="headerlink" title="注册驱动"></a>注册驱动</h4><p><code>class.forname(&quot;com.mysql.jdbc.Driver&quot;)# 利用反射创造类</code>,</p>
+<h4 id="获取链接"><a href="#获取链接" class="headerlink" title="获取链接"></a>获取链接</h4><p><code>Connection conn = DriverManager.getConnection(url, username, password)</code></p>
+<h4 id="定义sql语句"><a href="#定义sql语句" class="headerlink" title="定义sql语句"></a>定义sql语句</h4><p><code>String sql = &quot;   &quot;</code></p>
+<h4 id="获取执行SQL的对象"><a href="#获取执行SQL的对象" class="headerlink" title="获取执行SQL的对象"></a>获取执行SQL的对象</h4><p><code>Statement stmt = conn.createStatement()</code></p>
+<h4 id="执行SQL"><a href="#执行SQL" class="headerlink" title="执行SQL"></a>执行SQL</h4><p><code>int count = stmt.execute(sql) #返回受影响的行数</code></p>
+<h4 id="处理返回结果"><a href="#处理返回结果" class="headerlink" title="处理返回结果"></a>处理返回结果</h4><p><code>System.out.print(count)</code></p>
+<h4 id="释放资源"><a href="#释放资源" class="headerlink" title="释放资源"></a>释放资源</h4><p><code>stmt.close(); conn.close();</code></p>
+<h3 id="DriverManager（工具类）"><a href="#DriverManager（工具类）" class="headerlink" title="DriverManager（工具类）"></a>DriverManager（工具类）</h3><p>两个重要方法 <code>getconnection</code>，<code>registerDiver</code>注册驱动</p>
+<h4 id="获取链接-1"><a href="#获取链接-1" class="headerlink" title="获取链接"></a>获取链接</h4><p>语法”jdbc:mysql&#x2F;&#x2F;ip地址:端口号&#x2F;数据库名称？参数键值对“	</p>
+<h3 id="Connection"><a href="#Connection" class="headerlink" title="Connection"></a>Connection</h3><h4 id="获取执行SQL的对象-1"><a href="#获取执行SQL的对象-1" class="headerlink" title="获取执行SQL的对象"></a>获取执行SQL的对象</h4><p>1.普通执行SQL对象</p>
+<p><code>Statement Createstatement</code></p>
+<p>2.预编译SQL的执行SQL对象：<strong>防止SQL注入</strong></p>
+<p><code>PreparedStatement prepareStaement（SQL）</code></p>
+<p>3.执行存储过程的对象（不常用）</p>
+<p><code>CallableStatement prepareCall(SQL)</code></p>
+<h4 id="事务管理"><a href="#事务管理" class="headerlink" title="事务管理"></a>事务管理</h4><h5 id="Mysql"><a href="#Mysql" class="headerlink" title="Mysql"></a>Mysql</h5><p>1.开启事务</p>
+<p>2.提交事务（Mysql每一条语句自动提交一个事务）</p>
+<p>3.回滚事务</p>
+<h4 id="JDBC事务管理：Connection接口定义三个方法"><a href="#JDBC事务管理：Connection接口定义三个方法" class="headerlink" title="JDBC事务管理：Connection接口定义三个方法"></a>JDBC事务管理：Connection接口定义三个方法</h4><p><strong>1.开启事务：</strong><code>setAutoCommit(boolean auutoCommit);</code>true为自动提交</p>
+<p><strong>2.提交事务：</strong><code>commit()</code></p>
+<p><strong>3.回滚事务：</strong><code>rollback()</code></p>
+<p><strong>作用：</strong>事务的作用在于让多条sql语句合并成一个单元，要么同时成功要么同时失败</p>
+<h3 id="Statement"><a href="#Statement" class="headerlink" title="Statement"></a>Statement</h3><p>​	执行SQL语句（我的理解就是类似于命令行）</p>
+<p><code>int executeUpdate(sql) #DML,DDL 返回影响行数，执行DDL成功影响结果可能是0</code></p>
+<p><code>ResultSet executeQuery(sql) #DQL 返回结果集对象</code></p>
+<h3 id="ResultSet"><a href="#ResultSet" class="headerlink" title="ResultSet"></a>ResultSet</h3><p>封装DDL查询语句的结果</p>
+<p><code>boolean next()</code>:本身将光标向下移动一行，返回结果是当前是否为有效行（有无数据）</p>
+<p><code>xxx getXxx(参数)</code>:获取数据，xxx：数据类型如int getInt（参数）</p>
+<p>参数有两种形式：int和String，一个传列编号，一个传列名称</p>
+<h4 id="查询模版"><a href="#查询模版" class="headerlink" title="查询模版"></a>查询模版</h4><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">while</span>(rs.next()) &#123;</span><br><span class="line">rs.getXxx(参数)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="PreparedStatement"><a href="#PreparedStatement" class="headerlink" title="PreparedStatement"></a>PreparedStatement</h3><p>​		作用：预编译SQL语句并执行，预防SQL注入</p>
+<h4 id="什么是SQL注入"><a href="#什么是SQL注入" class="headerlink" title="什么是SQL注入"></a>什么是SQL注入</h4><p>​		通过操作输入来修改预先定义好的SQL语句，达到执行代码对服务器进行攻击的目的</p>
+<h4 id="获取preparedStatement对象"><a href="#获取preparedStatement对象" class="headerlink" title="获取preparedStatement对象"></a>获取preparedStatement对象</h4><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">String</span> <span class="variable">sql</span> <span class="operator">=</span> <span class="string">&quot;select * from user where usename = ? and password = ?&quot;</span>  <span class="comment">//参数值用？占位符来替代</span></span><br><span class="line"><span class="type">PreparedStatement</span> <span class="variable">pstmt</span> <span class="operator">=</span> conn.preparement(sql);</span><br><span class="line"><span class="comment">//设置参数值</span></span><br><span class="line">PreparedStatement: setXxx(参数<span class="number">1</span>，参数<span class="number">2</span>)<span class="comment">//给？赋值</span></span><br><span class="line"><span class="comment">// 参数1： ？的位置编号，从1开始</span></span><br><span class="line"><span class="comment">// 参数2： ？的值</span></span><br><span class="line"><span class="comment">//执行SQL</span></span><br><span class="line">    executeUpdate();</span><br><span class="line">    executeQuery();</span><br><span class="line"><span class="comment">//不需要再传递SQL语句</span></span><br></pre></td></tr></table></figure>
+
+<h4 id="原理"><a href="#原理" class="headerlink" title="原理"></a>原理</h4><p>​		预编译SQL，性能更高（对于模版句子只编译一次，后面不用重复编译）。</p>
+<p>​		并且将敏感字符进行转义（防止sql注入）。	</p>
+<p>​	<strong>开启预编译功能</strong>： 在连接数据库的时候要开启，传入参数“useServerPrepStmts &#x3D; true”</p>
+<h3 id="数据库连接池"><a href="#数据库连接池" class="headerlink" title="数据库连接池"></a>数据库连接池</h3><h4 id="简介-1"><a href="#简介-1" class="headerlink" title="简介"></a>简介</h4><p>​		就是一个容器，存放connection，用户要用就取出来，用完就还回来，负责分配管理数据库连接。</p>
+<h4 id="优点"><a href="#优点" class="headerlink" title="优点"></a>优点</h4><p>​		资源重用（用完连接的还回连接池）</p>
+<p>​		提升系统响应速度</p>
+<p>​		避免数据库连接遗漏（释放时间超过一定时间自动归还）</p>
+<h4 id="连接池实现（DataSource接口）"><a href="#连接池实现（DataSource接口）" class="headerlink" title="连接池实现（DataSource接口）"></a>连接池实现（DataSource接口）</h4><p>​		由官方提供标准接口，第三方组织实现接口（有点像JDBC）</p>
+<p>​		<strong>功能：获取连接</strong>：<code>Connection getConnection</code></p>
+<h4 id="常见的连接池"><a href="#常见的连接池" class="headerlink" title="常见的连接池"></a>常见的连接池</h4><p><strong>DBCP</strong></p>
+<p><strong>C3P0</strong></p>
+<p><strong>Druid</strong></p>
+<h4 id="Druid-德鲁伊"><a href="#Druid-德鲁伊" class="headerlink" title="Druid(德鲁伊)"></a>Druid(德鲁伊)</h4><ul>
+<li>阿里巴巴开源的数据库连接池项目</li>
+<li>功能强大性能优秀，是Java语言最好的数据库连接池之一</li>
+</ul>
+<h5 id="使用步骤"><a href="#使用步骤" class="headerlink" title="使用步骤"></a>使用步骤</h5><ol>
+<li><p>导入jar包</p>
+</li>
+<li><p>定义配置文件：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">DriverClassName = </span><br><span class="line">url = </span><br><span class="line">username = </span><br><span class="line">password = </span><br><span class="line">//初始申请连接数量</span><br><span class="line">initialSize =</span><br><span class="line">//最大连接数</span><br><span class="line">maxActive = </span><br><span class="line">//最大等待时间</span><br><span class="line">maxWait = </span><br></pre></td></tr></table></figure>
+
+
+</li>
+<li><p>加载配置文件</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">Properties</span> <span class="variable">prop</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">Properties</span>();</span><br><span class="line">prop.load(<span class="keyword">new</span> <span class="title class_">FileInputStream</span>(/))；</span><br><span class="line">    <span class="comment">//有时候路径会报错可能要加上模块名字</span></span><br><span class="line">    <span class="comment">//可用这条语句找property文件</span></span><br><span class="line">    System.getProperty(<span class="string">&quot;user.dir&quot;</span>)</span><br></pre></td></tr></table></figure>
+
+
+</li>
+<li><p>获取数据库连接池对象</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">DruidDataSourceFactory.createDataSource <span class="comment">//返回datasourve对象</span></span><br></pre></td></tr></table></figure>
+
+
+</li>
+<li><p>获取连接</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">datasouce.getConnection</span><br></pre></td></tr></table></figure></li>
+</ol>
+
+    
+
+    
+
+    
+
+  </div>
+  <div class="article-info article-info-index">
+    
+    
+	<div class="article-tag tagcloud">
+		<i class="icon-price-tags icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color2">spring</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
+    
+
+    
+    <p class="article-more-link">
+      <a class="article-more-a" href="/2023/03/10/spring2/">展开全文 >></a>
+    </p>
+    
+
+    
+    <div class="clearfix"></div>
+  </div>
+  </div>
+</article>
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
+        </div>
+        
+        
+    </div>
+</aside>
+
+
+
+
+  
+    <article id="post-人工智能基础2" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+  
+  
+    <h1 itemprop="name">
+	
+	  <a class="article-title" href="/2023/03/10/%E4%BA%BA%E5%B7%A5%E6%99%BA%E8%83%BD%E5%9F%BA%E7%A1%802/" target="_blank">人工智能基础2</a>
+  
+    </h1>
+  
+
+
+  
+  
+<a href="/2023/03/10/%E4%BA%BA%E5%B7%A5%E6%99%BA%E8%83%BD%E5%9F%BA%E7%A1%802/" class="archive-article-date">
+        <time datetime="2023-03-10T10:00:57.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2023-03-10</time>
+</a>
+
+  
+  
+    
+
+  
+  </header>
+  
+  <div class="article-entry" itemprop="articleBody">
+    
+    <h1 id="机器学习"><a href="#机器学习" class="headerlink" title="机器学习"></a>机器学习</h1><p>​		从大量信息中提取反复出现的规律和模式，这一过程在人工智能中的实现方式就是机器学习。</p>
+<p>​		举个例子：我们人类可以通过某个人的面貌大致判断其属于什么国家，就是通过其面部的一些特征来判断。</p>
+<p>​		比如中国人下颌适中，日本人长脸长鼻，韩国人眼小颧高，泰国人肤色暗深。在做出路人甲来自日本或是路人乙来自韩国的判断时，正是以这些特征作为依据的。</p>
+<h2 id="一些名词"><a href="#一些名词" class="headerlink" title="一些名词"></a>一些名词</h2><h3 id="属性，数据，实例"><a href="#属性，数据，实例" class="headerlink" title="属性，数据，实例"></a>属性，数据，实例</h3><ol>
+<li><p>属性：被观察的指标就是属性，例如上述例子中的眼睛大小，颧骨</p>
+</li>
+<li><p>数据：不同属性值有序排列的得到的向量就是数据也叫做事例例如</p>
+<p>​		黄种人相貌特征的典型属性便包括肤色、眼睛大小、鼻子长短、颧骨高度。标准的中国人实例甲就是属性值{浅、大、短、低 }的组合。</p>
+<p>​		数据的不同属性可以视为相互独立因此每个属性都表示一个不同维度，所有的属性张成了一个向量空间。</p>
+</li>
+</ol>
+<h2 id="预测问题"><a href="#预测问题" class="headerlink" title="预测问题"></a>预测问题</h2><p>​		对于前面的例子，输入的数据是一个人的相貌特征，输出数据是人种，在真正的机器学习中输入输出可能更加复杂，主要分成下面三类问题。</p>
+<h3 id="分类问题"><a href="#分类问题" class="headerlink" title="分类问题"></a>分类问题</h3><p>​		输出变量为有限个离散变量，比如上述的例子就是分类问题，输出是有限个人种。</p>
+<h3 id="回归问题"><a href="#回归问题" class="headerlink" title="回归问题"></a>回归问题</h3><p>​		输入输出变量都是连续变量。</p>
+<h3 id="标注问题"><a href="#标注问题" class="headerlink" title="标注问题"></a>标注问题</h3><p>​		输入输出变量都是变量序列可以看成分类问题的一个变种，不过输出是一个向量，有多个标签。</p>
+<h2 id="过拟合与欠拟合"><a href="#过拟合与欠拟合" class="headerlink" title="过拟合与欠拟合"></a>过拟合与欠拟合</h2><p>​		<strong>过拟合：</strong>简单来说就是模型对训练数据拟合的太好了，将训练数据都记住了，在训练集上表现很好，但是在实际应用上效果就很差。</p>
+<p>​		<strong>原因</strong>：一般是由于模型过于复杂，参数过多，所以训练误差较低。而且数据中可能存在一些噪音，如果参数太多模型可能会将噪声记住当作一个普世特征，因而在实际运用中会有较大误差。</p>
+<p>​		举个直观的例子：我们有一组点，要用一个多项式函数来拟合，我们越用高次的多项式拟合拟合效果越好，但是仅仅对于已知数据而言，对于未知数据表现就会很差。</p>
+<p>​		<strong>欠拟合：</strong>欠拟合就是在训练集上表现的就很差，这种一般就是模型选择的不够好，可以通过更改算法来改进。</p>
+<p>​		<strong>总的来说，测试误差与模型复杂度之间呈现的事抛物线关系。当模型复杂度较低，测试误差较高，随着模型复杂度增加测试误差逐渐下降，达到最小值，随后随着复杂度上升测试误差随之增加，对应过拟合的发生。</strong></p>
+<h3 id="交叉验证"><a href="#交叉验证" class="headerlink" title="交叉验证"></a>交叉验证</h3><p>​		为了对测试误差做出更精确的估计，我们采取交叉验证的方式，即将一个大测试集分割成若干个子集，然后自由组合将其中一个集当作训练集，一个当作测试集，不同模型中平均误差最小的就是最优模型。</p>
+<p>​		<strong>调参数</strong>，除了模型本身参数取值也非常重要，同样算法参数不同可能也会出现天翻地覆的变化，所以调参是个很重要的问题。</p>
+<h2 id="监督学习，无监督学习，半监督学习"><a href="#监督学习，无监督学习，半监督学习" class="headerlink" title="监督学习，无监督学习，半监督学习"></a>监督学习，无监督学习，半监督学习</h2><p>​		对比人类学习，我们有这样几种学习模式，一种就是自己摸索着学习，一种就是有高人指导着学习。人工智能也有类似的分类。</p>
+<p>​		<strong>监督学习：</strong>基于已知类别训练数据的类型，例如给出一堆图片，打上标签是什么动物，由机器提取出各个动物的特征来判断</p>
+<p>​		<strong>无监督学习：</strong>基于位置类别的训练数据进行学习，不给图片打标签，由模型本身通过提取一些特征来分类</p>
+<p>​		<strong>半监督学习：</strong>同时使用已知类别和未知类别的训练数据进行学习。</p>
+<h2 id="监督学习的两类方法"><a href="#监督学习的两类方法" class="headerlink" title="监督学习的两类方法"></a>监督学习的两类方法</h2><p>​		目前来说较好的学习算法执行的都是监督学习的任务。</p>
+<p>​		监督学习分成两种方法。<strong>生成方法和判别方法。</strong></p>
+<p>​		生成方法是根据输入数据和输出数据之间的联合概率分布确定条件概率分布 P(Y∣X)，这种方法表示了输入 X 与输出 Y 之间的生成关系；</p>
+<p>​		判别方法则直接学习条件概率分布 P(Y∣X) 或决策函数 f(X)，这种方法表示了根据输入 X 得出输出 Y 的预测方法。</p>
+<p>​		两相对比，生成方法具有<strong>更快的收敛速度和更广的应用范围</strong>，判别方法则具有<strong>更高的准确率和更简单的使用方式</strong>。</p>
+<h4 id="区别和特点"><a href="#区别和特点" class="headerlink" title="区别和特点"></a>区别和特点</h4><p><strong>区别</strong><br><strong>生成方法的特点</strong></p>
+<p>​		生成方法可以还原出联合概率分布P(X,Y)，而判别方法则不能；<br>​		生成方法的学习收敛速度更快，即当样本容量增加的时候，学到的模型可以更快的收敛于真实模型；<br>​		当存在隐变量时，仍可以用生成方法学习，此时判别方法就不能用。<br><strong>判别方法的特点</strong><br>​		判别方法直接学习的是条件概率P(Y|X)或决策函数f(X)，直接面对预测，往往学习的准确率更高；<br>​		由于直接学习P(Y|X)或f(X)，可以对数据进行各种程度上的抽象、定义特征并使用特征，因此可以简化学习问题。</p>
+<p>​		<strong>总结：</strong>生成模型在学习过程中可以得到联合分布，但其最终学习的目标可以不是联合分布，可以与判别模型一样学习条件概率分布。联合分布虽然能提供更多的信息，但也需要更多的样本和更多的计算。因此，对于样本数量较少的问题，优先考虑判别模型。<br>————————————————<br>版权声明：本文为CSDN博主「harry_128」的原创文章，遵循CC 4.0 BY-SA版权协议，转载请附上原文出处链接及本声明。<br>原文链接：<a target="_blank" rel="noopener" href="https://blog.csdn.net/harry_128/article/details/80495736">https://blog.csdn.net/harry_128/article/details/80495736</a></p>
+<h1 id="线性回归"><a href="#线性回归" class="headerlink" title="线性回归"></a>线性回归</h1><p>​		1875 年，从事遗传问题研究的英国统计学家弗朗西斯·高尔顿正在寻找父代与子代身高之间的关系。在分析了 1078 对父子的身高数据后，他发现这些数据的散点图大致呈直线状态，即父亲的身高和儿子的身高呈正相关关系。</p>
+<p>​		而在正相关关系背后还隐藏着另外一个现象：矮个子父亲的儿子更可能比父亲高；而高个子父亲的儿子更可能比父亲矮。受表哥查尔斯·达尔文的影响，高尔顿将这种现象称为“回归效应”，即<strong>大自然将人类身高的分布约束在相对稳定而不产生两极分化的整体水平</strong>，并给出了历史上第一个线性回归的表达式：y &#x3D; 0.516x + 33.73，式中的 y 和 x 分别代表以英寸为单位的子代和父代的身高。</p>
+<h2 id="误差（均方误差）最小二乘法"><a href="#误差（均方误差）最小二乘法" class="headerlink" title="误差（均方误差）最小二乘法"></a>误差（均方误差）最小二乘法</h2><p>​		简化来说我们就是要用一个函数去拟合所有的点，而函数的参数是一次的也就是线性的，我们拟合的目标是要<strong>均方误差</strong>最小。</p>
+<p>​		拟合的函数为</p>
+<p>​		<img src="/2023/03/10/%E4%BA%BA%E5%B7%A5%E6%99%BA%E8%83%BD%E5%9F%BA%E7%A1%802/p1.png"></p>
+<p>​		要满足均方差最小即</p>
+<p><img src="/2023/03/10/%E4%BA%BA%E5%B7%A5%E6%99%BA%E8%83%BD%E5%9F%BA%E7%A1%802/p2.png"></p>
+<p>​		结果为</p>
+<p>​		<img src="/2023/03/10/%E4%BA%BA%E5%B7%A5%E6%99%BA%E8%83%BD%E5%9F%BA%E7%A1%802/p4.png"></p>
+<h2 id="多元线性回归"><a href="#多元线性回归" class="headerlink" title="多元线性回归"></a>多元线性回归</h2><p>​		对于多元函数参与运算的从向量变成了矩阵。</p>
+<p>​		X 是由所有样本 x&#x3D;(x0;x1;x2;⋯,xn) 的转置共同构成的矩阵小x是一个列向量<img src="/2023/03/10/%E4%BA%BA%E5%B7%A5%E6%99%BA%E8%83%BD%E5%9F%BA%E7%A1%802/p3.png"></p>
+<h3 id="岭回归"><a href="#岭回归" class="headerlink" title="岭回归"></a>岭回归</h3><p>​		岭回归实现正则化的方式是在原始均方误差项的基础上添加一个待求解参数的二范数项，即最小化的对象变为 ∣∣yk−w^T^xk∣∣^2^+∣∣Γw∣∣^2^，其中的 Γ 被称为季霍诺夫矩阵，通常可以简化为一个常数。</p>
+<p>​		等于说给我们的最小化对象加了一个限制，让二次项最小。</p>
+<p>​		岭回归的作用相当于<strong>在原始最小二乘的结果上做了缩放</strong>，虽然最优解中每个参数的贡献被削弱了，但参数的数目并没有变少。</p>
+<h3 id="LASSO-回归（最小绝对缩减和选择算子）"><a href="#LASSO-回归（最小绝对缩减和选择算子）" class="headerlink" title="LASSO 回归（最小绝对缩减和选择算子）"></a>LASSO 回归（最小绝对缩减和选择算子）</h3><p>​		由加拿大学者罗伯特·提布什拉尼于 1996 年提出。与岭回归不同的是，LASSO 回归选择了待求解参数的一范数项作为惩罚项，即最小化的对象变为 ∣∣yk−w^T^xk∣∣2 + λ∣∣w∣∣1，其中的 λ 是一个常数。</p>
+<p>​		特点在于<strong>稀疏性</strong>的引入，因为加了一个w的一次项就是根号w1 + w2 + w3…,	 让其最小就是尽可能让其中一些因素为0，这就是为什么说引入了稀疏性。</p>
+<p>​		这样让一些参数的贡献为0，可以简化模型。</p>
+<p>​		这或多或少可以看作奥卡姆剃刀原理的一种实现：当主要矛盾和次要矛盾同时存在时，优先考虑的必然是主要矛盾。虽然饮食、环境、运动等因素都会影响身高的变化，但决定性因素显然只存在在染色体上。值得一提的是，引入稀疏性是简化复杂问题的一种常用方法，在数据压缩、信号处理等其他领域中亦有广泛应用。</p>
+<h3 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h3><p>​		无论岭回归还是 LASSO 回归，其作用都是通过惩罚项的引入<strong>抑制过拟合现象</strong>，以训练误差的上升为代价，换取测试误差的下降。将以上两种方法的思想结合可以得到新的优化方法，在此就不做赘述了。</p>
+<h1 id="朴素贝叶斯方法"><a href="#朴素贝叶斯方法" class="headerlink" title="朴素贝叶斯方法"></a>朴素贝叶斯方法</h1><p>​		根据条件概率的性质可以得到</p>
+<p><img src="/2023/03/10/%E4%BA%BA%E5%B7%A5%E6%99%BA%E8%83%BD%E5%9F%BA%E7%A1%802/p5.png"></p>
+<h2 id="类先验概率"><a href="#类先验概率" class="headerlink" title="类先验概率"></a>类先验概率</h2><p>​		在上式中，P(Y) 代表着每个类别出现的概率，也就是类先验概率；</p>
+<h2 id="类似然概率"><a href="#类似然概率" class="headerlink" title="类似然概率"></a>类似然概率</h2><p>​		P(X|Y) 代表着在给定的类别下不同属性出现的概率，也就是类似然概率。</p>
+<h2 id="朴素之处（条件独立假设）"><a href="#朴素之处（条件独立假设）" class="headerlink" title="朴素之处（条件独立假设）"></a>朴素之处（条件独立假设）</h2><p>​		如果每个样本包含 100 个属性，每个属性的取值都可能有 100 种，那么对分类的每个结果，要计算的条件概率数目就是 1002&#x3D;10000。在这么多参数的情况下，对似然概率的精确估计就需要庞大的数据量。</p>
+<p>​		在这10000种里面每一个都是独立的一类。有10000种不同的分类，如果是连续性那么更无法分类。</p>
+<p>​		要解决似然概率难以估计的问题，就需要“条件独立性假设”登台亮相。条件独立性假设保证了所有属性相互独立，互不影响，每个属性独立地对分类结果发生作用。这样类条件概率就变成了属性条件概率的乘积，在数学公式上可以体现为</p>
+<p><img src="/2023/03/10/%E4%BA%BA%E5%B7%A5%E6%99%BA%E8%83%BD%E5%9F%BA%E7%A1%802/p6.png"></p>
+<h2 id="优势"><a href="#优势" class="headerlink" title="优势"></a>优势</h2><p>​		有了训练数据集，先验概率 P(Y) 和似然概率 P(X|Y) 就可以视为已知条件，用来求解后验概率 P(Y|X)。对于给定的输入 x，朴素贝叶斯分类器利用贝叶斯定理求解后验概率，并将后验概率最大的类作为输出。</p>
+<p>​	在实际应用中，属性条件独立性假设会导致数据的<strong>过度简化</strong>，因而会给分类性能带来些许影响。但它带来的数学上的便利却能极大简化分类问题的计算复杂度，性能上的部分折中也就并非不可接受</p>
+<h2 id="限制（拉普拉斯平滑）"><a href="#限制（拉普拉斯平滑）" class="headerlink" title="限制（拉普拉斯平滑）"></a>限制（拉普拉斯平滑）</h2><p>​		朴素贝叶斯分类器通过将实例分配到后验概率最大的类中，也就同时让 1 - P(Y|X) 取得最小值。在以分类错误的实例数作为误差时，期望风险就等于 1 - P(Y|X)。</p>
+<p>​		这样一来，后验概率最大化就等效于期望风险最小化。受训练数据集规模的限制，某些属性的取值在训练集中可能从未与某个类同时出现，这就可能导致属性条件概率为 0，此时直接使用朴素贝叶斯分类就会导致错误的结论。</p>
+<p>​		还是以贷款申请为例，如果在训练集中没有样本同时具有“年龄大于 60”的属性和“发放贷款”的标签，那么当一个退休人员申请贷款时，即使他是坐拥百亿身家的李嘉诚，朴素贝叶斯分类器也会因为后验概率等于零而将他无情拒绝。</p>
+<p>​		因为训练集样本的不充分导致分类错误，显然不是理想的结果。为了避免属性携带的信息被训练集中未曾出现过的属性值所干扰，在计算属性条件概率时需要添加一个称为“拉普拉斯平滑”的步骤。</p>
+<p>​		所谓拉普拉斯平滑就是在计算类先验概率和属性条件概率时，在分子上添加一个较小的修正量，在分母上则添加这个修正量与分类数目的乘积。</p>
+<p>​		这就可以保证在满足概率基本性质的条件下，避免了<strong>零概率</strong>对分类结果的影响。当训练集的数据量较大时，修正量对先验概率的影响也就可以忽略不计了。</p>
+<h4 id="为什么条件独立性是一个较强的假设，但是在实际预测中效果不错"><a href="#为什么条件独立性是一个较强的假设，但是在实际预测中效果不错" class="headerlink" title="为什么条件独立性是一个较强的假设，但是在实际预测中效果不错"></a>为什么条件独立性是一个较强的假设，但是在实际预测中效果不错</h4><p>​	一种可能的解释是：在给定的训练数据集上，两个属性之间可能具有相关性，但这种相关性在每个类别上都以同样的程度体现。 这种情况显然违背了条件独立性假设，却不会破坏朴素贝叶斯分类器的最优性。</p>
+<p>​		即使相关性在不同类别上的分布不是均匀的也没关系，只看两个单独的属性，它们之间可能存在强烈的依赖关系，会影响分类的结果。但当所有属性之间的依赖关系一起发挥作用时，它们就可能相互抵消，不再影响分类。</p>
+<p>​		<strong>总结来说，各种依赖拉拉扯扯，你往负方向扯，我往正方向扯，平均下来等于没扯</strong></p>
+<h2 id="半朴素贝叶斯分类器"><a href="#半朴素贝叶斯分类器" class="headerlink" title="半朴素贝叶斯分类器"></a>半朴素贝叶斯分类器</h2><p>​		假设属相独立有些情况会效果不好，研究人员为了放宽这一假设，提出了半朴素贝叶斯分类器。</p>
+<p>​		<strong>考虑部分属性之间的依赖关系，</strong>既保留了属性之间较强的相关性，有简化了复杂的联合概率密度。</p>
+<p>​		常用方法：<strong>建立独依赖关系：</strong>假设每个属性除了类别之外，最多只依赖一个其他属性。由此，根据属性间依赖关系确定方式的不同，便衍生出了多种独依赖分类器。</p>
+
+    
+
+    
+
+    
+
+  </div>
+  <div class="article-info article-info-index">
+    
+    
+	<div class="article-tag tagcloud">
+		<i class="icon-price-tags icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">人工智能</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
+    
+
+    
+    <p class="article-more-link">
+      <a class="article-more-a" href="/2023/03/10/%E4%BA%BA%E5%B7%A5%E6%99%BA%E8%83%BD%E5%9F%BA%E7%A1%802/">展开全文 >></a>
+    </p>
+    
+
+    
+    <div class="clearfix"></div>
+  </div>
+  </div>
+</article>
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
+        </div>
+        
+        
+    </div>
+</aside>
+
+
+
+
+  
+    <article id="post-1590" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+  
+  
+    <h1 itemprop="name">
+	
+	  <a class="article-title" href="/2023/03/10/1590/" target="_blank">1590</a>
+  
+    </h1>
+  
+
+
+  
+  
+<a href="/2023/03/10/1590/" class="archive-article-date">
+        <time datetime="2023-03-10T01:54:47.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2023-03-10</time>
+</a>
+
+  
+  
+    
+
+  
+  </header>
+  
+  <div class="article-entry" itemprop="articleBody">
+    
+    <h1 id="题面"><a href="#题面" class="headerlink" title="题面"></a>题面</h1><p><img src="/2023/03/10/1590/p1.png"></p>
+<h1 id="小知识"><a href="#小知识" class="headerlink" title="小知识"></a>小知识</h1><p>​		有几个关于取模的小定理。</p>
+<p><img src="/2023/03/10/1590/p2.png"></p>
+<p>​		这里有个直观的理解，y - z可以被p整除，说明把y原本的余数给剪掉了，所以z除了p的一定倍数外一定还有一个和y除以p相同的余数。</p>
+<p><img src="/2023/03/10/1590/p3.png"></p>
+<p>​		这里没有什么直观的理解方法，但是可以简单记忆，把z和x交换位置，两边同时取余数。</p>
+<p>​		具体证明方法很简单，就是把取模符号改成被取模数的k倍然后加上一个余数，然后换来换去。</p>
+<h1 id="题解"><a href="#题解" class="headerlink" title="题解"></a>题解</h1><p>​		官方题解写的已经很好了直接拿来用，然后加一点解释</p>
+<p><img src="/2023/03/10/1590/p4.png"></p>
+<p>​	题解中一笔带过的东西我们来讲一讲，如何使用定理，对于题目中使用的定理1，将数组和<strong>sum</strong>当成y,将（fi+1 - fj）**(就是我们的要减去的子数组的和)**当成 z，因为y mod p &#x3D; x; (y - z) mod p &#x3D; 0; 所以 z mod p &#x3D; x；用定理二，</p>
+<p>​		我们由定理一获得了 （fi+1 - fj） mod p  &#x3D; x; 所以 (fi+1 - x)  mod p &#x3D; fj mod p;</p>
+<p>​		现在我们的问题变成了对于每一个fi+1，找到最大的fj满足这个这个条件，因为我们题目要找的是减去一个<strong>最小长度的子数组</strong>（子数组的长度是（ i + 1 - j ）+ 1），然后在所有fi+1的情况中，找到最小的那个子数组就是我们要的答案。</p>
+<p>​	讲一些细节上代码如何实现，首先先算出数组的和这个直接遍历就可以，这里需要<strong>注意的是</strong>，如果用<strong>int</strong>存的化可能会爆，因为数组元素是到10^9, 数组长度10^5, 所以应该一边遍历累加一边取余防止爆int。</p>
+<p>​		下面是代码实现的一个非常关键的步骤，遍历数组，一边遍历一边算（fi+1 - x）mod p 一边算fj mod p，再用哈希表存fj mod p，为什么可以这么做！！！因为我们每次算的时候（fi+1 - x）mod p的时候都要找的是最大的那个可以满组等式的，哈希表将fj mod p 当作主键，下标当作value，如果遇到相同的主键就更新下标，所以我们这个哈希表里面存的对于某一个 fj mod p来说值一定是最大的那个下标，而且由于我们是再遍历，也能保证我们的j一定在i+1的前面，这是我们想要看到的，每次匹配都只要花O（1）的时间就能找到每个i对应最大的j。然后用一个变量存最终答案<strong>（初始值是数组长度）</strong>，每次对比一下，如果长度小于就重新赋值，大于就不变，如果最终答案还是数组的长度就输出-1，否则输出答案。</p>
+<h1 id="代码"><a href="#代码" class="headerlink" title="代码"></a>代码</h1><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> java.util.HashMap;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">n1590</span> &#123;</span><br><span class="line">  <span class="keyword">public</span> <span class="type">int</span> <span class="title function_">minSubarray</span><span class="params">(<span class="type">int</span>[] nums, <span class="type">int</span> p)</span> &#123;</span><br><span class="line">    <span class="type">int</span> <span class="variable">x</span> <span class="operator">=</span> <span class="number">0</span>;</span><br><span class="line">    <span class="keyword">for</span> (<span class="type">int</span> <span class="variable">i</span> <span class="operator">=</span> <span class="number">0</span>; i &lt; nums.length; i++) &#123;</span><br><span class="line">      x = (x + nums[i]) % p;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">if</span> (x == <span class="number">0</span>) &#123;</span><br><span class="line">      <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    HashMap&lt;Integer, Integer&gt; index = <span class="keyword">new</span> <span class="title class_">HashMap</span>&lt;&gt;();</span><br><span class="line">    <span class="type">int</span> <span class="variable">y</span> <span class="operator">=</span> <span class="number">0</span>;</span><br><span class="line">    <span class="type">int</span> <span class="variable">res</span> <span class="operator">=</span> nums.length;</span><br><span class="line">    <span class="keyword">for</span> (<span class="type">int</span> <span class="variable">i</span> <span class="operator">=</span> <span class="number">0</span>; i &lt; nums.length; i++) &#123;</span><br><span class="line">      index.put(y, i);</span><br><span class="line">      y = (y + nums[i]) % p;</span><br><span class="line">      <span class="keyword">if</span> (index.containsKey((y - x + p) % p)) &#123;</span><br><span class="line">        res = Math.min(res, (i - index.get((y - x + p) % p) + <span class="number">1</span>));</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">if</span> (res == nums.length) &#123;</span><br><span class="line">      <span class="keyword">return</span> -<span class="number">1</span>;</span><br><span class="line">    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">      <span class="keyword">return</span> res;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<h2 id="tips"><a href="#tips" class="headerlink" title="tips"></a>tips</h2><p>​		注意我们上面求（y - x ）mod p, 用了（y - x + p）mod p,因为考虑到 y - x 可能是负数，有些编程语言负数取余数是负数，所以加一个p。</p>
+
+    
+
+    
+
+    
+
+  </div>
+  <div class="article-info article-info-index">
+    
+    
+	<div class="article-tag tagcloud">
+		<i class="icon-price-tags icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">力扣</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
+    
+
+    
+    <p class="article-more-link">
+      <a class="article-more-a" href="/2023/03/10/1590/">展开全文 >></a>
+    </p>
+    
+
+    
+    <div class="clearfix"></div>
+  </div>
+  </div>
+</article>
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
+        </div>
+        
+        
+    </div>
+</aside>
+
+
+
+
+  
+    <article id="post-spring" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+  
+  
+    <h1 itemprop="name">
+	
+	  <a class="article-title" href="/2023/03/09/spring/" target="_blank">spring1</a>
+  
+    </h1>
+  
+
+
+  
+  
+<a href="/2023/03/09/spring/" class="archive-article-date">
+        <time datetime="2023-03-09T12:00:56.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2023-03-09</time>
+</a>
+
+  
+  
+    
+
+  
+  </header>
+  
+  <div class="article-entry" itemprop="articleBody">
+    
+    <h1 id="整个家族"><a href="#整个家族" class="headerlink" title="整个家族"></a>整个家族</h1><h1 id="每一个阶层的工具支持"><a href="#每一个阶层的工具支持" class="headerlink" title="每一个阶层的工具支持"></a>每一个阶层的工具支持</h1><h2 id="Spring-Boot"><a href="#Spring-Boot" class="headerlink" title="Spring-Boot"></a>Spring-Boot</h2><p>​		，进课开箱即用，退可按需改动。提供各种非公能属性，不用生成代码，没有XML配置。</p>
+<p>​		<strong>更多的放在业务逻辑上而不是环境以来的配置</strong></p>
+<h2 id="Spring-Cloud"><a href="#Spring-Cloud" class="headerlink" title="Spring-Cloud"></a>Spring-Cloud</h2><pre><code>     分布式系统的开发，更快开发基于云的程序。
+</code></pre>
+<h1 id="改动（Spring-5-x）"><a href="#改动（Spring-5-x）" class="headerlink" title="改动（Spring 5.x）"></a>改动（Spring 5.x）</h1><h2 id="支持语言"><a href="#支持语言" class="headerlink" title="支持语言"></a>支持语言</h2><p>java8+， Kotlin</p>
+<h2 id="WebFlux"><a href="#WebFlux" class="headerlink" title="WebFlux"></a>WebFlux</h2><p><strong>异步编程</strong>的崛起</p>
+<h2 id="去除支持"><a href="#去除支持" class="headerlink" title="去除支持"></a>去除支持</h2><h1 id="出现的必然性"><a href="#出现的必然性" class="headerlink" title="出现的必然性"></a>出现的必然性</h1><p>​		将<strong>最佳实践</strong>固化到系统实践，从单机到集群再到云。</p>
+<p>​		重点从单个程序的不挂到面对物理机的宕机常态如何快速恢复程序的正常运行<strong>（快速降级？？）</strong></p>
+<h1 id="第一个spring程序"><a href="#第一个spring程序" class="headerlink" title="第一个spring程序"></a>第一个spring程序</h1><h2 id="启动"><a href="#启动" class="headerlink" title="启动"></a>启动</h2><p><strong>Spring.starter.io</strong>,(貌似也可以直接在ide中生成)</p>
+<h2 id="程序框架"><a href="#程序框架" class="headerlink" title="程序框架"></a>程序框架</h2><p>基本的maven框架</p>
+<h2 id="入口"><a href="#入口" class="headerlink" title="入口"></a>入口</h2><p><code>@Appliction</code>,</p>
+<h2 id="actuator组件"><a href="#actuator组件" class="headerlink" title="actuator组件"></a>actuator组件</h2><p> 帮助检查程序是否健康 &#x2F;acturator&#x2F;health</p>
+<h2 id="pom配置"><a href="#pom配置" class="headerlink" title="pom配置"></a>pom配置</h2><h2 id="parent"><a href="#parent" class="headerlink" title="parent"></a>parent</h2><p>​		spring-boot-starter-parent 作为 整个工程的parent，内部定义了大量的依赖，下面引入的依赖不需要标注版本号，在parent中的dependency management中进行管理，官方测试的不会发生冲突的各个版本号。</p>
+<h3 id="不想使用parent？"><a href="#不想使用parent？" class="headerlink" title="不想使用parent？"></a>不想使用parent？</h3><p>​		修改pom文件注入一个 dependency management</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">`&lt;dependency management&gt;`</span><br><span class="line">xxxxxx</span><br><span class="line">`&lt;/dependency management&gt;`</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+
+
+
+
+<h4 id="maven小复习"><a href="#maven小复习" class="headerlink" title="maven小复习"></a>maven小复习</h4><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">&lt;excutions&gt;</span><br><span class="line"></span><br><span class="line">&lt;excution&gt;</span><br><span class="line"></span><br><span class="line">&lt;goals&gt;</span><br><span class="line"></span><br><span class="line">&lt;goal&gt; xxxx&lt;/goal&gt; ##xxx中是该工具在什么时候启用</span><br><span class="line"></span><br><span class="line">&lt;/goals&gt;</span><br><span class="line"></span><br><span class="line">&lt;/excution&gt;</span><br><span class="line"></span><br><span class="line">&lt;/excutions&gt;</span><br></pre></td></tr></table></figure>
+
+
+
+
+
+<h2 id="plugin"><a href="#plugin" class="headerlink" title="plugin"></a>plugin</h2><p>打一个jar包</p>
+<p><code>mvn clean package -Dmaven.test.skip</code></p>
+<p>是一个可执行的jar包，不需要外部环境，将所有依赖都打包了</p>
+<p><code>java - jar</code>就可以执行</p>
+<p>​		</p>
+
+    
+
+    
+
+    
+
+  </div>
+  <div class="article-info article-info-index">
+    
+    
+	<div class="article-tag tagcloud">
+		<i class="icon-price-tags icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color2">spring</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
+    
+
+    
+    <p class="article-more-link">
+      <a class="article-more-a" href="/2023/03/09/spring/">展开全文 >></a>
+    </p>
+    
+
+    
+    <div class="clearfix"></div>
+  </div>
+  </div>
+</article>
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
+        </div>
+        
+        
+    </div>
+</aside>
+
+
+
+
+  
+    <article id="post-人工智能基础1" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+  
+  
+    <h1 itemprop="name">
+	
+	  <a class="article-title" href="/2023/03/09/%E4%BA%BA%E5%B7%A5%E6%99%BA%E8%83%BD%E5%9F%BA%E7%A1%801/" target="_blank">人工智能基础1</a>
+  
+    </h1>
+  
+
+
+  
+  
+<a href="/2023/03/09/%E4%BA%BA%E5%B7%A5%E6%99%BA%E8%83%BD%E5%9F%BA%E7%A1%801/" class="archive-article-date">
+        <time datetime="2023-03-09T07:57:36.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2023-03-09</time>
+</a>
+
+  
+  
+    
+
+  
+  </header>
+  
+  <div class="article-entry" itemprop="articleBody">
+    
+    <h1 id="最优化方法"><a href="#最优化方法" class="headerlink" title="最优化方法"></a>最优化方法</h1><h2 id="拉格朗日乘子"><a href="#拉格朗日乘子" class="headerlink" title="拉格朗日乘子"></a>拉格朗日乘子</h2><p>​		用于计算有限制的函数极值。</p>
+<p>​		比如说要算f（X,Y）的极值，有一个限制g（X,Y） &#x3D; 0</p>
+<p>​		令L（X,Y,C） &#x3D; f(X,Y) + Cg(X,Y)</p>
+<p>​		我们令 LX’ &#x3D; 0; LY’ &#x3D; 0; 还有一个g(X,Y) &#x3D; 0; 我们通过这三个方程算出的(X,Y)就是极值点。</p>
+<h2 id="梯度"><a href="#梯度" class="headerlink" title="梯度"></a>梯度</h2><p>​		梯度可以看成一个向量，沿着该向量的方向，函数下降速度最快。</p>
+<p>​	这个向量表示为</p>
+<p><img src="/2023/03/09/%E4%BA%BA%E5%B7%A5%E6%99%BA%E8%83%BD%E5%9F%BA%E7%A1%801/p1.png"></p>
+<p>​				同时定义了一个Nabla算子，梯度可以表示为Nabla算子乘所有变量。</p>
+<p>​		<img src="/2023/03/09/%E4%BA%BA%E5%B7%A5%E6%99%BA%E8%83%BD%E5%9F%BA%E7%A1%801/p2.png"></p>
+<h3 id="批处理模式"><a href="#批处理模式" class="headerlink" title="批处理模式"></a>批处理模式</h3><p>​		计算出每个样本中目标函数的梯度，将其加起来，作为本次目标更新中的总梯度。</p>
+<p>​		<strong>缺点：</strong>每次更新需要遍历训练集，速度较慢</p>
+<h3 id="随机梯度下降法"><a href="#随机梯度下降法" class="headerlink" title="随机梯度下降法"></a>随机梯度下降法</h3><p>​		每一次更新用一个样本，下一次更新再用下一个样本。</p>
+<h2 id="牛顿法"><a href="#牛顿法" class="headerlink" title="牛顿法"></a>牛顿法</h2><p>​		<strong>用途：</strong>用来找一阶导数为0的点</p>
+<p>​		<strong>特点：</strong>用到了二阶导数，收敛速度更快。</p>
+<p>​		<strong>公式：</strong></p>
+<p><img src="/2023/03/09/%E4%BA%BA%E5%B7%A5%E6%99%BA%E8%83%BD%E5%9F%BA%E7%A1%801/p3.png"></p>
+<h2 id="置信域方法"><a href="#置信域方法" class="headerlink" title="置信域方法"></a>置信域方法</h2><p>​		上述方法叫做线性搜索方法，即先找到方向，再确定步长（每次x的改变量，改变量过小收敛速度满，改变量大容易越过极值点）。</p>
+<p>​		置信域方法则是先确定步长，然后再确定方向。</p>
+<p>​		具体做法是先确定一个步长，确定一个球面，然后找到下降速度最快的那个点，以那个点作为下一次迭代的出发点，以此类推。</p>
+<h2 id="启发式算法"><a href="#启发式算法" class="headerlink" title="启发式算法"></a>启发式算法</h2><p>​		<strong>核心思想：</strong>启发式算法的核心思想在于运用了大自然的优胜劣汰法则，在算法中添加了选择和突变等因素。搜索越多不意味着越智能，智能的体现在于不经过大量搜索也能解决问题。</p>
+<p>​		<strong>实例：</strong>遗传算法，模拟低等生物产生集群智能的蚁群算法。</p>
+<p>神经网络（模拟人脑神经元的工作）</p>
+<h1 id="信息论"><a href="#信息论" class="headerlink" title="信息论"></a>信息论</h1><p>​		信息论之父：<strong>香农</strong></p>
+<p>​		香农在《通信的数学理论》中开宗明义：“通信的基本问题是在一点精确地或近似地复现在另一点所选取的消息。消息通常有意义，即根据某种体系，消息本身指向或关联着物理上或概念上的特定实体。但消息的语义含义与工程问题无关，重要的问题是一条消息来自于一个所有可能的消息的集合。</p>
+<p>​		上面说了一大堆，其实本质意义上就想表示，在通信工程上我们并不在乎信息的本义，我们只在乎能不能将一个信息在另外一个地方另外一个时间精准复现。</p>
+<p>​		也就是说我们可以将信息抽象成符号，只要我们清楚这些符号代表什么就能进行翻译，所有信息都被抽象成逻辑符号，将信息的传播和处理完全剥离开来（一个做传递符号的工作，一个做翻译符号的工作）。</p>
+<h2 id="信息熵"><a href="#信息熵" class="headerlink" title="信息熵"></a>信息熵</h2><p>​		熵这个概率描述的一个系统内混乱程度大小，这里信息熵的概率是用来描述一个信息的<strong>不确定性</strong></p>
+<p>​		一个信息发生的概率越小，那么这个消息所包含的信息量越大。</p>
+<p>​		举个例子：男足世界杯冠军这个信息包含的信息量就比男子乒乓拿了冠军的信息量要大的多，后者是大家都认为概率很大事件而后者是一个小概率事件。</p>
+<p>​		在信息论中，如果事件A发生的概率p(A), 那么这个事件的自信息量定义为</p>
+<p><img src="/2023/03/09/%E4%BA%BA%E5%B7%A5%E6%99%BA%E8%83%BD%E5%9F%BA%E7%A1%801/p4.png"></p>
+<p>​		如果一条信息包含多个信息源。</p>
+<p>​	<img src="/2023/03/09/%E4%BA%BA%E5%B7%A5%E6%99%BA%E8%83%BD%E5%9F%BA%E7%A1%801/p5.png"></p>
+<h2 id="条件熵"><a href="#条件熵" class="headerlink" title="条件熵"></a>条件熵</h2><p>​		概统中有条件概率的概率，对应的信息论中有条件熵的概率。如果信源X和信源Y之间有相关性，那么在已知其中一个信源X的条件下另外一个信源Y的信息熵必然会减少。条件熵 H(Y∣X) 表示的是在已知随机变量 X 的条件下另一个随机变量 Y 的不确定性，也就是在给定 X 时，根据 Y 的条件概率计算出的熵再对 X 求解数学期望。</p>
+<p>​		<img src="/2023/03/09/%E4%BA%BA%E5%B7%A5%E6%99%BA%E8%83%BD%E5%9F%BA%E7%A1%801/p6.png"></p>
+<h2 id="互信息（信息增益）"><a href="#互信息（信息增益）" class="headerlink" title="互信息（信息增益）"></a>互信息（信息增益）</h2><p>​				<img src="/2023/03/09/%E4%BA%BA%E5%B7%A5%E6%99%BA%E8%83%BD%E5%9F%BA%E7%A1%801/p7.png"></p>
+<p>​		知道了条件熵的定义之后我们引入了一个新的概率，互信息，他使用Y信息本身的信息熵减去已知X的情况下Y的条件熵</p>
+<p><strong>这个值的大小表示了X对Y的不确定性的消除，也可以看成X对Y的信息增益</strong></p>
+<h3 id="信息增益比"><a href="#信息增益比" class="headerlink" title="信息增益比"></a>信息增益比</h3><p>​		由于信息增益的数值大小和H(Y)有很大的关系，不具备绝对意义，所以提出了信息增益比的概念。</p>
+<p>​		<img src="/2023/03/09/%E4%BA%BA%E5%B7%A5%E6%99%BA%E8%83%BD%E5%9F%BA%E7%A1%801/p8.png"></p>
+<h2 id="KL散度"><a href="#KL散度" class="headerlink" title="KL散度"></a>KL散度</h2><p>​		KL散度是用来描述两个概率分布P,Q之间的差异大小</p>
+<p><img src="/2023/03/09/%E4%BA%BA%E5%B7%A5%E6%99%BA%E8%83%BD%E5%9F%BA%E7%A1%801/p9.png"></p>
+<p>​		KL 散度是对额外信息量的衡量。给定一个信源，其符号的概率分布为 P(X)，就可以设计一种针对 P(X) 的最优编码，使得表示该信源所需的平均比特数最少（等于该信源的信源熵）。</p>
+<p>​		可是当信源的符号集合不变，而符合的概率分布变为 Q(X) 时，再用概率分布 P(X) 的最优编码对符合分布 Q(X) 的符号编码，此时编码结果的字符数就会比最优值多一些比特。</p>
+<p>​		KL 散度就是用来衡量这种情况下平均每个字符多用的比特数，也可以表示两个分布之间的距离。</p>
+<h4 id="非负性"><a href="#非负性" class="headerlink" title="非负性"></a>非负性</h4><p>​		非负性是指 KL 散度是大于或等于 0 的，等号只在两个分布完全相同时取到。</p>
+<h4 id="非对称性"><a href="#非对称性" class="headerlink" title="非对称性"></a>非对称性</h4><p>​		非对称性则是指 DKL(P∣∣Q)\&#x3D;DKL(Q∣∣P)，即用 P(X) 去近似 Q(X) 和用 Q(X) 去近似 P(X) 得到的偏差是不同的，因此 KL 散度并不满足数学意义上对距离的定义，这一点需要注意。</p>
+<h2 id="最大熵原理"><a href="#最大熵原理" class="headerlink" title="最大熵原理"></a>最大熵原理</h2><p>​		“最大熵原理”。最大熵原理是确定随机变量统计特性时力图最符合客观情况的一种准则。对于一个未知的概率分布，最坏的情况就是它以等可能性取到每个可能的取值</p>
+<p>​		将最大熵原理应用到分类问题上就可以得到最大熵模型。在分类问题中，首先要确定若干特征函数作为分类的依据。</p>
+<p>​		为了保证特征函数的有效性，其在模型真实分布 P(X) 上的数学期望<strong>（我们假定的分布）</strong>和在由训练数据集推导出的经验分布 P~(X) 上的数学期望应该相等，即对给定特征函数数学期望的估计应该是个无偏估计量。</p>
+<p>​		这样以来我们每个模型就有了一个约束条件，分类模型就是要在这个约束条件下找到最好的模型，由于没有其他任何关于分类的知识，我们最大熵原理求解出条件熵最大的条件分布，让下列函数取值最大化。</p>
+<p><img src="/2023/03/09/%E4%BA%BA%E5%B7%A5%E6%99%BA%E8%83%BD%E5%9F%BA%E7%A1%801/p10.png"></p>
+<p>​		式中的 p(y∣x) 就是分类问题要确定的目标条件分布。<strong>（当已知种种x条件的情况下是y的可能性）</strong></p>
+<p>​		计算上式的最大值实质上就是一个约束优化问题，由特征函数确定的约束条件可以通过拉格朗日乘子的引入去除其影响，转化为无约束优化问题。从数学上可以证明，这个模型的解是存在且唯一的。</p>
+<h1 id="形式逻辑（离散数学）"><a href="#形式逻辑（离散数学）" class="headerlink" title="形式逻辑（离散数学）"></a>形式逻辑（离散数学）</h1><h2 id="三段论"><a href="#三段论" class="headerlink" title="三段论"></a>三段论</h2><h2 id="谓词逻辑"><a href="#谓词逻辑" class="headerlink" title="谓词逻辑"></a>谓词逻辑</h2><h2 id="产生式系统"><a href="#产生式系统" class="headerlink" title="产生式系统"></a>产生式系统</h2><p>​		产生式系统用逻辑符号来表示行为，类似于人类认知过程，产生的逻辑表达式叫做产生式规则。基本形式P -&gt; Q， P叫做规则前件，Q叫做规则后件，如果有很多这样的规则，那么一个规则生成的结论可以当作另外一个规则的前提。</p>
+<p>​		举个例子，我是个高级程序员推导出我很会编程，我很会编程推导出我可以参加这份工作，所以我是个高级程序源所以我可以参加这份工作，第一条句子的结论充当了第二条句子的前提。</p>
+<h3 id="三个部分"><a href="#三个部分" class="headerlink" title="三个部分"></a>三个部分</h3><p>​		<strong>规则库：</strong>存储着一些列的规则语句，诸如P -&gt; Q</p>
+<p>​	   <strong>事实库：</strong>输入事实，中间结果，和最终结果，对于上面那个例子，比如说我输入了一个事实我是高级程序员，会产生一个中间结果我很会编程，然后最终结果我可以参加这份工作都会被存入事实库中</p>
+<p>​		<strong>推理机：</strong>用于控制协调事实库和规则库，具体有三种推理的方式。</p>
+<ol>
+<li>正向推理采用的是自底向上的方式，即从已知事实出发，通过在规则库中不断选择匹配的规则前件，得到匹配规则的后件，进而推演出目标结论。</li>
+<li>反向推理采用的是自顶向下的方式，即从目标假设出发，通过不断用规则库中规则的后件与已知事实匹配，选择出匹配的规则前件，进而回溯已知事实。</li>
+<li>双向推理则是综合利用正向推理和反向推理，使推理从自顶向下和自底向上两个方向进行，直到在某个中间点汇合，这种方式具有更高的效率。</li>
+</ol>
+<h2 id="人类智能和人工智能"><a href="#人类智能和人工智能" class="headerlink" title="人类智能和人工智能"></a>人类智能和人工智能</h2><p>​		上述自动推理貌似是一个很好的模型，可以帮助计算机认知学习，但是这其中有个非常大的问题，那就是在于常识的输入</p>
+<p>​		对于人类而言，常识的建立是通过社会化的成长过程实现的。可计算机没办法像人类一样在成长中达成理解，</p>
+<p>​		因而常识这一智能的先决条件只能以形式化的方式被灌输到硬盘与内存之中。这要求将一般成年人的知识和信念进行显式的表达，并加以灵活的组织和运用。</p>
+<p>​		可几乎尽人皆知的是，对常识性知识的表达和组织存在着难以想象的困难。从“张三捡起足球”和“张三在运动场上”这两个命题推断出“足球在运动场上”对人工智能来说就已经不可想象，</p>
+<p>​		更不用说道德观世界观这些复杂概念。没有对常识和信念的清晰表达，人工智能就必然陷入混乱的泥沼而无法自拔，获得通用性和适应性较强的智能行为也只能是痴人说梦。</p>
+<p>​		<strong>总的而言就是常识无法全部输入而且有的常识很难以逻辑符号的形式输入</strong></p>
+<h2 id="哥德尔不完备性定理"><a href="#哥德尔不完备性定理" class="headerlink" title="哥德尔不完备性定理"></a>哥德尔不完备性定理</h2><p>​		1900 年，德国数学家大卫·希尔伯特在巴黎国际数学家代表大会上提出了 20 世纪 23 个最重要的数学问题，其中的第二问题便是算术公理系统的无矛盾性。</p>
+<p>​		1931 年，奥地利数学家库尔特·哥德尔对这个问题给出了否定的答案，即第一不完备性定理：</p>
+<p>​		在任何包含初等数论的形式系统中，都必定存在一个不可判定命题。</p>
+<p>​		通过这个定理，哥德尔证明了公理化系统的阿喀琉斯之踵在于对自指的无能为力，下面的语句就是个典型的自指语句：</p>
+<p>​		本数学命题不可以被证明。</p>
+<p>​		不完备性定理对人工智能的影响在于对“认知的本质是计算”这一理论基础的理解。从“认知即计算”的角度出发，基于计算机的人工智能如果想要达到近似人类的思维能力，也必须建立起“自我”的概念，这就无疑会导致自指的出现，也将成为不完备性定理的活靶子。</p>
+<p>​		在哥德尔不完备性定理的阴影下，基于图灵可计算概念的“认知可计算主义”研究纲领已经显示出其极大的局限。今天，依靠人工神经网络逐渐崛起的连接主义学派大放异彩，与此同时，以形式逻辑为依据的符号主义学派则已经走向没落。</p>
+
+    
+
+    
+
+    
+
+  </div>
+  <div class="article-info article-info-index">
+    
+    
+	<div class="article-tag tagcloud">
+		<i class="icon-price-tags icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">人工智能</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
+    
+
+    
+    <p class="article-more-link">
+      <a class="article-more-a" href="/2023/03/09/%E4%BA%BA%E5%B7%A5%E6%99%BA%E8%83%BD%E5%9F%BA%E7%A1%801/">展开全文 >></a>
+    </p>
+    
+
+    
+    <div class="clearfix"></div>
+  </div>
+  </div>
+</article>
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
+        </div>
+        
+        
+    </div>
+</aside>
+
+
+
+
+  
+    <article id="post-算法设计与分析2" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+  
+  
+    <h1 itemprop="name">
+	
+	  <a class="article-title" href="/2023/03/07/%E7%AE%97%E6%B3%95%E8%AE%BE%E8%AE%A1%E4%B8%8E%E5%88%86%E6%9E%902/" target="_blank">算法设计与分析2</a>
+  
+    </h1>
+  
+
+
+  
+  
+<a href="/2023/03/07/%E7%AE%97%E6%B3%95%E8%AE%BE%E8%AE%A1%E4%B8%8E%E5%88%86%E6%9E%902/" class="archive-article-date">
+        <time datetime="2023-03-07T11:01:07.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2023-03-07</time>
+</a>
+
+  
+  
+    
+
+  
+  </header>
+  
+  <div class="article-entry" itemprop="articleBody">
+    
+    <h1 id="时间复杂度的性质"><a href="#时间复杂度的性质" class="headerlink" title="时间复杂度的性质"></a>时间复杂度的性质</h1><h2 id="交换性"><a href="#交换性" class="headerlink" title="交换性"></a>交换性</h2><h2 id="可加性"><a href="#可加性" class="headerlink" title="可加性"></a>可加性</h2><h2 id="增长速度的排名（高数极限知识）"><a href="#增长速度的排名（高数极限知识）" class="headerlink" title="增长速度的排名（高数极限知识）"></a>增长速度的排名（高数极限知识）</h2><h1 id="具体例子"><a href="#具体例子" class="headerlink" title="具体例子"></a>具体例子</h1><h2 id="O-n"><a href="#O-n" class="headerlink" title="O(n)"></a>O(n)</h2><h3 id="Max函数"><a href="#Max函数" class="headerlink" title="Max函数"></a>Max函数</h3><h3 id="Merge函数（Merge-sort）"><a href="#Merge函数（Merge-sort）" class="headerlink" title="Merge函数（Merge sort）"></a>Merge函数（Merge sort）</h3><h2 id="O-nlogn"><a href="#O-nlogn" class="headerlink" title="O(nlogn)"></a>O(nlogn)</h2><h3 id="Sort"><a href="#Sort" class="headerlink" title="Sort"></a>Sort</h3><h2 id="O-n-2"><a href="#O-n-2" class="headerlink" title="O(n^2)"></a>O(n^2)</h2><h3 id="暴力两层循环求一组点中距离最小的一对"><a href="#暴力两层循环求一组点中距离最小的一对" class="headerlink" title="暴力两层循环求一组点中距离最小的一对"></a>暴力两层循环求一组点中距离最小的一对</h3><h2 id="指数级"><a href="#指数级" class="headerlink" title="指数级"></a>指数级</h2><h3 id="找一张图中的最多独立点（没有一条边连接）的集合"><a href="#找一张图中的最多独立点（没有一条边连接）的集合" class="headerlink" title="找一张图中的最多独立点（没有一条边连接）的集合"></a>找一张图中的最多独立点（没有一条边连接）的集合</h3>
+    
+
+    
+
+    
+
+  </div>
+  <div class="article-info article-info-index">
+    
+    
+	<div class="article-tag tagcloud">
+		<i class="icon-price-tags icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">算法设计与分析</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
+    
+
+    
+    <p class="article-more-link">
+      <a class="article-more-a" href="/2023/03/07/%E7%AE%97%E6%B3%95%E8%AE%BE%E8%AE%A1%E4%B8%8E%E5%88%86%E6%9E%902/">展开全文 >></a>
+    </p>
+    
+
+    
+    <div class="clearfix"></div>
+  </div>
+  </div>
+</article>
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
+        </div>
+        
+        
+    </div>
+</aside>
+
+
+
+
+  
+    <article id="post-数据库原理2" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+  
+  
+    <h1 itemprop="name">
+	
+	  <a class="article-title" href="/2023/03/07/%E6%95%B0%E6%8D%AE%E5%BA%93%E5%8E%9F%E7%90%862/" target="_blank">数据库原理2</a>
+  
+    </h1>
+  
+
+
+  
+  
+<a href="/2023/03/07/%E6%95%B0%E6%8D%AE%E5%BA%93%E5%8E%9F%E7%90%862/" class="archive-article-date">
+        <time datetime="2023-03-07T06:33:20.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2023-03-07</time>
+</a>
+
+  
+  
+    
+
+  
+  </header>
+  
+  <div class="article-entry" itemprop="articleBody">
+    
+    <h1 id="Lec"><a href="#Lec" class="headerlink" title="Lec"></a>Lec</h1><h2 id="NULL"><a href="#NULL" class="headerlink" title="NULL"></a>NULL</h2><p>​		我们判断一个数值是不是NULL，不能用 &#x3D; NULL，要用</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">xxx is null</span><br></pre></td></tr></table></figure>
+
+
+
+<h2 id="Function"><a href="#Function" class="headerlink" title="Function"></a>Function</h2><h2 id="Case"><a href="#Case" class="headerlink" title="Case"></a>Case</h2><p>​		用法</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">case when xxx then else xxx</span><br></pre></td></tr></table></figure>
+
+
+
+<h3 id="三值逻辑"><a href="#三值逻辑" class="headerlink" title="三值逻辑"></a>三值逻辑</h3><p>​		我们一般的逻辑只有true和false，这里的三值逻辑加上了null，我们可以把这里的null当作not known，一般的true和false和null结合之后一般也会是not known。这个每个数据库可能不尽相同需要查阅资料。</p>
+<h2 id="Distinct"><a href="#Distinct" class="headerlink" title="Distinct"></a>Distinct</h2><p>​		这个关键字是用来去除重复数据的</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">select</span> <span class="keyword">distinct</span> xxx</span><br></pre></td></tr></table></figure>
+
+
+
+<h2 id="Aggregate-Functions"><a href="#Aggregate-Functions" class="headerlink" title="Aggregate Functions"></a>Aggregate Functions</h2><p>​			聚合函数，一般是与分类合用。分类之后算一些我想要的值。</p>
+<p>如sum(),count().</p>
+<p><strong>null value 会被忽略</strong></p>
+
+    
+
+    
+
+    
+
+  </div>
+  <div class="article-info article-info-index">
+    
+    
+	<div class="article-tag tagcloud">
+		<i class="icon-price-tags icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color4">数据库</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
+    
+
+    
+    <p class="article-more-link">
+      <a class="article-more-a" href="/2023/03/07/%E6%95%B0%E6%8D%AE%E5%BA%93%E5%8E%9F%E7%90%862/">展开全文 >></a>
+    </p>
+    
+
+    
+    <div class="clearfix"></div>
+  </div>
+  </div>
+</article>
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
+        </div>
+        
+        
+    </div>
+</aside>
+
+
+
+
+  
+    <article id="post-计算机组成原理4" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+  
+  
+    <h1 itemprop="name">
+	
+	  <a class="article-title" href="/2023/03/06/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BB%84%E6%88%90%E5%8E%9F%E7%90%864/" target="_blank">计算机组成原理4</a>
+  
+    </h1>
+  
+
+
+  
+  
+<a href="/2023/03/06/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BB%84%E6%88%90%E5%8E%9F%E7%90%864/" class="archive-article-date">
+        <time datetime="2023-03-06T05:57:51.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2023-03-06</time>
+</a>
+
+  
+  
+    
+
+  
+  </header>
+  
+  <div class="article-entry" itemprop="articleBody">
+    
+    <h1 id="复习"><a href="#复习" class="headerlink" title="复习"></a>复习</h1><h2 id="Three-Principle"><a href="#Three-Principle" class="headerlink" title="Three Principle"></a>Three Principle</h2><h3 id="1-Simplicity-favors-regularity"><a href="#1-Simplicity-favors-regularity" class="headerlink" title="1.Simplicity favors regularity"></a><strong>1.Simplicity favors regularity</strong></h3><pre><code>     RISC指令的长度都是规则的，长度大小一样，有两个好处
+</code></pre>
+<ol>
+<li>规则的长度让底层实现更加简单</li>
+<li>简单的实现让消耗更少</li>
+</ol>
+<h3 id="2-Smaller-is-faster"><a href="#2-Smaller-is-faster" class="headerlink" title="2.Smaller is faster"></a>2.<strong>Smaller is faster</strong></h3><p>​		这里的小指的是register的数量比较好，少量的register可以让访问速度更快，<strong>相较于内存来说</strong></p>
+<h3 id="3-Make-the-common-case-faster"><a href="#3-Make-the-common-case-faster" class="headerlink" title="3.Make the common case faster"></a>3.<strong>Make the common case faster</strong></h3><p>​		让一些更常用的操作更快速（例如对一些立即数的操作），不用将立即数load进寄存器中，可直接计算。</p>
+<h2 id="寄存器每过18个月翻一番？"><a href="#寄存器每过18个月翻一番？" class="headerlink" title="寄存器每过18个月翻一番？"></a>寄存器每过18个月翻一番？</h2><p>​		<strong>错误的！！！</strong>寄存器的数量几乎不发生变化了，摩尔定律翻倍指的是<strong>晶体管数量</strong>的翻倍。</p>
+<h1 id="更多的控制语句"><a href="#更多的控制语句" class="headerlink" title="更多的控制语句"></a>更多的控制语句</h1><h2 id="slt-x2F-slti-set-less-than"><a href="#slt-x2F-slti-set-less-than" class="headerlink" title="slt&#x2F;slti(set less than)"></a>slt&#x2F;slti(set less than)</h2><figure class="highlight mips"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">slt </span>$<span class="built_in">s1</span>, $<span class="built_in">s2</span>, $<span class="built_in">s3</span> <span class="comment">##如果s2 &lt; s3则给s1赋值1否则赋值0</span></span><br></pre></td></tr></table></figure>
+
+
+
+<h4 id="为什么不直接设计一个blt（be-less-than）"><a href="#为什么不直接设计一个blt（be-less-than）" class="headerlink" title="为什么不直接设计一个blt（be less than）"></a>为什么不直接设计一个blt（be less than）</h4><figure class="highlight mips"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">blt </span>$<span class="built_in">s1</span>, $<span class="built_in">s2</span>, label <span class="comment">#如果s1 &lt; s2 则跳转到label</span></span><br></pre></td></tr></table></figure>
+
+<pre><code>      blt是一个（pseudo instructions 伪指令）。他是由下面几条指令组合而成的。
+</code></pre>
+<figure class="highlight mips"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">slt </span>$<span class="built_in">s1</span>, $<span class="built_in">s2</span>, $<span class="built_in">s3</span>  </span><br><span class="line"><span class="keyword">bne </span>$<span class="built_in">s1</span>, $<span class="built_in">zero</span>, label </span><br></pre></td></tr></table></figure>
+
+<p>​		为什么不将blt设置成一个基础指令而是一个伪指令呢？按照我们的<strong>Make the common case faster</strong>原则，blt很常用，我们应该将其变成一个基础指令。加快他的运行速度。但是我们没有。</p>
+<p>​		这主要是由于<strong>效率</strong>方面的考虑，时钟周期应该是取决于需要最长时钟周期的那个指令，如果我们将blt变成一个基础指令意味着我们需要加长时钟周期，时钟周期加长意味着运行速度的降低。</p>
+<h4 id="伪指令-bgt-be-grate-than-ble-be-less-equal-beqz-be-equal-zero-li-move"><a href="#伪指令-bgt-be-grate-than-ble-be-less-equal-beqz-be-equal-zero-li-move" class="headerlink" title="伪指令 bgt(be grate than),ble(be less equal),beqz(be equal zero),li,move"></a>伪指令 bgt(be grate than),ble(be less equal),beqz(be equal zero),li,move</h4><p>​		所谓伪指令就是为了方便我们平时写代码，mips自带的一些不是基础指令的指令，伪指令是由基础指令构成的，可以讲伪指令当成一个<strong>简单的函数</strong>来看。</p>
+<p>​		bgt，beqz，这些具体的实现可以参考上面的blt伪指令的实现，不是很难，笔者不赘述了。</p>
+<h2 id="两个概念"><a href="#两个概念" class="headerlink" title="两个概念"></a>两个概念</h2><h3 id="caller"><a href="#caller" class="headerlink" title="caller"></a>caller</h3><p>​		主方法体，调用函数的地方。</p>
+<h3 id="callee"><a href="#callee" class="headerlink" title="callee"></a>callee</h3><p>​		函数体本身。</p>
+<h2 id="优点"><a href="#优点" class="headerlink" title="优点"></a>优点</h2><p>​		这里的函数优点和高级编程语言的函数差不多，都提高了代码的复用率，防止代码冗余。</p>
+<h2 id="函数调用过程"><a href="#函数调用过程" class="headerlink" title="函数调用过程"></a>函数调用过程</h2><h3 id="jal"><a href="#jal" class="headerlink" title="jal"></a>jal</h3><p>​		在caller中调用。</p>
+<p>​		jal用于调用函数，并且将调入函数的下一行指令的地址存入<code>$ra</code>寄存器中用于return。</p>
+<h3 id="jr"><a href="#jr" class="headerlink" title="jr"></a>jr</h3><p>​		在callee中最后调用jr，用与从函数体跳回主方法体，用法是固定的。寄存器<code>$ra</code>存储的要跳回的指令的位置。</p>
+<p><code>jr $ra</code></p>
+<p>​		</p>
+<h2 id="An-example-leaf-procedure"><a href="#An-example-leaf-procedure" class="headerlink" title="An example (leaf procedure)"></a>An example (leaf procedure)</h2><p><img src="/2023/03/06/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BB%84%E6%88%90%E5%8E%9F%E7%90%864/p2.png"></p>
+<h3 id="stack"><a href="#stack" class="headerlink" title="stack"></a>stack</h3><p>​		要解释上述的代码，我们先得讲一下栈空间的概念，你可以把栈空间当初内存里面的一块空间，用于存储变量。</p>
+<p>​		我们又一个寄存器<code>$sp</code>用于存储当前栈空间已经存储到哪里了，可以把他看成一个指针。</p>
+<p>​		注意一点，栈空间的数据存储是<strong>从上往下</strong>的上面是大地址下面是小地址。因此我们如果要把数据存入栈空间，先要将<code>$sp</code>寄存器地址下调4 * n个大小，n是我们的变量（也就是寄存器），因为我们一个寄存器是32位占4个字那么大，所以要开4 * n的空间，然后依次将数据<strong>sw</strong>进入栈空间中。如果要释放内存，先把数据通过<strong>lw</strong>传回寄存器中，然后将<code>$sp</code>的地址重新上调回去，将内存释放。</p>
+<p>​		我们使用函数为什么要先把我们传入的参数和一些中间变量先存起来呢？</p>
+<p>​		因为我们要保证在函数调用前后，什么都没发生，所有变量的值都不发生变化，只要将我们需要的答案存在一个寄存器当中即可<strong>（这个寄存器应该专门用来存放返回值，一般来说是<code>$v0</code>）</strong></p>
+<p><img src="/2023/03/06/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BB%84%E6%88%90%E5%8E%9F%E7%90%864/p3.png"></p>
+<h2 id="Another-example-non-leaf-procedure"><a href="#Another-example-non-leaf-procedure" class="headerlink" title="Another example(non - leaf procedure)"></a>Another example(non - leaf procedure)</h2><p><img src="/2023/03/06/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BB%84%E6%88%90%E5%8E%9F%E7%90%864/p1.png"></p>
+<p>​		这个例子比较复杂，是一个递归函数，自己调用自己，用来计算阶乘。我们以传入的参数<code>$a0</code>等于2为例子讲一下函数的运行过程。</p>
+<p><img src="/2023/03/06/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BB%84%E6%88%90%E5%8E%9F%E7%90%864/p4.png"></p>
+<p>​	一开始a0等于2，我们这里将ra和a0的值都存入栈空间中，这里存ra我觉得应该是递归函数的一个特征。</p>
+<p>​		然后判断a0和0是否相等，不相等则跳入L1，这里的跳入L1对应的是我们的<code>else return n * fact(n - 1)</code>,把 a0 - 1之后重新跳回fact。<strong>注意这里ra变成了L2</strong>，我们重新跳回fact，这里a0等于1，我们再次将ra和a0的值存入栈空间，发现a0还是不等于0，继续跳入L1，然后a0此时等于0，ra又变成了L2。</p>
+<p><img src="/2023/03/06/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BB%84%E6%88%90%E5%8E%9F%E7%90%864/p8.png"></p>
+<p>​		我们再次将ra和a0的值存入栈空间，此时a0等于0，发现不用跳入L1了，我们这里v0等于1，然后跳回<code>$ra</code>,这时<code>$ra</code>的值为L2，跳回L2,先将<code>$a0</code>和<code>$ra</code>重新载入，这时<code>a0</code>等于1<code>ra</code>等于L2然后释放空间，然后v0等于v0 * 1，然后跳回去L2，再次载入<code>a0</code>等于2，然后<code>ra</code>此时是L0(函数最初调用的位置)，一样的v0等于v0乘a0, 2 * 1 &#x3D; 2,跳回函数最初调用的地方，结束。</p>
+<p><img src="/2023/03/06/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BB%84%E6%88%90%E5%8E%9F%E7%90%864/p10.png"></p>
+<h2 id="Memory-Layout"><a href="#Memory-Layout" class="headerlink" title="Memory Layout"></a>Memory Layout</h2><p>​		这里说的是内存中的各个空间分别是用来放什么的。</p>
+<p><img src="/2023/03/06/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BB%84%E6%88%90%E5%8E%9F%E7%90%864/p14.png"></p>
+<p>reserved : 系统内部文件</p>
+<p>text：存入运行指令</p>
+<p>static data：存放全局变量</p>
+<p>dynamic data heap： 存java中new的类对象</p>
+<p>stack： 自动存储,比如方法体中的中间变量</p>
+
+    
+
+    
+
+    
+
+  </div>
+  <div class="article-info article-info-index">
+    
+    
+	<div class="article-tag tagcloud">
+		<i class="icon-price-tags icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">计算机组成原理</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
+    
+
+    
+    <p class="article-more-link">
+      <a class="article-more-a" href="/2023/03/06/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BB%84%E6%88%90%E5%8E%9F%E7%90%864/">展开全文 >></a>
+    </p>
+    
+
+    
+    <div class="clearfix"></div>
+  </div>
+  </div>
+</article>
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
+        </div>
+        
+        
+    </div>
+</aside>
+
+
+
+
+  
+    <article id="post-离散数学2" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+  
+  
+    <h1 itemprop="name">
+	
+	  <a class="article-title" href="/2023/03/06/%E7%A6%BB%E6%95%A3%E6%95%B0%E5%AD%A62/" target="_blank">离散数学2</a>
+  
+    </h1>
+  
+
+
+  
+  
+<a href="/2023/03/06/%E7%A6%BB%E6%95%A3%E6%95%B0%E5%AD%A62/" class="archive-article-date">
+        <time datetime="2023-03-06T02:23:20.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2023-03-06</time>
+</a>
+
+  
+  
+    
+
+  
+  </header>
+  
+  <div class="article-entry" itemprop="articleBody">
+    
+    <h1 id="Function"><a href="#Function" class="headerlink" title="Function"></a>Function</h1><p>​		<strong>1个x只能对应1个y，1个y可以对应多个x</strong></p>
+<h2 id="one-to-one-function-（Injective）"><a href="#one-to-one-function-（Injective）" class="headerlink" title="one to one function （Injective）"></a>one to one function （Injective）</h2><p>​		if and only if f(x) &#x3D; f(y) implies x &#x3D; y. 一一对应</p>
+<p>​		proof：f(x)  &#x3D; f(x’) x &#x3D; x’</p>
+<h2 id="onto-Surjective-function"><a href="#onto-Surjective-function" class="headerlink" title="onto(Surjective) function"></a>onto(Surjective) function</h2><p>​		if and only if for every y there is element x that f(x) &#x3D; y;  每个y都有至少一个x对应</p>
+<p>​	</p>
+<h2 id="one-to-one-correspondence-（Bijective-function）"><a href="#one-to-one-correspondence-（Bijective-function）" class="headerlink" title="one to one correspondence （Bijective function）"></a>one to one correspondence （Bijective function）</h2><p>​		是one to one 和 onto function。</p>
+<p>​		换言之既是一对一，而且每个y都有x对应。</p>
+<p>​		</p>
+<h2 id="Two-functions"><a href="#Two-functions" class="headerlink" title="Two functions"></a>Two functions</h2><p>​	 如果两个方程 都是从集合A映射到集合B，那么 f(x) * g(x) &#x3D; f*g(x)</p>
+<p>​	f(x) + g(x) &#x3D; (f + g)(x)</p>
+<h2 id="Inverse-function"><a href="#Inverse-function" class="headerlink" title="Inverse function"></a>Inverse function</h2><p>​	f(x)必须是<strong>bijective function</strong>才有<strong>Inverse function</strong>（Invertible）</p>
+<h2 id="Composition-of-Functions-复合函数"><a href="#Composition-of-Functions-复合函数" class="headerlink" title="Composition of Functions(复合函数)"></a>Composition of Functions(复合函数)</h2><p>​		复合函数的表示： f ○ g  f(g(x))</p>
+<h3 id="一个小例子"><a href="#一个小例子" class="headerlink" title="一个小例子"></a>一个小例子</h3><p>​		f(x) 是从集合A到B的一个函数<strong>（bijective function）</strong></p>
+<p>​		f逆（f）和f（f逆）都是f(x) &#x3D; x;  但是定义域不同前者的定义域是A后者的定义域是B。</p>
+<h2 id="Floor-and-Ceiling-Functions（向上取整和向下取整）"><a href="#Floor-and-Ceiling-Functions（向上取整和向下取整）" class="headerlink" title="Floor and Ceiling Functions（向上取整和向下取整）"></a>Floor and Ceiling Functions（向上取整和向下取整）</h2><p>​		在证明的时候可以将向上取整和向下取整变成一个整数加一个小数的形式。</p>
+<h1 id="Cardinality-of-Sets"><a href="#Cardinality-of-Sets" class="headerlink" title="Cardinality of Sets"></a>Cardinality of Sets</h1><p>​		集合的模，我们之前谈到集合的模，似乎只能通过直接数来判读两个集合的模。</p>
+<p>​		实际上我门可以通过函数来确定模的相对关系：</p>
+<p>​		1.如果A → B又一个bijective function那么A ，B模长相同</p>
+<p>​		2.如果A → B有一个one to one function 那么A的模长小于等于B</p>
+<h2 id="Countable"><a href="#Countable" class="headerlink" title="Countable"></a>Countable</h2><p>​		一个集合是可数集<strong>（注意不一定是有限集，可以数无限个数）</strong>：<strong>证明其和正整数集有相同的cardinality</strong></p>
+<h3 id="uncountable的例子"><a href="#uncountable的例子" class="headerlink" title="uncountable的例子"></a>uncountable的例子</h3><h4 id="0到1之间的所有实数是不可数的。"><a href="#0到1之间的所有实数是不可数的。" class="headerlink" title="0到1之间的所有实数是不可数的。"></a>0到1之间的所有实数是不可数的。</h4><p>proof：</p>
+<p>​		假设0到1之间的所有实数可数，那么我们可以把所有实数给列出来，现在我们要构造一个新数，取第一个数字的第一位小数a，我们选一个不等于a的数b作为新数的第一位小数，第二个数字的第二位小数c，取一个不等于c的数字d作为新数字的第二位小数，依次类推，我们构造了一个新数。</p>
+<p>​		<strong>这个新数字不是我们列出来的数字中的任何一个</strong>，首先他第一位和第一个数字不同所以肯定不是第一个数字，第二位和第二个数字不同肯定不是第二个数字，依次类推，不是任何一个数字，所以他根本不可能在我们的数列中所以原假设不成立。实数不可数。</p>
+<h4 id="P-N-（自然数的所有子集）"><a href="#P-N-（自然数的所有子集）" class="headerlink" title="P(N)（自然数的所有子集）"></a>P(N)（自然数的所有子集）</h4><p>​		跟上一题的证明几乎一样，我们只要用一个无穷长的二进制数字来表示一个子集，比如说10100000…….,第一位是1表示我们这个子集中有1，第二位是0表示我们这个子集不含2，第三位是1表示我们这个子集含3。</p>
+<p>​		我们先假设自然数所有子集可数，所以这所有的二进制数字是可列的，我们可以用上面同样的方法构造一个新的二进制数字不存在我们列的数字当中。	</p>
+<h3 id="所有的Java程序"><a href="#所有的Java程序" class="headerlink" title="所有的Java程序"></a>所有的Java程序</h3><p>​		首先可以根据字典序将所有的字符串列出来，字符串是可列的，然后选取其中可以是java程序的即可，<strong>一个可列集的子集也是可列的</strong></p>
+<h4 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h4><p>​		上面为什么有的可数有的不可数（本身都是无限个），最关键的原因在于个体的长度是否是无限的，前两者个体长度都是无穷的，后者单个字符串是有限的。<strong>无穷的无穷是不可数的，无穷之间亦有差距</strong></p>
+<h1 id="Algorithm"><a href="#Algorithm" class="headerlink" title="Algorithm"></a>Algorithm</h1><h2 id="The-growth-of-function"><a href="#The-growth-of-function" class="headerlink" title="The growth of function"></a>The growth of function</h2><p>​		考虑n<strong>足够大</strong>时的时间消耗情况。</p>
+<h3 id="Big-O-O"><a href="#Big-O-O" class="headerlink" title="Big-O (O())"></a>Big-O (O())</h3><h4 id="An-example"><a href="#An-example" class="headerlink" title="An example"></a>An example</h4><p><strong>show that f(x) &#x3D; x^2 + 2x + 1 is O(x^2)</strong></p>
+<p><em>The key is to find C and k;</em></p>
+<p> We can set C &#x3D; 4 and k &#x3D; 1, when C </p>
+<p>&#x3D; 4, when x &gt; 1， 4x^2 &#x3D; x^2 + 2 x^2 + x^2  &gt; x^2 + 2x + 1，</p>
+<p>|f(x)| &lt;&#x3D; C|x^2|, hence f(x) is O(x^2).</p>
+<h4 id="some-examples"><a href="#some-examples" class="headerlink" title="some examples"></a>some examples</h4><p>1+2+3+…….+n &#x3D; O(n^2)</p>
+<p>n! &#x3D; O(n^n)</p>
+<p>logn! &#x3D; O(nlogn)</p>
+<p>log(a)n &#x3D; O(log(b)n)</p>
+<p>n^a &#x3D; O(n^b)</p>
+<p>n^a &#x3D; O(2^n)</p>
+<hr>
+<p><strong>if f1(x) is O(g1(x)) , f2(x) is O(g2(x))</strong></p>
+<p>(f1 + f2)(x) &#x3D; O(max(g1(x), g2(x)))</p>
+<p><em>proof:</em></p>
+<p><img src="/2023/03/06/%E7%A6%BB%E6%95%A3%E6%95%B0%E5%AD%A62/p1.png"></p>
+<h3 id="Big-Omega-Ω"><a href="#Big-Omega-Ω" class="headerlink" title="Big-Omega  (Ω())"></a>Big-Omega  (Ω())</h3><h3 id="Big-Theta-Θ"><a href="#Big-Theta-Θ" class="headerlink" title="Big-Theta  (Θ())"></a>Big-Theta  (Θ())</h3><h2 id="Time-and-space-complexity"><a href="#Time-and-space-complexity" class="headerlink" title="Time and space complexity"></a>Time and space complexity</h2><h3 id="Time-complexity"><a href="#Time-complexity" class="headerlink" title="Time complexity"></a>Time complexity</h3><p>​		The number of <strong>machine operations</strong>(addition, multiplication , assign, compare)</p>
+<h4 id="Horner’s-method-秦九韶算法"><a href="#Horner’s-method-秦九韶算法" class="headerlink" title="Horner’s method(秦九韶算法)"></a>Horner’s method(秦九韶算法)</h4><p>​		将多项式的和计算时间复杂度降到了O(n)</p>
+<p>  <img src="/2023/03/06/%E7%A6%BB%E6%95%A3%E6%95%B0%E5%AD%A62/p2.png"></p>
+<h3 id="Space-complexity"><a href="#Space-complexity" class="headerlink" title="Space complexity"></a>Space complexity</h3><p>​		占用的内存大小</p>
+<h2 id="Prove-there-isn’t-exists-efficient-algorithm-N-P-problem"><a href="#Prove-there-isn’t-exists-efficient-algorithm-N-P-problem" class="headerlink" title="Prove there isn’t exists efficient algorithm (N(P) problem)!!!"></a>Prove there isn’t exists efficient algorithm (N(P) problem)!!!</h2><p> <strong>polynomial-time algorithm</strong> is an efficient algorithm</p>
+<h1 id="NP-Complete-problems"><a href="#NP-Complete-problems" class="headerlink" title="NP - Complete problems"></a>NP - Complete problems</h1><h2 id="Defination-of-P-and-NP"><a href="#Defination-of-P-and-NP" class="headerlink" title="Defination of P and NP"></a>Defination of P and NP</h2><p>​		P问题指的是可以找到一种算法可以在多项式时间内解决该问题，NP问题是可以在多项式时间内验证一个问题。</p>
+<p>​		前者很好解释比如说排序算法就是解决排序问题，NP问题比如说我们可以密码验证，我们很难找到一个算法正面破解一个密码系统，但是我们可以随便输入一个密码验证其是否正确。</p>
+<p>​				NP-HARD就是既不属于P也不属于NP,无法在多项式时间内解决的问题。</p>
+<h3 id="P问题的互通性"><a href="#P问题的互通性" class="headerlink" title="P问题的互通性"></a>P问题的互通性</h3><p>​		如果你能找到一个问题他的某个特例和某个P问题相同，那么这个问题一定是一个P问题，可以找到多项式时间的算法解决这个问题。</p>
+<h3 id="P-x3D-NP"><a href="#P-x3D-NP" class="headerlink" title="P &#x3D; NP?"></a>P &#x3D; NP?</h3><p>​		我们现在不知道所有问题的集合到底长啥样，有下面两种可能。</p>
+<p>  <img src="/2023/03/06/%E7%A6%BB%E6%95%A3%E6%95%B0%E5%AD%A62/p3.png"></p>
+<p>​		如果P &#x3D; NP,这个世界会发生翻天覆地的变化，意味着我们所有的密码系统都存在一种多项式时间的算法。哪怕我们没找到。还有很多别的问题。可以看一看一个小科普视频。<a target="_blank" rel="noopener" href="https://www.bilibili.com/video/BV1WW411H7nH/?spm_id_from=333.999.0.0">【薛饿】这个数学题我做可以，但世界毁灭了别怪我。_哔哩哔哩_bilibili</a></p>
+<h2 id="Input-size-of-problems"><a href="#Input-size-of-problems" class="headerlink" title="Input size of problems"></a>Input size of problems</h2><p>​		这里提供了一个新的看输入数据的看法，我们一样看如果输入数据是n个，他的输入规模就是n，但是这里的input size是从编码的效果看，每个字符都用一个二进制数字来表示，每一个数字的大小是<strong>log2n</strong>，如果我们从字符的角度输入数据的规模是O(n) &#x3D; O(2^log2n),如果从二进制编码的角度来看，就是乘指数级增长了。</p>
+<h2 id="Type-of-funcion"><a href="#Type-of-funcion" class="headerlink" title="Type of funcion"></a>Type of funcion</h2><p>​		定义：</p>
+<p><img src="/2023/03/06/%E7%A6%BB%E6%95%A3%E6%95%B0%E5%AD%A62/p4.png"></p>
+<p>​		所以可以很轻易的看见所有的多项式时间的函数都是同类型的函数，是可以被包住的。</p>
+
+    
+
+    
+
+    
+
+  </div>
+  <div class="article-info article-info-index">
+    
+    
+	<div class="article-tag tagcloud">
+		<i class="icon-price-tags icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">离散数学</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
+    
+
+    
+    <p class="article-more-link">
+      <a class="article-more-a" href="/2023/03/06/%E7%A6%BB%E6%95%A3%E6%95%B0%E5%AD%A62/">展开全文 >></a>
+    </p>
+    
+
+    
+    <div class="clearfix"></div>
+  </div>
+  </div>
+</article>
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
+        </div>
+        
+        
+    </div>
+</aside>
+
+
+
+
+  
     <article id="post-计算机组成3" class="article article-type-post  article-index" itemscope itemprop="blogPost">
   <div class="article-inner">
     
@@ -207,7 +1378,7 @@
 <h1 id="翻译成机器码"><a href="#翻译成机器码" class="headerlink" title="翻译成机器码"></a>翻译成机器码</h1><p>​		这个在lab课的那节其实讲过了，这里就不细说了，这里提一下shamt，移位码，应该是sll等移位命令的数值大小。</p>
 <h1 id="跳跃"><a href="#跳跃" class="headerlink" title="跳跃"></a>跳跃</h1><p>​		这节课讲了一个比较重要的就是跳跃，正常的汇编语言是一句一句依次执行的，跳跃语句可以直接从一句跳转到另外一句。</p>
 <p>​		可以用来实现<strong>if else</strong>语句，<strong>循环语句</strong>。下面将具体使用</p>
-<figure class="highlight mips"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">不加条件的跳转</span><br><span class="line"><span class="keyword">j </span>L1 <span class="comment">#这里的L1是一个标签</span></span><br><span class="line"><span class="keyword">jr </span>$<span class="built_in">s0</span> <span class="comment"># ？</span></span><br><span class="line">加条件的跳转</span><br><span class="line"><span class="keyword">beg </span>$<span class="built_in">s0</span> $<span class="built_in">s1</span> L1 <span class="comment">#be equal,如果s0和s1内部的值相等则跳转到L1</span></span><br><span class="line"><span class="keyword">bne </span>$<span class="built_in">s0</span> $<span class="built_in">s1</span> L1 <span class="comment">#be not queal, 如果两个寄存器内部的值不跳转则跳转到L1</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight mips"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">不加条件的跳转</span><br><span class="line"><span class="keyword">j </span>L1 <span class="comment">#这里的L1是一个标签</span></span><br><span class="line"><span class="keyword">jr </span>$<span class="built_in">s0</span> <span class="comment"># ？</span></span><br><span class="line">加条件的跳转</span><br><span class="line"><span class="keyword">beq </span>$<span class="built_in">s0</span> $<span class="built_in">s1</span> L1 <span class="comment">#be equal,如果s0和s1内部的值相等则跳转到L1</span></span><br><span class="line"><span class="keyword">bne </span>$<span class="built_in">s0</span> $<span class="built_in">s1</span> L1 <span class="comment">#be not queal, 如果两个寄存器内部的值不跳转则跳转到L1</span></span><br></pre></td></tr></table></figure>
 
 <p>​		下面用mips实现一个while循环，这里提一个小点，我们一般知道的是一个数组的开头地址，然后一般一个数字占四个字节。</p>
 <p>​		例如数组A[0]的地址是$s0，A[i]的地址是i * 4 + s0.</p>
@@ -277,764 +1448,10 @@
 
 
   
-    <article id="post-离散数学1" class="article article-type-post  article-index" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
   
-  
-    <h1 itemprop="name">
-	
-	  <a class="article-title" href="/2023/02/27/%E7%A6%BB%E6%95%A3%E6%95%B0%E5%AD%A61/" target="_blank">离散数学1</a>
-  
-    </h1>
-  
-
-
-  
-  
-<a href="/2023/02/27/%E7%A6%BB%E6%95%A3%E6%95%B0%E5%AD%A61/" class="archive-article-date">
-        <time datetime="2023-02-27T13:56:31.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2023-02-27</time>
-</a>
-
-  
-  
-    
-
-  
-  </header>
-  
-  <div class="article-entry" itemprop="articleBody">
-    
-    <h1 id="开始"><a href="#开始" class="headerlink" title="开始"></a>开始</h1><p>​		事实上这已经是第三周了，才开始写离散数学的第一篇博客，心中有些惭愧。确实这几天有点偷懒了。下面简单叙述一下这几周上了什么内容吧。</p>
-<h1 id="大概"><a href="#大概" class="headerlink" title="大概"></a>大概</h1><p>​		其实大部分还是叙述一些概念性的东西，一些名词分别是什么意思，然后讲了一些证明的具体方法例如证明<strong>逆否命题</strong>，<strong>反证明法</strong>，</p>
-<p><strong>正面证明</strong>，很多证明都充满了奇技淫巧，感觉没啥意思，但是还是要记下来，唉唉。</p>
-<h2 id="proposition（命题）"><a href="#proposition（命题）" class="headerlink" title="proposition（命题）"></a>proposition（命题）</h2><p>​		老师花了大篇幅讲了<strong>proposition</strong>的概念，一句话说就是可以判断真伪的句子。例如地球是平的，太阳从东边升起，注意<strong>命题一定是陈述句，不能是问句，而且不能带未知数例如x&gt;3就不是个命题，因为这个句子的真假无法判断取决于x1的取值</strong>。</p>
-<h2 id="predicates-（谓词）Quantifiers-量词-Nested-Quantifiers-（嵌套量词）"><a href="#predicates-（谓词）Quantifiers-量词-Nested-Quantifiers-（嵌套量词）" class="headerlink" title="predicates （谓词）Quantifiers (量词) Nested Quantifiers （嵌套量词）"></a>predicates （谓词）Quantifiers (量词) Nested Quantifiers （嵌套量词）</h2><p>​		可以简单看成一个带有未知数的函数，例如<strong>P（x）：x&gt;3</strong>,P(x)就是一个谓词。</p>
-<p>​		找到一篇比较通俗的文章，可以借鉴看看，这里就不多说了，偷点小懒。</p>
-<p><a target="_blank" rel="noopener" href="https://blog.csdn.net/weixin_50502862/article/details/126504094">(27条消息) 【快乐离散数学】谓词与量词 | 嵌套量词 | 狄摩根定律 | Predicates and Quantifiers | Nested Quantifiers_柠檬叶子C的博客-CSDN博客</a></p>
-<h2 id="题目"><a href="#题目" class="headerlink" title="题目"></a>题目</h2><p>​		题目会手抄到本子上，就不在博客上写了，太麻烦。	</p>
-
-    
-
-    
-
-    
-
-  </div>
-  <div class="article-info article-info-index">
-    
-    
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">离散数学</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-    
-
-    
-    <p class="article-more-link">
-      <a class="article-more-a" href="/2023/02/27/%E7%A6%BB%E6%95%A3%E6%95%B0%E5%AD%A61/">展开全文 >></a>
-    </p>
-    
-
-    
-    <div class="clearfix"></div>
-  </div>
-  </div>
-</article>
-
-<aside class="wrap-side-operation">
-    <div class="mod-side-operation">
-        
-        <div class="jump-container" id="js-jump-container" style="display:none;">
-            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
-                <i class="icon-font icon-back"></i>
-            </a>
-            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
-                <i class="icon-font icon-plane jump-plane"></i>
-            </div>
-        </div>
-        
-        
-    </div>
-</aside>
-
-
-
-
-  
-    <article id="post-数据库1" class="article article-type-post  article-index" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-  
-  
-    <h1 itemprop="name">
-	
-	  <a class="article-title" href="/2023/02/27/%E6%95%B0%E6%8D%AE%E5%BA%931/" target="_blank">数据库1</a>
-  
-    </h1>
-  
-
-
-  
-  
-<a href="/2023/02/27/%E6%95%B0%E6%8D%AE%E5%BA%931/" class="archive-article-date">
-        <time datetime="2023-02-27T13:55:52.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2023-02-27</time>
-</a>
-
-  
-  
-    
-
-  
-  </header>
-  
-  <div class="article-entry" itemprop="articleBody">
-    
-    <h1 id="第一次"><a href="#第一次" class="headerlink" title="第一次"></a>第一次</h1><p>​		这是我第一次写关于数据库的内容，开始几周数据库并没有讲很多的内容，大部分时间都是在将一些基础概念，下面来简单介绍一下吧。</p>
-<h2 id="关键名词的全称"><a href="#关键名词的全称" class="headerlink" title="关键名词的全称"></a>关键名词的全称</h2><p>​		SQL : structure query language (结构化查询语言)</p>
-<p>​		DBMS：Database mangement system （数据库管理系统，我们用的postgresql和mysql实际本质上就是一种数据库管理系统，用来管理数据库）</p>
-<p>​		DDL: Database definition language （定义语句，主要用来建表，插入约束，定义数据类型）</p>
-<p>​		DML：Data Manipulation（操作） Language</p>
-<p> （具体操作语句，负责增删改的部分）</p>
-<p>​		DQL：Database query language  </p>
-<p> （查询语句，用来查询（带条件））</p>
-<p>​		DCL：Data Control Language  (控制语句，这个一般比较少用，用来创建用户，决定用户的权限)</p>
-<h2 id="外键"><a href="#外键" class="headerlink" title="外键"></a>外键</h2><p>​		一张表要和另外一张表链接起来就要靠外键，一张表的外键行对应的事别的表的一行，<strong>二者一定要一一对应</strong>，下面介绍几种常见的外键插入方式。</p>
-<p>​		一对一：直接插入外键（在谁那里插都一样）</p>
-<p>​		一对多: 在多的哪里插入外键，例如一个课程可以有很多学生选，应该在学生哪里插入一个course_id的外键对应到对应的课程</p>
-<p>​		多对多：重新建立一张表两行，建立二者的联系。</p>
-<h3 id="注意"><a href="#注意" class="headerlink" title="注意"></a>注意</h3><p>​		虽然外键很方便但是一般我们在实际工作中不用外键，因为如果是一个体积非常庞大的数据库使用外键，当其中一行发生修改时，整个数据库都要因为外键的原因一起修改，可能会造成数据库的崩溃，因为其<strong>高耦合</strong>，所以我门想要实现类似外键的作用都要在应用层实现（我的理解就是具体操作数据库的时候用查询组合等语句来实现，而不是在建立数据库的时候插入外键）。</p>
-<h2 id="数据类型"><a href="#数据类型" class="headerlink" title="数据类型"></a>数据类型</h2><p>​		常规的就不说了，平常都会用到，这里说一下<strong>data</strong>类型，用来储存时间的，data只储存年月日，datatime储存年月日时分秒，注意如果拿data和datatime进行比较，我们将date(‘2020-03-20’) 当成 datetime(‘2020-03-20 00:00:00’)。</p>
-
-    
-
-    
-
-    
-
-  </div>
-  <div class="article-info article-info-index">
-    
-    
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color4">数据库</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-    
-
-    
-    <p class="article-more-link">
-      <a class="article-more-a" href="/2023/02/27/%E6%95%B0%E6%8D%AE%E5%BA%931/">展开全文 >></a>
-    </p>
-    
-
-    
-    <div class="clearfix"></div>
-  </div>
-  </div>
-</article>
-
-<aside class="wrap-side-operation">
-    <div class="mod-side-operation">
-        
-        <div class="jump-container" id="js-jump-container" style="display:none;">
-            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
-                <i class="icon-font icon-back"></i>
-            </a>
-            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
-                <i class="icon-font icon-plane jump-plane"></i>
-            </div>
-        </div>
-        
-        
-    </div>
-</aside>
-
-
-
-
-  
-    <article id="post-计算机组成原理2（续）" class="article article-type-post  article-index" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-  
-  
-    <h1 itemprop="name">
-	
-	  <a class="article-title" href="/2023/02/23/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BB%84%E6%88%90%E5%8E%9F%E7%90%862%EF%BC%88%E7%BB%AD%EF%BC%89/" target="_blank">计算机组成原理2（lab）</a>
-  
-    </h1>
-  
-
-
-  
-  
-<a href="/2023/02/23/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BB%84%E6%88%90%E5%8E%9F%E7%90%862%EF%BC%88%E7%BB%AD%EF%BC%89/" class="archive-article-date">
-        <time datetime="2023-02-23T14:09:52.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2023-02-23</time>
-</a>
-
-  
-  
-    
-
-  
-  </header>
-  
-  <div class="article-entry" itemprop="articleBody">
-    
-    <h1 id="Lab"><a href="#Lab" class="headerlink" title="Lab"></a>Lab</h1><p>​		这次的lab课内容不是很多但是比较麻烦，我还没没想好该从哪开始说，先从<strong>MIPS</strong>中的存储规范和关键字开始讲起吧。</p>
-<h2 id="存储规范"><a href="#存储规范" class="headerlink" title="存储规范"></a>存储规范</h2><h3 id="字与字节"><a href="#字与字节" class="headerlink" title="字与字节"></a>字与字节</h3><p>​		字与字节都可以简单看成一串二进制数字，字节是构成字的<strong>基本单位</strong>，对于所有系统中字节的长度都是一定的<strong>（叫做一个byte）</strong>，为8个<strong>bit</strong>，即一个八位的二进制数字如<strong>10101010</strong>，对于字的长度则不一定，在不同的场合有不同的规范，在我们的<strong>MIPS</strong>中四个字节构成一个字，即一个字节就是一个32位的二进制数字，在<strong>MIPS</strong>中每一个寄存器的大小是一个字，<strong>一个字可以存储一个字符或者一个数字。</strong>我们以字为基本存储单位。</p>
-<h3 id="信息如何在MIPS中储存"><a href="#信息如何在MIPS中储存" class="headerlink" title="信息如何在MIPS中储存"></a>信息如何在MIPS中储存</h3><h4 id="数据域"><a href="#数据域" class="headerlink" title="数据域"></a>数据域</h4><p>​		<strong>MIPS</strong>中总共有两类信息，第一类信息是数据域中的信息，数据域中的信息是按照顺序存在<strong>内存</strong>里的下面请看一个例子。</p>
-<p>​		<img src="/2023/02/23/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BB%84%E6%88%90%E5%8E%9F%E7%90%862%EF%BC%88%E7%BB%AD%EF%BC%89/p1.png"></p>
-<p>​		这里是数据域，简单介绍一下，第一个<strong>s1</strong>存储的是一个字符串<strong>（.ascii）</strong>，第二个<strong>sid</strong>，用一个关键字<strong>（.space）</strong>表示预先给其一个9个<strong>字节</strong>那么大的空间但是先不存东西，后面一个<strong>e1</strong>存储的也是一个字符串，但是关键字是<strong>asciiz</strong>，它与<strong>ascii</strong>的不同是它会自动给字符串的结尾加上一个终止符<code>\0</code>，<strong>输出语句只有遇到<code>\0</code>才会终止</strong>，这句话很重要！！！。</p>
-<p>​		我们来看看在内存中长什么样子</p>
-<p><img src="/2023/02/23/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BB%84%E6%88%90%E5%8E%9F%E7%90%862%EF%BC%88%E7%BB%AD%EF%BC%89/p2.png"></p>
-<p>​		前面这个<strong>Address</strong>表示的地址其实是开头第一个字节的地址<strong>（每一个字节都有自己的一个独特的地址）</strong>，我们之前说了一个字节是一个8位二进制数，也就是一个2位的16进制数，所以这里的地址为0x10010000存储的数据是第一段最低的16进制数57，0x10010001存储的是65,0x10010002存储的事6c，然后是63,6f,6d,65,20，后面为什么都是0呢，因为这是我们<strong>sid</strong>提前占的9个字<strong>（18位的16进制数，）</strong>那么长，需要注意的是你其实只能输入8个字节的数据，最后一个字节会自动给你加上一个<code>\0</code>，终止符，在这18位之后继续存的是下一个字符串。</p>
-<h4 id="存储小规则"><a href="#存储小规则" class="headerlink" title="存储小规则"></a>存储小规则</h4><p>​		字节是一个8位的二进制数也就是一个两位的16进制数，使用什么规则转换的呢，用的是对应的<strong>ascall</strong>码表示的哦！！！上面的57,65,6c，63查表对应下来应该是W,e,l,c。</p>
-<pre><code>   我们来看下上面的对应信息是啥。
-</code></pre>
-<p><img src="/2023/02/23/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BB%84%E6%88%90%E5%8E%9F%E7%90%862%EF%BC%88%E7%BB%AD%EF%BC%89/p3.png"></p>
-<h4 id="操作域"><a href="#操作域" class="headerlink" title="操作域"></a>操作域</h4><p>​		上面说的是我们的数据域如何存储，那么操作域实际上也会被存储进入我们的内存当中，每一个操作语句都会被转成一个32位的二进制数字，具体规则如下。</p>
-<p><img src="/2023/02/23/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BB%84%E6%88%90%E5%8E%9F%E7%90%862%EF%BC%88%E7%BB%AD%EF%BC%89/p4.png"></p>
-<p>​		这里有两种指令格式，上面一个被称为<strong>I型</strong>指令下面是<strong>R型</strong>指令，其各部分的含义是。</p>
-<p><img src="/2023/02/23/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BB%84%E6%88%90%E5%8E%9F%E7%90%862%EF%BC%88%E7%BB%AD%EF%BC%89/p6.jpg"></p>
-<p><img src="/2023/02/23/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BB%84%E6%88%90%E5%8E%9F%E7%90%862%EF%BC%88%E7%BB%AD%EF%BC%89/p5.jpg"></p>
-<p>​		对于<strong>R型</strong>可以有三个寄存器，也可以有两个如果是两个则将<strong>rs</strong>赋值为5位的0，如果是一个寄存器将<strong>rt，rd</strong>分别赋值为5位的0，对于指令的翻译，需要对应查表才能知道如何翻译。</p>
-<p><img src="/2023/02/23/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BB%84%E6%88%90%E5%8E%9F%E7%90%862%EF%BC%88%E7%BB%AD%EF%BC%89/p7.png"></p>
-<p>​		上图好看出来，<strong>Address</strong>表示指令存储的地址，<strong>code</strong>表示翻译成的二进制数字。<strong>basic</strong>表示的意思应该是将原复杂指令<strong>（source）</strong>翻译成更简单的指令。</p>
-<h2 id="关键字"><a href="#关键字" class="headerlink" title="关键字"></a>关键字</h2><h3 id="小复习"><a href="#小复习" class="headerlink" title="小复习"></a>小复习</h3><h4 id="li："><a href="#li：" class="headerlink" title="li："></a>li：</h4><p>用的格式是 <code>li $t0,x</code>,x是一个立即数（就是一个数字），这句话的意思是直接将后面那个x直接赋值给前面那个寄存器t0。</p>
-<h4 id="la："><a href="#la：" class="headerlink" title="la："></a>la：</h4><p>用的格式是有两种第一种是<code>la $t0,x</code>这里的x是数据域中的某个变量，或者<code>la $t0,($t1)</code>,这里的意思是将后面那个<strong>变量</strong>或者<strong>寄存器</strong>的地址赋给前面的变量。</p>
-<h3 id="Load-and-Store"><a href="#Load-and-Store" class="headerlink" title="Load and Store"></a>Load and Store</h3><pre><code>     下面这些操作分为两类，第一类是Load表示将数据从内存搬到寄存器，第二类Store是将数据从寄存器存到内存，相信聪明的你以及发现一个问题了，我们**无法**将数据直接从**一个内存搬到另外一个内存**，只能通过中间的寄存器将内存中数据搬到寄存器，再将寄存器中数据搬到内存。
-</code></pre>
-<p>​		<strong>事实上我们也无法直接访问内存，只能通过寄存器存储内存地址，然后通过寄存器中的内存地址寻址找到那一块内存并对内存中的数据进行操作。</strong>下面开始介绍几个操作。</p>
-<h4 id="lw："><a href="#lw：" class="headerlink" title="lw："></a>lw：</h4><p>​		使用方法<code>lw $t0,($t1)</code>或者<code>lw $t0,x</code>,x表示数据域中的一个变量，表示将寄存器t1中的地址取出来，找到该地址对应的内存然后将该内存中的<strong>四个字节</strong>的数据即一个字存入寄存器当中，这里需要注意的是，这里面内存的地址必须是四的倍数，我们联系一下上文，我们这里的四个字节可以是<strong>Welc</strong>，但是不能是<strong>elco</strong>，前者是合法因为开头内存地址是0x10010000是4的倍数而后者的开头是0x10010001所以不合法是错误的。</p>
-<h4 id="lb"><a href="#lb" class="headerlink" title="lb:"></a>lb:</h4><p>​		这个关键字同<code>lw</code>十分相像，用法也是一样，只不过这里搬移的数据从一个字变成了一个字节。</p>
-<h4 id="sw"><a href="#sw" class="headerlink" title="sw:"></a>sw:</h4><p>​		以<strong>s</strong>开头就代表了<strong>store</strong>，即将数据（一个字）从寄存器存储到内存中，具体用法是<code>sw $t2,($t0)</code>,这里我们是将寄存器t2中的数据搬到内存中，这个内存在哪呢，内存的地址存储在$t0当中。</p>
-<h4 id="sb："><a href="#sb：" class="headerlink" title="sb："></a>sb：</h4><p>​		同lw和lb的关系，只搬移一个字节进入内存当中。</p>
-<h4 id="小小的延伸用法"><a href="#小小的延伸用法" class="headerlink" title="小小的延伸用法"></a>小小的延伸用法</h4><p>​		 可以在这四个关键字当中表示地址的寄存器前加数字，（可正可负），表示我要取的地址或者要存的地址实际上是在我寄存器所在地址的前面或者后面，如果是正数就是加也就是在后面，反之就是在前面。具体的例子是<code>lw $t2, 4($t0)</code>,<code>sw $t2,-12($t0)</code> 。</p>
-<h2 id="实战"><a href="#实战" class="headerlink" title="实战"></a>实战</h2><p>​		下面是一个小小的例子</p>
-<p><img src="/2023/02/23/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BB%84%E6%88%90%E5%8E%9F%E7%90%862%EF%BC%88%E7%BB%AD%EF%BC%89/p8.png"></p>
-<p>​			前面先读入一段<strong>String</strong>，读入<strong>String</strong>存入的是寄存器a0所指代的内存地址，长度是寄存器a1中的值，但是你要注意哦，我们实际输入的长度只能是a1中的值减一，这是为什么呢，因为他会自动在我们的字符串后面加上一个<code>\0</code>也就是终止符，这个终止符要占一个位置。</p>
-<h3 id="小问题"><a href="#小问题" class="headerlink" title="小问题"></a>小问题</h3><p>​		让我们想想，我们如果在这里输入的是11111111，输出会是什么，答案是会是<strong>Welcome 11111111</strong>，为什么呢，我们不妨来看看内存里现在有什么.</p>
-<p>​		<img src="/2023/02/23/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BB%84%E6%88%90%E5%8E%9F%E7%90%862%EF%BC%88%E7%BB%AD%EF%BC%89/p9.png"></p>
-<p>​		首先根据我们上面对于数据域的存储规律可以知道，s1,sid(尽管是空的)，e1，是依次排列的，所以我们这里先将sid的值赋给a0，其实就是将那个空的地址赋给了a0，所以后面读到的String自然也就存储到了sid所表示的内存当中，也就是紧跟着Welcome，后来我们再将Welcome的地址赋给a0（实际上赋的地址是字母W的地址也就是开头的地址），然后调动<strong>syscall（v0此时为4，是输出a0存储地址代表内存的内容）</strong>去找到a0内部存储的地址所代表的内存然后输出里面的内容，这个输出有一个要点<strong>会一直输出，直到碰到\0</strong>，所以虽然我们指向的是W，但是只要我们调用输出就会输出Welcome 11111111,知道碰到最后一个1后面的\0终止这就是为什么不会输出全部只输出前面的原因。</p>
-<h3 id="如何解决"><a href="#如何解决" class="headerlink" title="如何解决"></a>如何解决</h3><p>​		这里有几个办法可以解决，第一个办法就是把to MIPS World这个字符串（每个字符占一个字节）整体往前搬一位，让<strong>t</strong>把那个<strong>\0</strong>的位置给占掉，（这里有些人可能有些小疑问，为什么我们不能四个字节四个字节的搬运，也就是一个字一个字的般，而是一个字节一个字节的般呢，这就要联系到我们前面说的lw和sw的规则了，地址必须是四位的，我们这里最后一位的\0地址是0x100110017，不是四的倍数，不能直接搬过去，只能一位一位的搬），占掉之后就会顺着输出了，知道下一个\0,这里我们简单写一个字符的，而不是整个字符串，整个字符串太长了而且都类似。</p>
-<figure class="highlight mips"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">la $<span class="built_in">t0</span>,e1 <span class="comment">#把e1的地址先存入一个寄存器中以便于后面移位</span></span><br><span class="line"><span class="keyword">lb </span>$<span class="built_in">t1</span>,($<span class="built_in">t0</span>) <span class="comment">#将t0代表的地址中的内容存到t1中</span></span><br><span class="line"><span class="keyword">sb </span>$<span class="built_in">t1</span>,-<span class="number">1</span>($<span class="built_in">t0</span>) <span class="comment">#将t0中存入的数据存进t0所代表的地址减一位中</span></span><br></pre></td></tr></table></figure>
-
-<p>​		这里再简单解释一下代码，为什么第一步要多次一举把e1存入t0中，因为只有这样才能写sb $t1,-1($t0)这句话，笔者之前试过写sb $t1,-1e1，发现似乎不行，直接用数据域前面加数字似乎是不合法的。</p>
-<p>​		代码的过程就是先把e1存入t0，然后先从t0所指代的地址也就是e1所指代的地址存入一个字节的数据其实也就是<strong>t</strong>进入t1中，然后再将t1现在存的东西（也就是t）存入t0对应的地址-1，也就是那个t之前的\0的位置，现在内存里的东西是啥呢。</p>
-<p>​		<img src="/2023/02/23/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BB%84%E6%88%90%E5%8E%9F%E7%90%862%EF%BC%88%E7%BB%AD%EF%BC%89/p10.png"></p>
-<p>​		我们可以发现原先是\0的位置以及被t给占领了，接下来我们只要一个一个往前搬移就能把所有数据都往前搬一位</p>
-<p>就能实现我们的最终目的。</p>
-<p>​		当然了如果想偷懒可以直接找一个空格的位置，把他直接存到原来\0代表的位置上去，让后就可以取而代之了，而且也不影响输出的结果，有点小偷懒哈哈。比如所Welcome后就有一个空格可以这样</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">la $t0,s1</span><br><span class="line">la $t2,e1</span><br><span class="line">lb $t1,7($s1) #搬了一个空格来</span><br><span class="line">sb $t1,-1(t2) #空格占位</span><br></pre></td></tr></table></figure>
-
-<h1 id="结束"><a href="#结束" class="headerlink" title="结束"></a>结束</h1><p>​		以上就是本期的全部内容辣，如果有建议欢迎来提，写的好累。</p>
-
-    
-
-    
-
-    
-
-  </div>
-  <div class="article-info article-info-index">
-    
-    
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">计算机组成原理</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-    
-
-    
-    <p class="article-more-link">
-      <a class="article-more-a" href="/2023/02/23/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BB%84%E6%88%90%E5%8E%9F%E7%90%862%EF%BC%88%E7%BB%AD%EF%BC%89/">展开全文 >></a>
-    </p>
-    
-
-    
-    <div class="clearfix"></div>
-  </div>
-  </div>
-</article>
-
-<aside class="wrap-side-operation">
-    <div class="mod-side-operation">
-        
-        <div class="jump-container" id="js-jump-container" style="display:none;">
-            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
-                <i class="icon-font icon-back"></i>
-            </a>
-            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
-                <i class="icon-font icon-plane jump-plane"></i>
-            </div>
-        </div>
-        
-        
-    </div>
-</aside>
-
-
-
-
-  
-    <article id="post-计算机组成原理2" class="article article-type-post  article-index" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-  
-  
-    <h1 itemprop="name">
-	
-	  <a class="article-title" href="/2023/02/23/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BB%84%E6%88%90%E5%8E%9F%E7%90%862/" target="_blank">计算机组成原理2</a>
-  
-    </h1>
-  
-
-
-  
-  
-<a href="/2023/02/23/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BB%84%E6%88%90%E5%8E%9F%E7%90%862/" class="archive-article-date">
-        <time datetime="2023-02-23T08:27:00.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2023-02-23</time>
-</a>
-
-  
-  
-    
-
-  
-  </header>
-  
-  <div class="article-entry" itemprop="articleBody">
-    
-    <h1 id="lecture"><a href="#lecture" class="headerlink" title="lecture"></a>lecture</h1><h2 id="一点前言"><a href="#一点前言" class="headerlink" title="一点前言"></a>一点前言</h2><p>​		这节课一开始延续上节课的ppt讲了一些余下的内容，具体有下面几点</p>
-<h3 id="能量消耗问题"><a href="#能量消耗问题" class="headerlink" title="能量消耗问题"></a>能量消耗问题</h3><p>​		上节课说了摩尔定律，计算机的算力每18个月翻一番，这很大程度上依赖于单位面积上晶体管数量的增长<strong>所以光刻机的发展十分重要，否则根本制造不了如此微小的晶体管</strong>，但是与此同时带来的问题就是能量消耗问题，能源消耗问题主要有两个分类。</p>
-<h4 id="静态能源消耗"><a href="#静态能源消耗" class="headerlink" title="静态能源消耗"></a>静态能源消耗</h4><p>​		晶体管保持自身原本的状态所需要的能量，这个能量老师上课没有给计算的公式，但是似乎这部分能量是我们很难去改变的部分所以我们的重点不在于此。我们的重点在于动态能源损耗的减少上。</p>
-<h4 id="动态能源损耗"><a href="#动态能源损耗" class="headerlink" title="动态能源损耗"></a>动态能源损耗</h4><p> 为了简化计算，我们将动态能源的损耗简单看成电容的充放电，一个电容器所具有的能量是<strong>1&#x2F;2CV^2</strong>,所以一个电容经过一次完整的充放电所需要的能量就是<strong>CV^2</strong>，我们想要减少这个能量的损耗有几个方向。</p>
-<p>​		<strong>2.<strong>减少电容充放电的次数，想要达到这个目的我们需要降低时钟频率，但是降低时钟频率带来的问题就是</strong>计算机处理速度的下降</strong>，所以只能在一定范围内限制时钟频率。你可以看到近些年的计算机时钟频率没有持续的升高。</p>
-<p><img src="/2023/02/23/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BB%84%E6%88%90%E5%8E%9F%E7%90%862/p1.png"></p>
-<p>​		**1.**降低电容的电容量，这点是很难做到的，第二点试试降低电压，但是这也存在一定的问题，在计算机中我们实际就是以高低电平来表示二进制数字1和0，如果电压太低，高低电平区分不明显就往往会导致错误，所以降低电压不能降的太低。</p>
-<h3 id="存储器"><a href="#存储器" class="headerlink" title="存储器"></a>存储器</h3><p>​		我们讲到存储器主要就是两种一种是<code>Volatile main memory</code>，断电数据即消失的内存，以<code>RAM</code>为代表，还有一种就是永久的存储器，如硬盘，CD等等。</p>
-<h2 id="八个大问题（设计领域）"><a href="#八个大问题（设计领域）" class="headerlink" title="八个大问题（设计领域）"></a>八个大问题（设计领域）</h2><p>​		由于这八个领域感觉不是我们考试的重要范畴就简单点一下吧。</p>
-<p>先上图。</p>
-<p><img src="/2023/02/23/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BB%84%E6%88%90%E5%8E%9F%E7%90%862/p2.png"></p>
-<h3 id="为摩尔定律设计"><a href="#为摩尔定律设计" class="headerlink" title="为摩尔定律设计"></a>为摩尔定律设计</h3><p>​		根据摩尔定律计算机的计算速度每18个月翻一番，所以我们现有的软件以及其他一些计算机方向的设计是对标以后的计算机算力的，如果我们以当前计算机算力来设计的话，等到我们产品上线就会跟不上时代了。</p>
-<h3 id="抽象的设计"><a href="#抽象的设计" class="headerlink" title="抽象的设计"></a>抽象的设计</h3><p>​		其核心思想就是数据都能转换成二进制编码，我们将需要将问题逐渐抽象化，讲一个实际问题转换成二进制运算才能变成计算机所能解决的问题。</p>
-<h3 id="提高计算机速度的方法"><a href="#提高计算机速度的方法" class="headerlink" title="提高计算机速度的方法"></a>提高计算机速度的方法</h3><p>​	**流水线作业:**将一个大问题分离成若干的小问题，然后将处理器分块解决，这样本来每次必需处理完一个大问题才能处理下一个同样的大问题，将其分块后，完成第一个大问题的小问题后紧接着就能继续做下一个同样大问题的第一个小问题，然后以此类推，这种工作模式叫做流水线作业。</p>
-<p>  <img src="/2023/02/23/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BB%84%E6%88%90%E5%8E%9F%E7%90%862/p3.png"></p>
-<p><strong>并行</strong>：笔者对此没有很深的了解，但是根据笔者的理解应该是在计算机内安装多个处理器，这样就能同时完成多项任务*(amd已经有64核的处理器集群了可以同时开64个线程，恐怖如斯)*</p>
-<h3 id="数据搬移问题"><a href="#数据搬移问题" class="headerlink" title="数据搬移问题"></a>数据搬移问题</h3><p>​		数据直接从cpu搬移的速度&gt;从内存搬移的速度&gt;从硬盘搬移的速度。提升搬移速度最好的打算似乎就是将cpu的内存不断扩大，但是这件事很难办成，一个是成本原因一个是cpu大小的原因，所以我们有了一个新的解决思路。我将其称之为<strong>缓存策略</strong>：先从cpu取数据，如果没有接着向下找，在某一级找到了该元素，就将他提上一级，这样下次查找的速度就会更快（这里我们是认为被查询过的数据下次被查询到的概率更大），一个数据被查询的越频繁他的级别就越高查询他的速度就越快。</p>
-<p><img src="/2023/02/23/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BB%84%E6%88%90%E5%8E%9F%E7%90%862/p4.png"></p>
-<h3 id="冗余与稳定性问题"><a href="#冗余与稳定性问题" class="headerlink" title="冗余与稳定性问题"></a>冗余与稳定性问题</h3><p>​		我们知道计算机内部的数据（磁盘内的数据）不总是稳定的，就算是假定一个很低的故障率如果一个计算机拥有大量的磁盘，那么整个系统的故障率还是会很高，这个时候我们就要引入<strong>冗余</strong>的方案，我们将一个数据多备份几份在磁盘里，这样即时有一份出现问题也可以从其他正常的备份中找到原始数据，虽然这样会消耗存储空间但是确实降低了系统的故障率。</p>
-<h2 id="如何评价计算机的好坏"><a href="#如何评价计算机的好坏" class="headerlink" title="如何评价计算机的好坏"></a>如何评价计算机的好坏</h2><pre><code>     计算机的性能其实有很多方面的数据和指标，我们这里采用CPU的计算速度来评判。
-</code></pre>
-<h3 id="最简单的入门公式"><a href="#最简单的入门公式" class="headerlink" title="最简单的入门公式"></a>最简单的入门公式</h3><pre><code>     一个最简单的算法就是用时钟**(我们总是考虑CPU在时钟的控制下工作)**一个周期的时间乘以时钟过了多少个周期**（这里说的是完成一项具体工作的时间啊）**。
-</code></pre>
-<p><img src="/2023/02/23/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BB%84%E6%88%90%E5%8E%9F%E7%90%862/p5.png"></p>
-<p>​		根据这个公式我们有两种提升性能的办法，第一种就是减少所需要的时钟周期，第二种就是提高时钟的周期频率。</p>
-<h3 id="新概念——CPI"><a href="#新概念——CPI" class="headerlink" title="新概念——CPI"></a>新概念——CPI</h3><pre><code>     前面我们说的CPU时间的计算是完成一项具体工作所需要的时钟周期乘以每个周期时间，我们将其进一步细化，我们其实可以将一个工作分解成若干个指令`Instructions`，然后每个`Instructions`需要多少个时钟周期，再去乘以时钟周期时间，这里的`CPI`就是每个指令所需要花费的时钟周期数量(下图应该是默认了每个指令所需要的时钟周期是相同的，可以理解在**RISC**指令集下所有的指令都是较为简单的指令长度相同**有别于CISC**)![](p6.png)
-</code></pre>
-<p>下面来简单举一个例子吧</p>
-<p>这里的sequence1和2的区别应该是在于两种不同的代码方式或者编译方式，使得相同类（完成同样工作）所需要的指令数目不同CPI也不同。</p>
-<p><img src="/2023/02/23/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BB%84%E6%88%90%E5%8E%9F%E7%90%862/p7.png"></p>
-<h3 id="最终公式"><a href="#最终公式" class="headerlink" title="最终公式"></a>最终公式</h3><p><img src="/2023/02/23/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BB%84%E6%88%90%E5%8E%9F%E7%90%862/p8.png"></p>
-<p>第一项是有平均每个程序有多少条指令，第二项是平均每一条指令要多少个时钟周期，最后一项是一个周期有多少秒，乘在一起就是平均每个程序的CPU时间。</p>
-<h3 id="影响因素"><a href="#影响因素" class="headerlink" title="影响因素"></a>影响因素</h3><p><img src="/2023/02/23/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BB%84%E6%88%90%E5%8E%9F%E7%90%862/p9.png"></p>
-<h3 id="一些额外的知识"><a href="#一些额外的知识" class="headerlink" title="一些额外的知识"></a>一些额外的知识</h3><p>​		国际上实际有标准的评价计算机性能的标准<strong>SPEC CPU Benchmark</strong>，下面附一个一个Core i7的测评报告</p>
-<p><img src="/2023/02/23/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BB%84%E6%88%90%E5%8E%9F%E7%90%862/p10.png"></p>
-<h3 id="另外的评判标准（从功率上评判）——-SPEC-Power-Benchmark"><a href="#另外的评判标准（从功率上评判）——-SPEC-Power-Benchmark" class="headerlink" title="另外的评判标准（从功率上评判）—— SPEC Power Benchmark"></a>另外的评判标准（从功率上评判）—— SPEC Power Benchmark</h3><p>​		具体的指标就是利用多少CPU需要消耗多少的能量</p>
-<p><img src="/2023/02/23/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BB%84%E6%88%90%E5%8E%9F%E7%90%862/p11.png"></p>
-<p>​		可以看到，CPU在负载较低的情况下的能量消耗率是很大的，在10%的CPU占用下居然可以达到满载的资源消耗的一半，着实有些匪夷所思。</p>
-<h1 id="结束"><a href="#结束" class="headerlink" title="结束"></a>结束</h1><p> 额，感觉这次lec的东西有点多。实验课的东西就单独再开一章，这次就先这样喽。</p>
-<h1 id="补充问答"><a href="#补充问答" class="headerlink" title="补充问答"></a>补充问答</h1><h2 id="评价计算机性能的两个指标："><a href="#评价计算机性能的两个指标：" class="headerlink" title="评价计算机性能的两个指标："></a>评价计算机性能的两个指标：</h2><p>Responstime ：运行一个任务的时间</p>
-<p>throughout ： 单位时间内能运行多少任务</p>
-<h2 id="给出一系列程序在电脑上运行，通过这些程序运行的时间来评判计算机性能的好坏："><a href="#给出一系列程序在电脑上运行，通过这些程序运行的时间来评判计算机性能的好坏：" class="headerlink" title="给出一系列程序在电脑上运行，通过这些程序运行的时间来评判计算机性能的好坏："></a>给出一系列程序在电脑上运行，通过这些程序运行的时间来评判计算机性能的好坏：</h2><p><strong>SPEC标准</strong></p>
-<h2 id="新旧对比"><a href="#新旧对比" class="headerlink" title="新旧对比"></a>新旧对比</h2><p>通过新的计算机运行时间和老的计算机运行时间来比较。</p>
-
-    
-
-    
-
-    
-
-  </div>
-  <div class="article-info article-info-index">
-    
-    
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">计算机组成原理</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-    
-
-    
-    <p class="article-more-link">
-      <a class="article-more-a" href="/2023/02/23/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BB%84%E6%88%90%E5%8E%9F%E7%90%862/">展开全文 >></a>
-    </p>
-    
-
-    
-    <div class="clearfix"></div>
-  </div>
-  </div>
-</article>
-
-<aside class="wrap-side-operation">
-    <div class="mod-side-operation">
-        
-        <div class="jump-container" id="js-jump-container" style="display:none;">
-            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
-                <i class="icon-font icon-back"></i>
-            </a>
-            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
-                <i class="icon-font icon-plane jump-plane"></i>
-            </div>
-        </div>
-        
-        
-    </div>
-</aside>
-
-
-
-
-  
-    <article id="post-算法设计与分析" class="article article-type-post  article-index" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-  
-  
-    <h1 itemprop="name">
-	
-	  <a class="article-title" href="/2023/02/21/%E7%AE%97%E6%B3%95%E8%AE%BE%E8%AE%A1%E4%B8%8E%E5%88%86%E6%9E%90/" target="_blank">算法设计与分析1</a>
-  
-    </h1>
-  
-
-
-  
-  
-<a href="/2023/02/21/%E7%AE%97%E6%B3%95%E8%AE%BE%E8%AE%A1%E4%B8%8E%E5%88%86%E6%9E%90/" class="archive-article-date">
-        <time datetime="2023-02-21T14:48:31.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2023-02-21</time>
-</a>
-
-  
-  
-    
-
-  
-  </header>
-  
-  <div class="article-entry" itemprop="articleBody">
-    
-    <h1 id="Stable-Matching-Algorithm"><a href="#Stable-Matching-Algorithm" class="headerlink" title="Stable Matching Algorithm"></a>Stable Matching Algorithm</h1><h2 id="引子"><a href="#引子" class="headerlink" title="引子"></a>引子</h2><pre><code>   今天记录一下今天上了整整一节大课才讲完的`Stable Matching Algorithm`，这个算法是由`Gale-Shapley`两个人共同提出的，一个算法两个人提出嗯。。。可见其含金量，、之所以被称为`stable matching algorithm`是因为他解决了**stable matching problem**,即一个稳定匹配的问题。下面由一个例子引出这个算法。
-</code></pre>
-<h2 id="Introduction-：an-example"><a href="#Introduction-：an-example" class="headerlink" title="Introduction ：an example"></a>Introduction ：an example</h2><pre><code>      假设有一群毕业的医学生，他们毕业要分配到不同的医院去，并且我们有一张表，上面记录了医学生对每个医院的排名和医院对医学生的排名，我们需要找到一种配对方式，使得这个配对方式里不存在不稳定对即`unstable pairs`。
-</code></pre>
-<p><strong>unstable pairs</strong> ：在此种配对方式下，将所有不是一对的学生和医院进行一个自由组合，如果其中有一对其学生对这所医院的排名高于自己本身配对的医院并且该医院对这个学生的排名也大于它本身配对的学生，那么这一对就叫做不稳定对，<strong>直观上的理解就是双方都有更好的选择所以两个人可能会达成某种交易变成一对这会伤害到他们本身配对的学生和医院</strong>。</p>
-<h2 id="Another-example"><a href="#Another-example" class="headerlink" title="Another example:"></a>Another example:</h2><p>​       上一个例子可能还不够直观，那我们来说一个更直观的例子，关于结婚的例子，有n个男人和n个女人，男人对女人有一个排名，女人对男人有一个排名，我们需要找到一种配对方式，使得这种方式不存在<code>unstable pairs</code>,这里的<strong>unstable pairs</strong>同上面类似也是在其他的配对中，有女性喜欢这个配对的男性大于自身原来的配偶并且该男性喜欢这个女性也大于自身的配偶，那么他们有可能<strong>私奔</strong>，所以这是一个不稳定对。看下面一张表。</p>
-<p><img src="/2023/02/21/%E7%AE%97%E6%B3%95%E8%AE%BE%E8%AE%A1%E4%B8%8E%E5%88%86%E6%9E%90/p1.png"></p>
-<p>​           此时我们给定一种配对<strong>X-C,Y-B,Z-A</strong>,请读者想一想这种配对是否是一个<strong>stable matching</strong>，事实上我们的检验方法也是非常简单，把所有其他的配对给列出来例如<strong>X-B</strong>,这是一个<strong>unstable pairs</strong>吗，事实上是的，因为<strong>X</strong>对<strong>B</strong>的喜爱度大于其当前的伴侣<strong>C</strong>并且<strong>B</strong>对<strong>X</strong>的限度也大于他当前的伴侣<strong>Y</strong>，所以<strong>X-B</strong>是一对不稳定对，他们完全有可能抛弃自己当前的伴侣而选择对方并且私奔。我们再来看<strong>X-A,Y-B,Z-C</strong>这一组组合，发现找不出一族<strong>unstable pairs</strong>，举个例子<strong>Z-A</strong>，虽然<strong>Z</strong>喜欢<strong>A</strong>胜过自己现在的伴侣<strong>C</strong>,但是<strong>A</strong>喜欢自己现在的伴侣超过<strong>Z</strong>，所以他不会抛弃自己现在的伴侣，所以这并不是一对<strong>unstable pairs</strong>。</p>
-<h2 id="一个例外"><a href="#一个例外" class="headerlink" title="一个例外"></a>一个例外</h2><pre><code>     现在我们似乎应该开始探讨这么一种算法了，但是在那之前我们不妨先想一想，是否每一个类似的问题都有解。我们先来看一个类似的问题，选择室友的问题。下面是一张表，是每一个人对自己室友候选人的一个评级，我们要给出一种配对，也是两个人一对，不存在任何的不稳定对。
-</code></pre>
-<p><img src="/2023/02/21/%E7%AE%97%E6%B3%95%E8%AE%BE%E8%AE%A1%E4%B8%8E%E5%88%86%E6%9E%90/p2.png"></p>
-<p>​		存在这样的配对方式吗，我们经过穷举发现是不存在的，具体结果请看下图。</p>
-<p><img src="/2023/02/21/%E7%AE%97%E6%B3%95%E8%AE%BE%E8%AE%A1%E4%B8%8E%E5%88%86%E6%9E%90/p3.png"></p>
-<p>​         所以这样一个找室友的问题似乎是不存在解的，但是幸运的是像我们上面那样的找伴侣或者学生和医院的配对是一定存在解的并且可以找到这么一种算法求得这样一个解。</p>
-<h3 id="为什么"><a href="#为什么" class="headerlink" title="为什么"></a>为什么</h3><p>​         笔者经过一定的思考发现了找室友问题和找伴侣问题和医院学生配对的不同，即伴侣问题是将对象严格分为两组的，且每一组内部的对象不能够互相配对，但是找室友问题则没有将对象分为两组，所有的对象都能两两配对，所以这样的问题不一定有解。</p>
-<h2 id="算法"><a href="#算法" class="headerlink" title="算法"></a>算法</h2><p>​        终于到了我们最重要的阶段了，算法揭秘阶段，这个算法叫做<code>Propose-and-reject algorithm</code>也叫<code>Gale-Shapley algorithm</code>，后面这个是以两个设计者的名称的来命名的。下面是算法的实现过程。</p>
-<p><img src="/2023/02/21/%E7%AE%97%E6%B3%95%E8%AE%BE%E8%AE%A1%E4%B8%8E%E5%88%86%E6%9E%90/p4.png"></p>
-<p>​    	 简要叙述一下算法的过程，首先第一步将所有的男性和女性的状态全都设置为<strong>free</strong>即自由状态，然后开始while循环，while循环的条件有两个，一个是有<strong>free</strong>的男性并且该男性并没有对所有的女性都发过申请。进入while循环，首先随便选择一个符合while循环条件的男性m，再选择一个女性w，这个w是m当前为发出过请求中最喜欢的女性。</p>
-<p>​		接下来开始if判断，如果w是自由的那么w将直接成为m的暂时伴侣，如果w有伴侣了那么如果w喜欢当前m大于自己的当前伴侣那么w抛弃自己原来的伴侣接受m否则拒绝m，经过一次又一次的循环，最终得到的就是一份<strong>stable matching</strong> 。</p>
-<h2 id="证明"><a href="#证明" class="headerlink" title="证明"></a>证明</h2><h3 id="证明1"><a href="#证明1" class="headerlink" title="证明1"></a>证明1</h3><p>​		 这个证明需要一步一步证明，我们先来第一个证明，这个算法运算结束之后所有男性女性都将有一个伴侣，不可能存在一个孤立的男性和一个孤立的女性的情况，如何证明呢我们运用<strong>反证法</strong>。</p>
-<p>​		<strong>假设有一个男性和女性当算法结束的时候没有配对，那么这个男性一定对所有的女性发出过请求，不然while循环不会结束，如果女性没有配对说明这个女性没有被任何人请求过，因为按照我们的算法，如果一个自由的女性被请求过那么她后面只会在男性之间被交换（没有歧视女性的意思），这就与上面的结论矛盾，因为我们说那个男性一定请求过所有的女性，矛盾产生，假设不成立原命题成立</strong></p>
-<h3 id="证明2"><a href="#证明2" class="headerlink" title="证明2"></a>证明2</h3><p>​		第二个证明，这种配对下不存在<strong>unstable pairs</strong>我们同样使用反证法。</p>
-<p>​		<strong>假设有这样一对unstable pairs，M1-W1，M1喜欢W1超过自己的现任，说明M1曾经先请求的W1但是被拒绝了，因为根据我们的算法男性会先向自己最喜欢的女性发出请求，但是W1拒绝说明W1喜欢当初的伴侣超过M1，按照我们的算法女性只会找自己越来越喜欢的男性，所以最终的伴侣不可能低于M1所以与我们的假设相悖，原命题成立</strong></p>
-<h3 id="证明3"><a href="#证明3" class="headerlink" title="证明3"></a>证明3</h3><h4 id="一点小深入"><a href="#一点小深入" class="headerlink" title="一点小深入"></a>一点小深入</h4><p>​		通过上面两个证明我们已经基本证明了该算法的可行性，即一定可以找到一个合理的<strong>stable matching</strong>，我们将这个问题思考的再深一些，<strong>stable matching</strong>是否只存在一种，我们通过一些例子可以发现是不只一种的，看下面一个例子。</p>
-<p><img src="/2023/02/21/%E7%AE%97%E6%B3%95%E8%AE%BE%E8%AE%A1%E4%B8%8E%E5%88%86%E6%9E%90/p5.png"></p>
-<p>​		这个例子就有两种<strong>stable matching</strong>，那么我们通过算法获得的是哪一种呢，是男性获得自己最喜欢的女性的那一种即第一种。叫做<code>man-optimal stable matching</code>.下面是证明。</p>
-<p><img src="/2023/02/21/%E7%AE%97%E6%B3%95%E8%AE%BE%E8%AE%A1%E4%B8%8E%E5%88%86%E6%9E%90/p6.png"></p>
-<p>​		简单点一下最难的部分第六步，因为Y是第一个被自己最好的valid<strong>（m的valid women指的是所有不同的stable matching里面和m配对的女性）</strong>所以Z在之前不可能被任何自己最佳的valid women拒绝过，而Z会从好到差选择自己的女性伴侣，所以他一定喜欢A超过B，不然他肯定会先选B但是会被拒绝，不然也不会和Y抢A，但是这样Y就不是第一个被valid women拒绝的了所以矛盾。这是对第六条的解释后面看上面就比较简单了。</p>
-<h2 id="具体实现"><a href="#具体实现" class="headerlink" title="具体实现"></a>具体实现</h2><p>​		具体实现和简单，两个二维数组存上述的男女两个表，再用一个数组存第m个男性发出请求的次数。</p>
-<p>时间复杂度O（n方) </p>
-<h3 id="实现补充"><a href="#实现补充" class="headerlink" title="实现补充"></a>实现补充</h3><p>​		今天lab课上让我们具体实现了一下才发现不是那么简单的事情，我大概花了半个小时实现该算法，简单讲一下其中的要点，首先是姓名到数字的映射，因为我们中途处理的过程中需要把人的姓名给编号，用1，2，3，4，5…来代替人的名字存入数组当中，但是每次如果需要查找对应的人和编号是一件不那么容易的事情，我们如果有n个数据，查找所有人的编号就要遍历n次，是o（n^2）的时间复杂度，我们采取另一个数据结构<code>HashMap</code>做映射，这样通过键值对查询，每次查询的速度是o（1）的，同时为了后面将编号和人民反过来对应输出，我建立了第二张<code>HashMap</code>以编号为key人名为value。</p>
-<p>​		存储每个人对男&#x2F;女的打分，先用一张二维数组存下来此时数组的下标是名字，里面的值是人的编号，我们后面再建立一个inverse数组，数组下标表示人物编号，值表示排名方便后面对比(仅女性)。</p>
-<p>​		同时建立一个<code>count</code>数组，count[m]表示第m个男性已经对多少个女性发出过请求，这有两个作用，一个作用是判断其是不是已经向全部女性发出过请求，第二个因为男性总是会从高到低向女性发出申请，如果他被一个女性拒绝了，那么下次他也同样会被该女性拒绝，所以这个数组可以帮助我们快速找到这个男性当前应该对谁发出请求。</p>
-<p>​		建立一个rewomen数组，用来存储当前女性的伴侣编号，如果是-1则表示free，有两个用，第一个是储存中间结果，便于对比，第二个是方便最后输出结果。下面贴上我的代码(交过oj已经AC)。**(Qreader是一个快读模板，不用管)**</p>
- <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> java.io.BufferedReader;</span><br><span class="line"><span class="keyword">import</span> java.io.IOException;</span><br><span class="line"><span class="keyword">import</span> java.io.InputStreamReader;</span><br><span class="line"><span class="keyword">import</span> java.io.PrintWriter;</span><br><span class="line"><span class="keyword">import</span> java.util.ArrayDeque;</span><br><span class="line"><span class="keyword">import</span> java.util.Deque;</span><br><span class="line"><span class="keyword">import</span> java.util.HashMap;</span><br><span class="line"><span class="keyword">import</span> java.util.StringTokenizer;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">StableMatching</span> &#123;</span><br><span class="line">  <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title function_">main</span><span class="params">(String[] args)</span> &#123;</span><br><span class="line">    <span class="type">QReader</span> <span class="variable">in</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">QReader</span>();</span><br><span class="line">    <span class="type">PrintWriter</span> <span class="variable">out</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">PrintWriter</span>(System.out);</span><br><span class="line">    <span class="type">int</span> <span class="variable">n</span> <span class="operator">=</span> in.nextInt();</span><br><span class="line">    <span class="type">int</span>[] count = <span class="keyword">new</span> <span class="title class_">int</span>[n];</span><br><span class="line">    <span class="type">int</span>[] womenResult =  <span class="keyword">new</span> <span class="title class_">int</span>[n];</span><br><span class="line">    <span class="keyword">for</span> (<span class="type">int</span> <span class="variable">i</span> <span class="operator">=</span> <span class="number">0</span>; i &lt; n; i++) &#123;</span><br><span class="line">      womenResult[i] = -<span class="number">1</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    HashMap&lt;String, Integer&gt; menList = <span class="keyword">new</span> <span class="title class_">HashMap</span>&lt;&gt;();</span><br><span class="line">    HashMap&lt;Integer, String&gt; reMenList = <span class="keyword">new</span> <span class="title class_">HashMap</span>&lt;&gt;();</span><br><span class="line">    <span class="type">int</span> <span class="variable">manCount</span> <span class="operator">=</span> <span class="number">0</span>;</span><br><span class="line">    HashMap&lt;String, Integer&gt; womenList = <span class="keyword">new</span> <span class="title class_">HashMap</span>&lt;&gt;();</span><br><span class="line">    HashMap&lt;Integer, String&gt; reWomenList = <span class="keyword">new</span> <span class="title class_">HashMap</span>&lt;&gt;();</span><br><span class="line">    <span class="type">int</span> <span class="variable">womenCount</span> <span class="operator">=</span> <span class="number">0</span>;</span><br><span class="line">    <span class="keyword">for</span> (<span class="type">int</span> <span class="variable">i</span> <span class="operator">=</span> <span class="number">0</span>; i &lt; n; i++) &#123;</span><br><span class="line">      <span class="type">String</span> <span class="variable">name</span> <span class="operator">=</span> in.next();</span><br><span class="line">      menList.put(name, manCount);</span><br><span class="line">      reMenList.put(manCount, name);</span><br><span class="line">      manCount++;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">for</span> (<span class="type">int</span> <span class="variable">i</span> <span class="operator">=</span> <span class="number">0</span>; i &lt; n; i++) &#123;</span><br><span class="line">      <span class="type">String</span> <span class="variable">name</span> <span class="operator">=</span> in.next();</span><br><span class="line">      womenList.put(name, womenCount);</span><br><span class="line">      reWomenList.put(womenCount, name);</span><br><span class="line">      womenCount++;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="type">int</span>[][] menPreferenceList = <span class="keyword">new</span> <span class="title class_">int</span>[n][n];</span><br><span class="line">    <span class="type">int</span>[][] womenPreferenceList = <span class="keyword">new</span> <span class="title class_">int</span>[n][n];</span><br><span class="line">    <span class="keyword">for</span> (<span class="type">int</span> <span class="variable">i</span> <span class="operator">=</span> <span class="number">0</span>; i &lt; n; i++) &#123;</span><br><span class="line">      <span class="keyword">for</span> (<span class="type">int</span> <span class="variable">j</span> <span class="operator">=</span> <span class="number">0</span>; j &lt; n; j++) &#123;</span><br><span class="line">        <span class="type">String</span> <span class="variable">name</span> <span class="operator">=</span> in.next();</span><br><span class="line">        menPreferenceList[i][j] = womenList.get(name);</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">for</span> (<span class="type">int</span> <span class="variable">i</span> <span class="operator">=</span> <span class="number">0</span>; i &lt; n; i++) &#123;</span><br><span class="line">      <span class="keyword">for</span> (<span class="type">int</span> <span class="variable">j</span> <span class="operator">=</span> <span class="number">0</span>; j &lt; n; j++) &#123;</span><br><span class="line">        <span class="type">String</span> <span class="variable">name</span> <span class="operator">=</span> in.next();</span><br><span class="line">        womenPreferenceList[i][j] = menList.get(name);</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;</span><br><span class="line"> </span><br><span class="line">    <span class="type">int</span>[][] inverseWomenList = <span class="keyword">new</span> <span class="title class_">int</span>[n][n];</span><br><span class="line">   </span><br><span class="line">    <span class="keyword">for</span> (<span class="type">int</span> <span class="variable">i</span> <span class="operator">=</span> <span class="number">0</span>; i &lt; n; i++) &#123;</span><br><span class="line">      <span class="keyword">for</span> (<span class="type">int</span> <span class="variable">j</span> <span class="operator">=</span> <span class="number">0</span>; j &lt; n; j++) &#123;</span><br><span class="line">        inverseWomenList[i][womenPreferenceList[i][j]] = j;</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;</span><br><span class="line">  Deque&lt;Integer&gt; man = <span class="keyword">new</span> <span class="title class_">ArrayDeque</span>&lt;&gt;();</span><br><span class="line">    <span class="keyword">for</span> (<span class="type">int</span> <span class="variable">i</span> <span class="operator">=</span> <span class="number">0</span>; i &lt; n; i++) &#123;</span><br><span class="line">      man.addLast(i);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">while</span> (!man.isEmpty()) &#123;</span><br><span class="line">      <span class="type">int</span> <span class="variable">tempMan</span> <span class="operator">=</span> man.pollFirst();</span><br><span class="line">      <span class="type">int</span> <span class="variable">tempWomen</span> <span class="operator">=</span> menPreferenceList[tempMan][count[tempMan]];</span><br><span class="line">      count[tempMan]++;</span><br><span class="line">      <span class="keyword">if</span> (womenResult[tempWomen] == -<span class="number">1</span>) &#123;</span><br><span class="line">        womenResult[tempWomen] = tempMan;</span><br><span class="line">      &#125; <span class="keyword">else</span> <span class="keyword">if</span> (inverseWomenList[tempWomen][womenResult[tempWomen]] &gt; inverseWomenList[tempWomen][tempMan]) &#123;</span><br><span class="line">        <span class="keyword">if</span> (count[womenResult[tempWomen]] &lt; n) &#123;</span><br><span class="line">          man.addLast(womenResult[tempWomen]);</span><br><span class="line">        &#125;</span><br><span class="line">        womenResult[tempWomen] = tempMan;</span><br><span class="line">      &#125; <span class="keyword">else</span> <span class="keyword">if</span> (count[womenResult[tempWomen]] &lt; n) &#123;</span><br><span class="line">        man.addLast(tempMan);</span><br><span class="line">      &#125;</span><br><span class="line">  </span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">for</span> (<span class="type">int</span> <span class="variable">i</span> <span class="operator">=</span> <span class="number">0</span>; i &lt; n; i++) &#123;</span><br><span class="line">      out.println(reMenList.get(womenResult[i])+<span class="string">&quot; &quot;</span>+reWomenList.get(i));</span><br><span class="line">    &#125;</span><br><span class="line">    out.close();</span><br><span class="line">&#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">class</span> <span class="title class_">QReader</span> &#123;</span><br><span class="line">  <span class="keyword">private</span> <span class="type">BufferedReader</span> <span class="variable">reader</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">BufferedReader</span>(<span class="keyword">new</span> <span class="title class_">InputStreamReader</span>(System.in));</span><br><span class="line">  <span class="keyword">private</span> <span class="type">StringTokenizer</span> <span class="variable">tokenizer</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">StringTokenizer</span>(<span class="string">&quot;&quot;</span>);</span><br><span class="line">  </span><br><span class="line">  <span class="keyword">private</span> String <span class="title function_">innerNextLine</span><span class="params">()</span> &#123;</span><br><span class="line">    <span class="keyword">try</span> &#123;</span><br><span class="line">      <span class="keyword">return</span> reader.readLine();</span><br><span class="line">    &#125; <span class="keyword">catch</span> (IOException e) &#123;</span><br><span class="line">      <span class="keyword">return</span> <span class="literal">null</span>;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">  </span><br><span class="line">  <span class="keyword">public</span> <span class="type">boolean</span> <span class="title function_">hasNext</span><span class="params">()</span> &#123;</span><br><span class="line">    <span class="keyword">while</span> (!tokenizer.hasMoreTokens()) &#123;</span><br><span class="line">      <span class="type">String</span> <span class="variable">nextLine</span> <span class="operator">=</span> innerNextLine();</span><br><span class="line">      <span class="keyword">if</span> (nextLine == <span class="literal">null</span>) &#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line">      &#125;</span><br><span class="line">      tokenizer = <span class="keyword">new</span> <span class="title class_">StringTokenizer</span>(nextLine);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> <span class="literal">true</span>;</span><br><span class="line">  &#125;</span><br><span class="line">  </span><br><span class="line">  <span class="keyword">public</span> String <span class="title function_">nextLine</span><span class="params">()</span> &#123;</span><br><span class="line">    tokenizer = <span class="keyword">new</span> <span class="title class_">StringTokenizer</span>(<span class="string">&quot;&quot;</span>);</span><br><span class="line">    <span class="keyword">return</span> innerNextLine();</span><br><span class="line">  &#125;</span><br><span class="line">  </span><br><span class="line">  <span class="keyword">public</span> String <span class="title function_">next</span><span class="params">()</span> &#123;</span><br><span class="line">    hasNext();</span><br><span class="line">    <span class="keyword">return</span> tokenizer.nextToken();</span><br><span class="line">  &#125;</span><br><span class="line">  </span><br><span class="line">  <span class="keyword">public</span> <span class="type">int</span> <span class="title function_">nextInt</span><span class="params">()</span> &#123;</span><br><span class="line">    <span class="keyword">return</span> Integer.parseInt(next());</span><br><span class="line">  &#125;</span><br><span class="line">  </span><br><span class="line">  <span class="keyword">public</span> <span class="type">long</span> <span class="title function_">nextLong</span><span class="params">()</span> &#123;</span><br><span class="line">    <span class="keyword">return</span> Long.parseLong(next());</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-
-
-
-    
-
-    
-
-    
-
-  </div>
-  <div class="article-info article-info-index">
-    
-    
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">算法设计与分析</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-    
-
-    
-    <p class="article-more-link">
-      <a class="article-more-a" href="/2023/02/21/%E7%AE%97%E6%B3%95%E8%AE%BE%E8%AE%A1%E4%B8%8E%E5%88%86%E6%9E%90/">展开全文 >></a>
-    </p>
-    
-
-    
-    <div class="clearfix"></div>
-  </div>
-  </div>
-</article>
-
-<aside class="wrap-side-operation">
-    <div class="mod-side-operation">
-        
-        <div class="jump-container" id="js-jump-container" style="display:none;">
-            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
-                <i class="icon-font icon-back"></i>
-            </a>
-            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
-                <i class="icon-font icon-plane jump-plane"></i>
-            </div>
-        </div>
-        
-        
-    </div>
-</aside>
-
-
-
-
-  
-    <article id="post-计算机组成原理1" class="article article-type-post  article-index" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-  
-  
-    <h1 itemprop="name">
-	
-	  <a class="article-title" href="/2023/02/16/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BB%84%E6%88%90%E5%8E%9F%E7%90%861/" target="_blank">计算机组成原理1</a>
-  
-    </h1>
-  
-
-
-  
-  
-<a href="/2023/02/16/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BB%84%E6%88%90%E5%8E%9F%E7%90%861/" class="archive-article-date">
-        <time datetime="2023-02-16T11:16:41.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2023-02-16</time>
-</a>
-
-  
-  
-    
-
-  
-  </header>
-  
-  <div class="article-entry" itemprop="articleBody">
-    
-    <h1 id="Lecture"><a href="#Lecture" class="headerlink" title="Lecture"></a>Lecture</h1><p>​       这个应该是关于计算机组成原理的第一次博客，第一次大课老师并没有讲述很多内容，主要讲了这门课程的大纲还有说这门课<strong>很难</strong>，除此之外，简单介绍了一下一个iPad的组成（个人感觉介绍这个组成其实就是我们计组的学习内容大纲），其中包括<code>I/O devices、Memory、Center processor unit</code>(以此是输入输出设备，存储器，中央处理器（CPU),然后重点介绍了一下CPU的内部构造主要有三个部分<code>Datapath、Control、Cache memory</code>，他们的功能依次是处理信息、控制datapath存储器,I&#x2F;O设备的序列（个人理解为安排这些器件的工作顺序）、可以存储并快速获取部分数据（类似于内存）。</p>
-<p>​       还介绍了一个非常著名的定律<strong>摩尔定律</strong>即计算机每过18到24个月计算性能将会翻一番，也就是计算机性能会呈指数型上涨的趋势，笔者稍稍拓宽一下，其实计算机本身的硬件的增长速度在近些年已经出现了一些瓶颈很难再去满足摩尔定律了，但是在移动终端（手机）处理器领域摩尔定律依旧发挥着作用，摩尔定律其实对计算机硬件厂商是一个很大的挑战，业界有另外一个定律叫做反摩尔定律即如果硬件厂商在现在卖与18个月前同样数量的18个月前的产品他们的收入将会降为原来的一半（计算机性能每过18个月翻一番也可以从同样性能的计算机在18个月后价格将会降低一半），也就是说硬件厂商就算做了18个月以前一样的事情他们的利益仍然会降低一半这也就倒逼的硬件厂商不断更新自己的产品以维持高盈利否则就会被行业所淘汰，像世界上有名的厂商因特尔就有自己的实验室，里面汇聚了一大批著名的科学家和技术人吗不断研发新的产品，感觉这对笔者来说也是一个提醒，必需不断学习不断进步否则就会被淘汰。</p>
-<h1 id="Lab"><a href="#Lab" class="headerlink" title="Lab"></a>Lab</h1><p>​        lab课首先还是先延续了之前数字逻辑的内容，简单讲了一下<code>vivado</code>的运用和操作步骤，然后介绍了<code>General purpose processor</code>（通用处理器），我们可以把他看成一种特殊的电路，他与<code>special purpose circuit </code>（具有特定用途的电路，其实就是我们数字逻辑学过的那些例如加法器一种电路只能实现一种功能）最大的不同就是可以干很多很多的事情而不局限于某种特定的功能，他的工作原理是我们通过输入输出设备给予这个处理器<code>instruction</code>和<code>data</code>（指令和数据），其中指令是告诉我们该如何处理数据，然后输出处理后的数据(笔者说一个简单的观点：其实我们所有的程序电路想要实现的功能都可以看成接收数据处理数据输出数据的过程)，你可以给这个处理器不同的<code>instruction</code>和<code>data</code>来实现不同的功能，这就是通用处理器之所以通用的原因，然后如何给予这个处理器指令和数据呢，我们通过汇编语言，我们这门课采用的事<code>MIPS</code>指令集（似乎还有其他的指令集，这里的指令集可以简单类比成高级变成语言的语法，不同的指令集就是不同的语言），同时通过<code>MARS</code>工具来编写MIPS，MARS工具就可以类比我们高级编程语言的IDE，<img src="/2023/02/16/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BB%84%E6%88%90%E5%8E%9F%E7%90%861/co1.png" alt="实现步骤"></p>
-<p>​       通过这张图片我们可以简单聊下一下全部的操作步骤，首先<code>asm</code>文件就是我们的汇编语言写成的文件，我们写好之后通过<code>MinisysAv2.0</code>工具对他进行进一步解释（我的理解有点类似编译可能也不对。。。），然后获得两个<code>coe</code>文件这两个coe文件应该是保存在我们下载的MinisysAv2.0工具的<code>output</code>目录下，我们再用<code>GenUBit_Minisys3.0</code>对这两个文件进行进一步的解释并获得最终的out.txt文件，这个文件就包含了我们前文所要的指令和数据，我们再通过<code>UartAssist</code>工具（这个工具是我们与CPU进行交流的工具我们需要通过他给处理器传入指令和数据并获得输出）将out.txt文件作为输入递给处理器并获得相对应的输出。</p>
-<h2 id="简单的MIPS指令"><a href="#简单的MIPS指令" class="headerlink" title="简单的MIPS指令"></a>简单的MIPS指令</h2><p>​       第一节课没有没有介绍过多的MIPS指令只讲了一点点，汇编语言之所以被称为低级语言低级就在于这个语言和硬件强相关，我们的一些语句其实就是直接操控硬件（如寄存器），下面通过笔者写的一个程序来简单介绍一下。程序实现了从操作台读入学号，然后打印出<strong>Welcome xxxxxxxx to the cs202 Lab in Spring of 2023</strong>这句话。</p>
-<figure class="highlight mips"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">.data</span> <span class="comment">#数据域</span></span><br><span class="line"><span class="symbol">  str1:</span> .asciiz <span class="string">&quot;Welcome &quot;</span></span><br><span class="line"><span class="symbol">  str2:</span> .asciiz <span class="string">&quot; to the CS202 Lab in Spring of 2023&quot;</span></span><br><span class="line"><span class="meta">.text</span> <span class="comment">#操作域</span></span><br><span class="line"><span class="symbol">  main:</span></span><br><span class="line">  li $<span class="built_in">v0</span>,<span class="number">5</span></span><br><span class="line">  <span class="keyword">syscall</span></span><br><span class="line"><span class="keyword"></span>  <span class="keyword">move </span>$<span class="built_in">t1</span>,$<span class="built_in">v0</span></span><br><span class="line">  li $<span class="built_in">v0</span>,<span class="number">4</span></span><br><span class="line">  la $<span class="built_in">a0</span>,str1</span><br><span class="line">  <span class="keyword">syscall</span></span><br><span class="line"><span class="keyword"></span>  li $<span class="built_in">v0</span>,<span class="number">1</span></span><br><span class="line">  la $<span class="built_in">a0</span>,($<span class="built_in">t1</span>)</span><br><span class="line">  <span class="keyword">syscall</span></span><br><span class="line"><span class="keyword"></span>  li $<span class="built_in">v0</span>,<span class="number">4</span></span><br><span class="line">  la $<span class="built_in">a0</span>,str2</span><br><span class="line">  <span class="keyword">syscall</span></span><br><span class="line"><span class="keyword"></span>  li $<span class="built_in">v0</span>,<span class="number">10</span></span><br><span class="line">  <span class="keyword">syscall</span></span><br></pre></td></tr></table></figure>
-
-<p>​      首先抬头通过<code>.data</code>来表示下面是数据域用于存储我们想要的一些数据，<code>str1,str2</code>是数据名字自己定义，<code>.asciiz</code>表示这个数据存储的类型是字符串，然后是<code>.text</code>表明下面要进行的操作，<code>main:</code>是程序的入口，<code>li</code>语句就是我们的赋值语句，前面是要赋值的对象后面是值，注意我们要赋值的对象就是寄存器我们用<code>$xx</code>(xx表示具体寄存器的序号)来表示寄存器，然后最重要的<code>syscall</code>关键字，它将从我们的<code>$v0</code>寄存器中取出数值并根据v0中的数值完成对应的操作，比如说我前面给v0先赋值5，然后调用syscall后获取v0里面的值为5然后要进行的是读入操作，将从控制台读入一个integer（整数）并存储在v0中（至于存储在哪里和v0不同值代表什么不同的操作会有一张表格），下面将将两个关键字<code>la,move</code>，两个有点类似，其中la表示将后一个寄存器或者data的地址传递给前一个寄存器，如果是后一个是寄存器要加上括号如这一句<code>la $a0,($t1)</code>，而move则是直接将后面寄存器内部或者数据的数值直接传递给前者，此时前者内部存储的是真实的数值而不是一个地址，这两点希望读者好好揣摩，和高级语言中的直接赋值和引用（指针）类似。下面我将将syscall的操作规则表贴上，希望读者根据这张表自己揣摩一下上面的示例代码。</p>
-<p><img src="/2023/02/16/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BB%84%E6%88%90%E5%8E%9F%E7%90%861/co2.png" alt="规则"></p>
-<h1 id="结束"><a href="#结束" class="headerlink" title="结束"></a>结束</h1><p>​       以上就是本次博客的全部内容，花了笔者挺长时间的，但是感觉也很值得，主要是自己又加深了一遍印象获得了更深层次的理解，以后还是得坚持写，写博客真的很有意义，也给我带来了一点成就感。</p>
-
-    
-
-    
-
-    
-
-  </div>
-  <div class="article-info article-info-index">
-    
-    
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">计算机组成原理</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-    
-
-    
-    <p class="article-more-link">
-      <a class="article-more-a" href="/2023/02/16/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BB%84%E6%88%90%E5%8E%9F%E7%90%861/">展开全文 >></a>
-    </p>
-    
-
-    
-    <div class="clearfix"></div>
-  </div>
-  </div>
-</article>
-
-<aside class="wrap-side-operation">
-    <div class="mod-side-operation">
-        
-        <div class="jump-container" id="js-jump-container" style="display:none;">
-            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
-                <i class="icon-font icon-back"></i>
-            </a>
-            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
-                <i class="icon-font icon-plane jump-plane"></i>
-            </div>
-        </div>
-        
-        
-    </div>
-</aside>
-
-
-
-
-  
-    <article id="post-开始" class="article article-type-post  article-index" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-  
-  
-    <h1 itemprop="name">
-	
-	  <a class="article-title" href="/2023/02/15/%E5%BC%80%E5%A7%8B/" target="_blank">开始</a>
-  
-    </h1>
-  
-
-
-  
-  
-<a href="/2023/02/15/%E5%BC%80%E5%A7%8B/" class="archive-article-date">
-        <time datetime="2023-02-15T08:10:51.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2023-02-15</time>
-</a>
-
-  
-  
-    
-
-  
-  </header>
-  
-  <div class="article-entry" itemprop="articleBody">
-    
-    <p>  今天应该算是第一天写博客，简单聊一下自己搭博客的初衷吧，上了大学以后感觉自己渐渐失去了高中记东西的习惯(其实是变懒了)，学过的东西过了一个假期(甚至不到)就全忘记了，所以萌生了一个写博客的念头，而且之前就听学长说了可以搭建自己的博客于是就在网上找了教程自己学着搭建了一下（昨天上数据库这门课老师说的一些话也给我了一些鼓励，他说要勇敢的去做一些东西我们计算机人大不了就重装系统呗），花了我一下午的时间感觉还挺有意思的。然后我后面可能会在博客记录一些我学过的东西还有一些平时的感悟随笔什么的，因为博客大概率都是自己看吗，所以可能就不会那么注重格式，就是主要自己能看懂就行(要是有那么一两个粉丝也挺好)，(⊙o⊙)…感觉就这么水也不是很好，简单说说今天让我印象最深的一件事情吧：今天上了这个学期第一节体育课–散打课，老师教了我们巴西柔术里面的一招裸绞，感觉挺有意思的(想回去对家里人和朋友试试hahahaha)，然后就不说了吧，反正从今天起多写点博客，记录一下自己的日子，让自己日子过的有意义一点，给自己定一个目标吧一周最少写两篇（如果有平常学习的需要也算），就这样加油吧年轻人。</p>
-
-    
-
-    
-
-    
-
-  </div>
-  <div class="article-info article-info-index">
-    
-    
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">随笔</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-    
-
-    
-    <p class="article-more-link">
-      <a class="article-more-a" href="/2023/02/15/%E5%BC%80%E5%A7%8B/">展开全文 >></a>
-    </p>
-    
-
-    
-    <div class="clearfix"></div>
-  </div>
-  </div>
-</article>
-
-<aside class="wrap-side-operation">
-    <div class="mod-side-operation">
-        
-        <div class="jump-container" id="js-jump-container" style="display:none;">
-            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
-                <i class="icon-font icon-back"></i>
-            </a>
-            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
-                <i class="icon-font icon-plane jump-plane"></i>
-            </div>
-        </div>
-        
-        
-    </div>
-</aside>
-
-
-
-
-  
+    <nav id="page-nav">
+      <span class="page-number current">1</span><a class="page-number" href="/page/2/">2</a><a class="extend next" rel="next" href="/page/2/">Next &amp;raquo;</a>
+    </nav>
   
 
 
@@ -1194,6 +1611,18 @@
              
               <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color5">离散数学</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color3">力扣</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color2">spring</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color5">人工智能</a>
               </li>
             
             <div class="clearfix"></div>

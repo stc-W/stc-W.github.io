@@ -18,7 +18,7 @@
 <meta property="og:description" content="Lec大概​		到了周末写博客的时间了，这节大课讲的内容不是很多，很多其实在lab课上都讲过了都是mips的一些代码。还有从指令翻译成机器码。 翻译成机器码​		这个在lab课的那节其实讲过了，这里就不细说了，这里提一下shamt，移位码，应该是sll等移位命令的数值大小。 跳跃​		这节课讲了一个比较重要的就是跳跃，正常的汇编语言是一句一句依次执行的，跳跃语句可以直接从一句跳转到另外一句。 ​">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2023-03-04T09:43:35.000Z">
-<meta property="article:modified_time" content="2023-03-05T02:31:12.399Z">
+<meta property="article:modified_time" content="2023-03-06T06:43:11.629Z">
 <meta property="article:author" content="王海龙">
 <meta property="article:tag" content="计算机组成原理">
 <meta name="twitter:card" content="summary">
@@ -227,7 +227,7 @@
 <h1 id="翻译成机器码"><a href="#翻译成机器码" class="headerlink" title="翻译成机器码"></a>翻译成机器码</h1><p>​		这个在lab课的那节其实讲过了，这里就不细说了，这里提一下shamt，移位码，应该是sll等移位命令的数值大小。</p>
 <h1 id="跳跃"><a href="#跳跃" class="headerlink" title="跳跃"></a>跳跃</h1><p>​		这节课讲了一个比较重要的就是跳跃，正常的汇编语言是一句一句依次执行的，跳跃语句可以直接从一句跳转到另外一句。</p>
 <p>​		可以用来实现<strong>if else</strong>语句，<strong>循环语句</strong>。下面将具体使用</p>
-<figure class="highlight mips"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">不加条件的跳转</span><br><span class="line"><span class="keyword">j </span>L1 <span class="comment">#这里的L1是一个标签</span></span><br><span class="line"><span class="keyword">jr </span>$<span class="built_in">s0</span> <span class="comment"># ？</span></span><br><span class="line">加条件的跳转</span><br><span class="line"><span class="keyword">beg </span>$<span class="built_in">s0</span> $<span class="built_in">s1</span> L1 <span class="comment">#be equal,如果s0和s1内部的值相等则跳转到L1</span></span><br><span class="line"><span class="keyword">bne </span>$<span class="built_in">s0</span> $<span class="built_in">s1</span> L1 <span class="comment">#be not queal, 如果两个寄存器内部的值不跳转则跳转到L1</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight mips"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">不加条件的跳转</span><br><span class="line"><span class="keyword">j </span>L1 <span class="comment">#这里的L1是一个标签</span></span><br><span class="line"><span class="keyword">jr </span>$<span class="built_in">s0</span> <span class="comment"># ？</span></span><br><span class="line">加条件的跳转</span><br><span class="line"><span class="keyword">beq </span>$<span class="built_in">s0</span> $<span class="built_in">s1</span> L1 <span class="comment">#be equal,如果s0和s1内部的值相等则跳转到L1</span></span><br><span class="line"><span class="keyword">bne </span>$<span class="built_in">s0</span> $<span class="built_in">s1</span> L1 <span class="comment">#be not queal, 如果两个寄存器内部的值不跳转则跳转到L1</span></span><br></pre></td></tr></table></figure>
 
 <p>​		下面用mips实现一个while循环，这里提一个小点，我们一般知道的是一个数组的开头地址，然后一般一个数字占四个字节。</p>
 <p>​		例如数组A[0]的地址是$s0，A[i]的地址是i * 4 + s0.</p>
@@ -347,6 +347,15 @@
 
 
 <nav id="article-nav">
+  
+    <a href="/2023/03/06/%E7%A6%BB%E6%95%A3%E6%95%B0%E5%AD%A62/" id="article-nav-newer" class="article-nav-link-wrap">
+      <i class="icon-circle-left"></i>
+      <div class="article-nav-title">
+        
+          离散数学2
+        
+      </div>
+    </a>
   
   
     <a href="/2023/02/27/%E7%A6%BB%E6%95%A3%E6%95%B0%E5%AD%A61/" id="article-nav-older" class="article-nav-link-wrap">
@@ -563,6 +572,18 @@
              
               <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color5">离散数学</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color3">力扣</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color2">spring</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color5">人工智能</a>
               </li>
             
             <div class="clearfix"></div>
