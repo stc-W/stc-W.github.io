@@ -1,31 +1,40 @@
 <?xml version="1.0" encoding="utf-8"?>
 <feed xmlns="http://www.w3.org/2005/Atom">
-  <title>Hexo</title>
+  <title>long</title>
   
   
   <link href="http://example.com/atom.xml" rel="self"/>
   
   <link href="http://example.com/"/>
-  <updated>2024-02-15T03:07:26.344Z</updated>
+  <updated>2024-02-16T01:49:24.397Z</updated>
   <id>http://example.com/</id>
   
   <author>
-    <name>John Doe</name>
+    <name>whl</name>
     
   </author>
   
   <generator uri="https://hexo.io/">Hexo</generator>
   
   <entry>
-    <title></title>
-    <link href="http://example.com/2024/02/15/%E5%BC%80%E5%A7%8B/"/>
-    <id>http://example.com/2024/02/15/%E5%BC%80%E5%A7%8B/</id>
-    <published>2024-02-15T03:07:26.344Z</published>
-    <updated>2024-02-15T03:07:26.344Z</updated>
+    <title>新的开始</title>
+    <link href="http://example.com/2024/02/16/%E5%BC%80%E5%A7%8B/"/>
+    <id>http://example.com/2024/02/16/%E5%BC%80%E5%A7%8B/</id>
+    <published>2024-02-16T01:28:55.000Z</published>
+    <updated>2024-02-16T01:49:24.397Z</updated>
+    
+    <content type="html"><![CDATA[<h1 id="新的开始"><a href="#新的开始" class="headerlink" title="新的开始"></a>新的开始</h1><p>​今天是换电脑之后第一次写博客，换电脑之后一直将这件事情耽搁了，昨天心血来潮重新搭建了一下，今日里又换了个主题，新的一年，新的开始，这个博客主要就是记录一些平时上的课程以及一些简单的随笔日记，主要是写给自己看的，给自己保留一些记忆，多年之后再读兴许能逗自己一乐，如果还能给别人带来一些快乐和帮助那自然是再好不过了。</p>]]></content>
+    
+    
+      
+      
+    <summary type="html">&lt;h1 id=&quot;新的开始&quot;&gt;&lt;a href=&quot;#新的开始&quot; class=&quot;headerlink&quot; title=&quot;新的开始&quot;&gt;&lt;/a&gt;新的开始&lt;/h1&gt;&lt;p&gt;​	今天是换电脑之后第一次写博客，换电脑之后一直将这件事情耽搁了，昨天心血来潮重新搭建了一下，今日里又换了个主题，新的一年，</summary>
+      
     
     
     
     
+    <category term="随笔" scheme="http://example.com/tags/%E9%9A%8F%E7%AC%94/"/>
     
   </entry>
   
