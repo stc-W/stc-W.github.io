@@ -20,28 +20,33 @@
     var CONFIG = {"hostname":"example.com","root":"/","scheme":"Muse","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":true},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":true,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
   </script>
 
-  <meta property="og:type" content="website">
-<meta property="og:title" content="long">
-<meta property="og:url" content="http://example.com/index.html">
+  <meta name="description" content="写在前面​	我一直在想这个博客应该写成什么样子，一条条的按照老师讲的来记录当笔记写么，我觉得不一定好，而且不仅少了读起来的乐趣而且这样写的话不如去看PPT复习得了，所以这种记录课程的博客还是按照我自己的感觉来，写的随意一点多记录一点自己的想法。 到底什么是操作系统，操作系统是用来干嘛的？​	首先得讲一讲计算机是什么，简单的来说计算机就是一个由晶体管构成的，用来执行一系列指令的机器。一个计算机系统的">
+<meta property="og:type" content="article">
+<meta property="og:title" content="os1">
+<meta property="og:url" content="http://example.com/2024/02/20/os1/index.html">
 <meta property="og:site_name" content="long">
+<meta property="og:description" content="写在前面​	我一直在想这个博客应该写成什么样子，一条条的按照老师讲的来记录当笔记写么，我觉得不一定好，而且不仅少了读起来的乐趣而且这样写的话不如去看PPT复习得了，所以这种记录课程的博客还是按照我自己的感觉来，写的随意一点多记录一点自己的想法。 到底什么是操作系统，操作系统是用来干嘛的？​	首先得讲一讲计算机是什么，简单的来说计算机就是一个由晶体管构成的，用来执行一系列指令的机器。一个计算机系统的">
 <meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2024-02-20T06:12:42.000Z">
+<meta property="article:modified_time" content="2024-02-21T08:08:13.865Z">
 <meta property="article:author" content="whl">
+<meta property="article:tag" content="operating system">
 <meta name="twitter:card" content="summary">
 
-<link rel="canonical" href="http://example.com/">
+<link rel="canonical" href="http://example.com/2024/02/20/os1/">
 
 
 <script id="page-configurations">
   // https://hexo.io/docs/variables.html
   CONFIG.page = {
     sidebar: "",
-    isHome : true,
-    isPost : false,
+    isHome : false,
+    isPost : true,
     lang   : 'en'
   };
 </script>
 
-  <title>long</title>
+  <title>os1 | long</title>
   
 
 
@@ -141,9 +146,10 @@
         <div class="content-wrap">
           
 
-          <div class="content index posts-expand">
+          <div class="content post posts-expand">
             
-      
+
+    
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
@@ -159,10 +165,9 @@
       <meta itemprop="name" content="long">
     </span>
       <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2024/02/20/os1/" class="post-title-link" itemprop="url">os1</a>
-        </h2>
+        <h1 class="post-title" itemprop="name headline">
+          os1
+        </h1>
 
         <div class="post-meta">
             <span class="post-meta-item">
@@ -192,7 +197,7 @@
     <div class="post-body" itemprop="articleBody">
 
       
-          <h1 id="写在前面"><a href="#写在前面" class="headerlink" title="写在前面"></a>写在前面</h1><p>​	我一直在想这个博客应该写成什么样子，一条条的按照老师讲的来记录当笔记写么，我觉得不一定好，而且不仅少了读起来的乐趣而且这样写的话不如去看PPT复习得了，所以这种记录课程的博客还是按照我自己的感觉来，写的随意一点多记录一点自己的想法。</p>
+        <h1 id="写在前面"><a href="#写在前面" class="headerlink" title="写在前面"></a>写在前面</h1><p>​	我一直在想这个博客应该写成什么样子，一条条的按照老师讲的来记录当笔记写么，我觉得不一定好，而且不仅少了读起来的乐趣而且这样写的话不如去看PPT复习得了，所以这种记录课程的博客还是按照我自己的感觉来，写的随意一点多记录一点自己的想法。</p>
 <h1 id="到底什么是操作系统，操作系统是用来干嘛的？"><a href="#到底什么是操作系统，操作系统是用来干嘛的？" class="headerlink" title="到底什么是操作系统，操作系统是用来干嘛的？"></a>到底什么是操作系统，操作系统是用来干嘛的？</h1><p>​	首先得讲一讲计算机是什么，简单的来说计算机就是一个由晶体管构成的，用来执行一系列指令的机器。一个计算机系统的构成由一系列硬件如IO设备（键盘鼠标），cpu，显示器，硬盘，各种各样的controller（用来控制设备的其中包括硬件部分和软件驱动部分），他们由一条总线（bus）来和同一内存（memory）进行交互。</p>
 <p>​	这其中就会有一个比较重要的问题了，大家都用同一个内存为了防止冲突，一个clock（同一时间）只有一个设备可以接触memory，但是究竟谁先谁后呢，这里就需要有一个大管家来控制安排这一切。</p>
 <p>​	再更为高级的角度上计算机系统主要有四个部分构成：硬件，操作系统，应用程序，用户。</p>
@@ -203,80 +208,33 @@
 <h2 id="插一段题外话，计算机架构"><a href="#插一段题外话，计算机架构" class="headerlink" title="插一段题外话，计算机架构"></a>插一段题外话，计算机架构</h2><p>​	现代常见的计算机架构主要是两种一种是冯诺依曼结构，第二种是哈佛结构，两者最重要的差距在于指令空间和变量空间是否分开，前者不分开，后者分开，冯氏结构因为指令空间和变量空间在一起所以不能同时取，而哈佛结构则可以同时取变量和指令，所以哈佛结构的处理速度更快，但是相对应的就是哈佛结构需要两块内存空间所以所以结构更为复杂。</p>
 <p>​	</p>
 
-      
     </div>
 
     
     
     
+
       <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
+          <div class="post-tags">
+              <a href="/tags/operating-system/" rel="tag"># operating system</a>
+          </div>
 
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2024/02/16/%E5%BC%80%E5%A7%8B/">
+        
 
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="whl">
-      <meta itemprop="description" content="">
-    </span>
 
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="long">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2024/02/16/%E5%BC%80%E5%A7%8B/" class="post-title-link" itemprop="url">新的开始</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">Posted on</span>
-              
-
-              <time title="Created: 2024-02-16 09:28:55 / Modified: 09:49:24" itemprop="dateCreated datePublished" datetime="2024-02-16T09:28:55+08:00">2024-02-16</time>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h1 id="新的开始"><a href="#新的开始" class="headerlink" title="新的开始"></a>新的开始</h1><p>​	今天是换电脑之后第一次写博客，换电脑之后一直将这件事情耽搁了，昨天心血来潮重新搭建了一下，今日里又换了个主题，新的一年，新的开始，这个博客主要就是记录一些平时上的课程以及一些简单的随笔日记，主要是写给自己看的，给自己保留一些记忆，多年之后再读兴许能逗自己一乐，如果还能给别人带来一些快乐和帮助那自然是再好不过了。</p>
-
-      
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2024/02/16/%E5%BC%80%E5%A7%8B/" rel="prev" title="新的开始">
+      <i class="fa fa-chevron-left"></i> 新的开始
+    </a></div>
+      <div class="post-nav-item"></div>
     </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
       </footer>
+    
   </article>
   
   
-  
-
-
   
 
 
@@ -329,6 +287,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%86%99%E5%9C%A8%E5%89%8D%E9%9D%A2"><span class="nav-number">1.</span> <span class="nav-text">写在前面</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%88%B0%E5%BA%95%E4%BB%80%E4%B9%88%E6%98%AF%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F%EF%BC%8C%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F%E6%98%AF%E7%94%A8%E6%9D%A5%E5%B9%B2%E5%98%9B%E7%9A%84%EF%BC%9F"><span class="nav-number">2.</span> <span class="nav-text">到底什么是操作系统，操作系统是用来干嘛的？</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%8F%92%E4%B8%80%E6%AE%B5%E9%A2%98%E5%A4%96%E8%AF%9D%EF%BC%8C%E8%AE%A1%E7%AE%97%E6%9C%BA%E6%9E%B6%E6%9E%84"><span class="nav-number">2.1.</span> <span class="nav-text">插一段题外话，计算机架构</span></a></li></ol></li></ol></div>
       </div>
       <!--/noindex-->
 

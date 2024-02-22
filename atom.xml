@@ -6,7 +6,7 @@
   <link href="http://example.com/atom.xml" rel="self"/>
   
   <link href="http://example.com/"/>
-  <updated>2024-02-16T01:49:24.397Z</updated>
+  <updated>2024-02-21T08:08:13.865Z</updated>
   <id>http://example.com/</id>
   
   <author>
@@ -15,6 +15,28 @@
   </author>
   
   <generator uri="https://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>os1</title>
+    <link href="http://example.com/2024/02/20/os1/"/>
+    <id>http://example.com/2024/02/20/os1/</id>
+    <published>2024-02-20T06:12:42.000Z</published>
+    <updated>2024-02-21T08:08:13.865Z</updated>
+    
+    <content type="html"><![CDATA[<h1 id="写在前面"><a href="#写在前面" class="headerlink" title="写在前面"></a>写在前面</h1><p>​我一直在想这个博客应该写成什么样子，一条条的按照老师讲的来记录当笔记写么，我觉得不一定好，而且不仅少了读起来的乐趣而且这样写的话不如去看PPT复习得了，所以这种记录课程的博客还是按照我自己的感觉来，写的随意一点多记录一点自己的想法。</p><h1 id="到底什么是操作系统，操作系统是用来干嘛的？"><a href="#到底什么是操作系统，操作系统是用来干嘛的？" class="headerlink" title="到底什么是操作系统，操作系统是用来干嘛的？"></a>到底什么是操作系统，操作系统是用来干嘛的？</h1><p>​首先得讲一讲计算机是什么，简单的来说计算机就是一个由晶体管构成的，用来执行一系列指令的机器。一个计算机系统的构成由一系列硬件如IO设备（键盘鼠标），cpu，显示器，硬盘，各种各样的controller（用来控制设备的其中包括硬件部分和软件驱动部分），他们由一条总线（bus）来和同一内存（memory）进行交互。</p><p>​这其中就会有一个比较重要的问题了，大家都用同一个内存为了防止冲突，一个clock（同一时间）只有一个设备可以接触memory，但是究竟谁先谁后呢，这里就需要有一个大管家来控制安排这一切。</p><p>​再更为高级的角度上计算机系统主要有四个部分构成：硬件，操作系统，应用程序，用户。</p><p>​<strong>操作系统就是一组使得计算器可以正确高效运作的软件。</strong>具体包含以下三个表现：使得用户的程序可以运行并且使得计算机系统更好被使用，让计算机硬件的工作效率更高（分配硬件资源）（hardware abstraction），给上层软件一种抽象的硬件调用接口，我的理解是这样即使是实际的硬件不同软件依然能够以相同的规范进行开发。其中操作系统就起到了中间的桥梁的作用有点像adapter。</p><p>​<strong>操作系统的构成有两个部分kernel和helper</strong>，kernel就是最核心的部分也就是直接和硬件进行交互的部分，调度硬件的部分，helper部分其实就是便于用户使用的部分，例如<strong>shell</strong>和<strong>gui</strong>有时候甚至浏览器也可以作为交互工具（Chrome book）。</p><p>​所以简单来说操作系统主要有两个作用：一是做资源的分配，分配硬件资源的使用，二是控制的作用，防止软件对计算机硬件的不正确使用。</p><p>​用三个词可以总结操作系统的作用：Virtualization,concurrency, persistence.第一个词可以让计算机同时跑多个程序，好像有多个CPU一样，并且可以让程序认为自己有独立的内存空间（实际上并不是）。第二点是在程序并行运行的时候如何分配资源。第三点就是像存储设备（disk）中存储内容。</p><h2 id="插一段题外话，计算机架构"><a href="#插一段题外话，计算机架构" class="headerlink" title="插一段题外话，计算机架构"></a>插一段题外话，计算机架构</h2><p>​现代常见的计算机架构主要是两种一种是冯诺依曼结构，第二种是哈佛结构，两者最重要的差距在于指令空间和变量空间是否分开，前者不分开，后者分开，冯氏结构因为指令空间和变量空间在一起所以不能同时取，而哈佛结构则可以同时取变量和指令，所以哈佛结构的处理速度更快，但是相对应的就是哈佛结构需要两块内存空间所以所以结构更为复杂。</p><p>​</p>]]></content>
+    
+    
+      
+      
+    <summary type="html">&lt;h1 id=&quot;写在前面&quot;&gt;&lt;a href=&quot;#写在前面&quot; class=&quot;headerlink&quot; title=&quot;写在前面&quot;&gt;&lt;/a&gt;写在前面&lt;/h1&gt;&lt;p&gt;​	我一直在想这个博客应该写成什么样子，一条条的按照老师讲的来记录当笔记写么，我觉得不一定好，而且不仅少了读起来的乐趣而且这</summary>
+      
+    
+    
+    
+    
+    <category term="operating system" scheme="http://example.com/tags/operating-system/"/>
+    
+  </entry>
   
   <entry>
     <title>新的开始</title>
