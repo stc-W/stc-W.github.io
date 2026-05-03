@@ -27,6 +27,8 @@ social:
   # It will be displayed as the default author of the posts and the copyright owner in the Footer
   name: Wang Hailong
   email: 12532569@mail.sustech.edu.cn # change to your email address
+  links:
+    - https://github.com/stc-W
   fediverse_handle: # fill in your fediverse handle. E.g. "@username@domain.com"
   
 
